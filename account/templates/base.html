@@ -13,8 +13,8 @@
 		<ul class="menu">
 			<li {% if section == "dashboard" %}class="selected"{% endif %}>
 				<a href="{% url "dashboard" %}">My dashboard</a>
-				<br>
 				<a href="{% url "add_transaction" %}">Transactions</a>
+				<a href="{% url "settings" %}">Settings</a>
 			</li>
 
 		</ul>
@@ -28,6 +28,7 @@
        </form>
      {% else %}
 	     <a href="{% url "login" %}">Log-in</a>
+	     <a href="{% url "register" %}">Sign-up</a>
      {% endif %}
    </span>
 </div>

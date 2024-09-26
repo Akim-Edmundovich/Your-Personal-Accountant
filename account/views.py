@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
-from .froms import CustomUserCreationForm
+from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
+from transactions.models import Transaction
+from datetime import datetime
+
 
 
 @login_required
@@ -17,6 +20,13 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
+@login_required
 def dashboard(request):
-    return render(request,
-                  'account/dashboard.html')
+    transactions = Transaction.objects.filter(user=request.user).values(
+        'created_at',
+        'category__name',
+        'subcategory__name',
+        'amount',
+        'description')
+    return render(request, 'account/dashboard.html',
+                  {'transactions': transactions})

@@ -407,7 +407,14 @@ button {
 
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: 1fr 1fr;
+
+    gap: 5px;
+}
+
+.subcategory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 40px);
     gap: 10px;
 }
 
@@ -416,7 +423,7 @@ button {
     padding: 10px;
     text-align: center;
     cursor: pointer;
-    background-color: #467343;
+    background-color: #878787;
     color: white;
     font-size: 14px;
     border-radius: 5px;
@@ -433,5 +440,31 @@ button {
 
 .category-button.active {
     background-color: green; /* Цвет при нажатии */
+    color: white;
+}
+
+
+
+.subcategory-button {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #978a4f;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #333;
+    transition: .2s;
+
+    &:hover {
+        box-shadow: 10px 10px 10px #edd986;
+        transform: scale(1.05);
+        background-color: white;
+        color: black;
+    }
+}
+
+.subcategory-button.active {
+    background-color: #008000; /* Цвет при нажатии */
     color: white;
 }

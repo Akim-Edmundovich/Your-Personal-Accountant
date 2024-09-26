@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}My categories{% endblock %}
+
+{% block content %}
+	<h1>My categories</h1>
+	<div class="module">
+		{% for category in object_list %}
+			{#	       ПОМЕНЯТЬ В CSS       #}
+			<div class="course-info">
+				<h3>{{ category.name }}</h3>
+				<p><a href="{% url "category_update" category.id %}">Edit</a>
+					<a href="{% url "category_delete" category.id %}">Delete</a>
+				</p>
+			</div>
+		{% empty %}
+			<p>You haven't created any categories yet.</p>
+		{% endfor %}
+		<p>
+			<a href="{% url "category_create" %}" class="button">Create new
+				category</a>
+		</p>
+	</div>
+{% endblock %}

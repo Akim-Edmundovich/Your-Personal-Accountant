@@ -25,9 +25,8 @@
 	<form method="post" id="form-rows">
 		{% csrf_token %}
 		<div class="form-row">
+		<!-- Используем только одну форму -->
 			<!-- Список категорий -->
-			<label for="category">Category</label>
-
 			<div class="category-grid">
 				{% for category in categories %}
 					<div class="category-button"
@@ -35,24 +34,15 @@
 				{% endfor %}
 			</div>
 
-			{#			<select name="category" id="category" class="category">#}
-			{#				<option value="" disabled selected></option>#}
-			{#				{% for category in categories %}#}
-			{#					<option value="{{ category.id }}">{{ category.name }}</option>#}
-			{#				{% endfor %}#}
-			{#			</select>#}
+			<!-- Скрытое поле для выбранной категории -->
+			<input type="hidden" id="category" name="category" value="">
 
 			<!-- Список подкатегорий -->
-			<label for="subcategory">Subcategory</label>
-			<select id="subcategory" name="subcategory">
-				<option value=""></option>
-				{% for subcategory in subcategories %}
+			<div class="subcategory-grid">
 
-				{% endfor %}
-				<!-- Здесь будут динамически загруженные подкатегории -->
-			</select>
+			</div>
 
-			{{ form.as_p }}  <!-- Используем только одну форму -->
+			{{ form.as_p }}
 
 			<input type="hidden" id="transaction_type"
 			       name="transaction_type"

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'transactions',
     'social_django',
     'django_extensions',
+    'profile_settings',
 ]
 
 MIDDLEWARE = [

@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def add_transaction(request):
-    # Проверяем, является ли запрос POST
     if request.method == 'POST':
         transaction_type = request.POST.get('transaction_type')
         form = TransactionForm(request.POST)
@@ -15,7 +14,7 @@ def add_transaction(request):
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction.user = request.user
-            transaction.type = transaction_type  # Добавляем тип транзакции
+            transaction.type = transaction_type
 
             category_id = request.POST.get('category')
 
@@ -25,23 +24,30 @@ def add_transaction(request):
             try:
                 category = Category.objects.get(id=category_id,
                                                 user=request.user)
-                subcategory = Subcategory.objects.get(category=category)
+                subcategory_id = request.POST.get('subcategory')
+
+                # Проверка на подкатегорию
+                if subcategory_id:
+                    transaction.subcategory = Subcategory.objects.get(
+                        id=subcategory_id)
+
                 transaction.category = category
-                transaction.subcategory = subcategory
             except Category.DoesNotExist:
                 return HttpResponseBadRequest('Category does not exist.')
+            except Subcategory.DoesNotExist:
+                # Если подкатегория не найдена, можем оставить её пустой
+                transaction.subcategory = None
 
             transaction.save()
             return redirect('add_transaction')
 
     else:
-        form = TransactionForm()  # Создаём пустую форму для GET-запроса
+        form = TransactionForm()
 
     categories = Category.objects.filter(user=request.user)
     return render(request, 'add_transaction.html', {
         'form': form,
         'categories': categories,
-
     })
 
 
