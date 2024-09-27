@@ -92,6 +92,8 @@ ol {
 /* forms */
 form {
     overflow: auto;
+    width: 100%; /* Ширина формы */
+    max-width: 500px; /* Ограничение максимальной ширины */
 }
 
 form p {
@@ -106,7 +108,8 @@ label {
     margin-bottom: 4px;
 }
 
-input, textarea {
+
+input, textarea, select {
     clear: both;
     float: left;
     margin: 0 0 10px;
@@ -305,9 +308,11 @@ a.like, a.follow {
 }
 
 .form-row {
-    display: flex; /* Активируем Flexbox */
-    align-items: center; /* Выравнивание элементов по центру по вертикали */
-    gap: 10px; /* Отступы между элементами */
+    display: flex; /* Используем Flexbox для размещения элементов в одной строке */
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    align-items: center; /* Выравнивание по центру */
+    gap: 10px; /* Отступ между элементами */
+    padding: 10px;
 }
 
 .form-row select, .form-row input {
@@ -402,20 +407,21 @@ button {
 }
 
 .transaction-btn:hover {
-    background-color: #408bd5;
+    background-color: #006cd8;
 }
 
 .category-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-
+    grid-template-columns: repeat(5, 1fr);
     gap: 5px;
+    justify-content: center; /* Центровка сетки */
 }
 
 .subcategory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 40px);
-    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    justify-content: center; /* Центровка сетки */
 }
 
 
@@ -444,8 +450,8 @@ button {
 }
 
 
-
 .subcategory-button {
+    width: 100px;
     padding: 10px;
     text-align: center;
     cursor: pointer;
@@ -465,6 +471,18 @@ button {
 }
 
 .subcategory-button.active {
-    background-color: #008000; /* Цвет при нажатии */
+    background-color: #500f0f; /* Цвет при нажатии */
     color: white;
+}
+
+
+.transaction-page {
+    display: flex;
+    flex-direction: column; /* Располагаем элементы по вертикали */
+    align-items: center; /* Центруем элементы по горизонтали */
+    text-align: center;
+}
+
+.form-control {
+    margin-bottom: 10px; /* Отступ между полями */
 }

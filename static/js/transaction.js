@@ -23,15 +23,27 @@ document.addEventListener('DOMContentLoaded', function () {
             categoryGrid.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
             // Добавляем класс active к нажатой кнопке
             clickedButton.classList.add('active');
-
             // Получаем ID категории из атрибута data-id
             const categoryId = clickedButton.getAttribute('data-id');
-
             // Устанавливаем значение скрытого поля
             document.getElementById('category').value = categoryId;
-
             // Загружаем подкатегории для выбранной категории
             loadSubcategories(categoryId);
+        }
+    });
+
+    // Обработчик события для выбора подкатегории
+    const subcategoryGrid = document.querySelector('.subcategory-grid');
+    subcategoryGrid.addEventListener('click', function (event) {
+        const clickedButton = event.target.closest('.subcategory-button');
+        if (clickedButton) {
+            // Убираем класс active у всех кнопок подкатегорий
+            subcategoryGrid.querySelectorAll('.subcategory-button').forEach(btn => btn.classList.remove('active'));
+            // Добавляем класс active к нажатой кнопке
+            clickedButton.classList.add('active');
+            // Устанавливаем значение скрытого поля
+            const subcategoryId = clickedButton.getAttribute('data-id');
+            document.getElementById('subcategory').value = subcategoryId;
         }
     });
 
@@ -50,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     button.textContent = category.name;
                     categoryGrid.appendChild(button); // Добавляем категорию в сетку
 
-                    // Очищаем субкатегории
+                    // Очищаем подкатегории
                     const subcategoryGrid = document.querySelector('.subcategory-grid');
                     subcategoryGrid.innerHTML = ''; // Очищаем список подкатегорий
                 });
@@ -68,35 +80,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Убираем значение подкатегории, если подкатегорий нет
                 const subcategoryInput = document.getElementById('subcategory');
+                subcategoryInput.value = ''; // Обнуляем поле подкатегории
+
                 if (data.length === 0) {
-                    subcategoryInput.value = ''; // Убираем значение, если нет подкатегорий
                     return; // Прерываем выполнение, если подкатегорий нет
                 }
 
                 data.forEach(subcategory => {
                     const button = document.createElement('div');
-                    button.classList.add('category-button'); // Используем тот же класс для стилизации
+                    button.classList.add('subcategory-button');
                     button.setAttribute('data-id', subcategory.id);
                     button.textContent = subcategory.name;
                     subcategoryGrid.appendChild(button); // Добавляем субкатегорию в сетку
                 });
-
-                // Если подкатегории загружены, назначаем значение первой подкатегории
-                subcategoryInput.value = data[0].id; // Устанавливаем это значение в скрытое поле
             });
     }
 
     // Обработчик отправки формы
     document.getElementById('form-rows').addEventListener('submit', function (event) {
         const categoryId = document.getElementById('category').value;
-        const subcategoryId = document.getElementById('subcategory').value; // Получаем значение подкатегории
         if (!categoryId) {
             event.preventDefault(); // Остановить отправку формы, если категория не выбрана
             alert('Please select a category.');
-        } else if (data.length > 0 && !subcategoryId) { // Проверяем, если есть подкатегории
-            event.preventDefault(); // Остановить отправку формы, если подкатегория не выбрана
-            alert('Please select a subcategory.');
         }
+
     });
 
 

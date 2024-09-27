@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'profile_settings',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +72,8 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = 'yourAccountment.wsgi.application'
 

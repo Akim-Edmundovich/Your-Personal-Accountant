@@ -1,60 +1,130 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
+{#{% load crispy_forms_filters %}#}
+{##}
+{#{% load static %}#}
+{#{% load crispy_forms_tags %}#}
+{##}
+{#{% block title %}Add Transaction{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#	<h1>Add Transaction</h1>#}
+{##}
+{#	<div class="transaction-page">#}
+{#		<!-- Кнопки для выбора типа транзакции -->#}
+{#		<div>#}
+{#			<button id="transaction-btn" class="transaction-btn" data-type="expense">#}
+{#				Expense#}
+{#			</button>#}
+{#			<button id="transaction-btn" class="transaction-btn" data-type="income">#}
+{#				Income#}
+{#			</button>#}
+{#		</div>#}
+{##}
+{#		<input type="hidden" id="transaction_type" name="transaction_type" value="expense">#}
+{##}
+{#		<!-- Форма для ввода суммы и описания -->#}
+{#		<form method="post" id="form-rows">#}
+{#			{% csrf_token %}#}
+{##}
+{#			<div class="form-row">#}
+{#				<div class="category-grid">#}
+{#					{% for category in categories %}#}
+{#						<div class="category-button"#}
+{#						     data-id="{{ category.id }}">{{ category.name }}</div>#}
+{#					{% endfor %}#}
+{#				</div>#}
+{##}
+{#				<!-- Скрытое поле для выбранной категории -->#}
+{#				<input type="hidden" id="category" name="category" value="">#}
+{##}
+{#				<!-- Список подкатегорий -->#}
+{#				<div class="subcategory-grid">#}
+{#					<!-- Подкатегории будут динамически загружаться через JS -->#}
+{#				</div>#}
+{##}
+{#				<!-- Скрытое поле для выбранной подкатегории -->#}
+{#				<input type="hidden" id="subcategory" name="subcategory"#}
+{#				       value="">#}
+{##}
+{#				<!-- Скрытое поле для типа транзакции -->#}
+{#				<input type="hidden" id="transaction_type"#}
+{#				       name="transaction_type"#}
+{#				       value="expense">#}
+{##}
+{#			#}
+{#			</div>#}
+{#			<div class="form-row">#}
+{#				{% crispy form %}#}
+{#			</div>#}
+{##}
+{#			<div class="form-row">#}
+{#				<button class="submit" type="submit">Submit</button>#}
+{#			</div>#}
+{##}
+{##}
+{#		</form>#}
+{#	</div>#}
+{#	<script src="{% static 'js/transaction.js' %}"></script>#}
+{##}
+{#{% endblock %}#}
 
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}Add Transaction{% endblock %}
 
 {% block content %}
 	<h1>Add Transaction</h1>
 
-	<!-- Кнопки для выбора типа транзакции -->
-	<div>
-		<button id="transaction-btn" class="transaction-btn"
-		        data-type="expense">
-			Expense
-		</button>
-		<button id="transaction-btn" class="transaction-btn" data-type="income">
-			Income
-		</button>
+	<div class="transaction-page">
+		<!-- Кнопки для выбора типа транзакции -->
+		<div>
+			<button id="transaction-btn" class="transaction-btn" data-type="expense">
+				Expense
+			</button>
+			<button id="transaction-btn" class="transaction-btn" data-type="income">
+				Income
+			</button>
+		</div>
+
+		<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
+
+		<!-- Форма для ввода суммы и описания -->
+		<form method="post" id="form-rows">
+			{% csrf_token %}
+
+{#			<div class="form-row">#}
+				<div class="category-grid">
+					{% for category in categories %}
+						<div class="category-button" data-id="{{ category.id }}">{{ category.name }}</div>
+					{% endfor %}
+				</div>
+
+				<!-- Скрытое поле для выбранной категории -->
+				<input type="hidden" id="category" name="category" value="">
+
+				<!-- Список подкатегорий -->
+				<div class="subcategory-grid">
+					<!-- Подкатегории будут динамически загружаться через JS -->
+				</div>
+
+				<!-- Скрытое поле для выбранной подкатегории -->
+				<input type="hidden" id="subcategory" name="subcategory" value="">
+
+
+				<!-- Поля формы -->
+
+				{{ form|crispy }}
+				<!-- Используем crispy для рендеринга формы -->
+				<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
+
+
+				<button class="submit" type="submit">Submit</button>
+{#			</div>#}
+		</form>
 	</div>
 
-	<input type="hidden" id="transaction_type" name="transaction_type"
-	       value="expense">
-
-	<!-- Форма для ввода суммы и описания -->
-	<form method="post" id="form-rows">
-		{% csrf_token %}
-		<div class="form-row">
-		<!-- Используем только одну форму -->
-			<!-- Список категорий -->
-			<div class="category-grid">
-				{% for category in categories %}
-					<div class="category-button"
-					     data-id="{{ category.id }}">{{ category.name }}</div>
-				{% endfor %}
-			</div>
-
-			<!-- Скрытое поле для выбранной категории -->
-			<input type="hidden" id="category" name="category" value="">
-
-			<!-- Список подкатегорий -->
-			<div class="subcategory-grid">
-
-			</div>
-
-			{{ form.as_p }}
-
-			<input type="hidden" id="transaction_type"
-			       name="transaction_type"
-			       value="expense">
-			<!-- Скрытое поле для типа транзакции -->
-		</div>
-		<!-- Контейнер для динамически добавляемых строк -->
-		<div id="form-rows-container"></div>
-
-		<button class="submit" type="submit">Submit</button>
-	</form>
-
 	<script src="{% static 'js/transaction.js' %}"></script>
-
 {% endblock %}
