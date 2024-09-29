@@ -89,11 +89,12 @@ ol {
     padding: 30px 100px;
 }
 
-/* forms */
+/* Forms */
 form {
     overflow: auto;
     width: 100%; /* Ширина формы */
     max-width: 500px; /* Ограничение максимальной ширины */
+    margin: 0 auto; /* Центрируем форму */
 }
 
 form p {
@@ -102,19 +103,17 @@ form p {
 }
 
 label {
-    float: left;
     clear: both;
     color: #333;
     margin-bottom: 4px;
+    display: block; /* Убедитесь, что метки занимают всю ширину */
 }
-
 
 input, textarea, select {
     clear: both;
-    float: left;
     margin: 0 0 10px;
     background: #efefef;
-    border: 0;
+    border: 1px solid #ccc; /* Убедитесь, что у элементов есть рамка */
     padding: 6px 10px;
     font-size: 14px;
 }
@@ -126,11 +125,12 @@ input[type=submit], a.button {
     padding: 10px 20px;
     font-size: 14px;
     text-transform: uppercase;
+    border: none; /* Убираем рамку */
+    cursor: pointer; /* Курсор в виде руки */
 }
 
 .errorlist {
     color: #cc0033;
-    float: left;
     clear: both;
     padding-left: 10px;
 }
@@ -143,7 +143,7 @@ input[type=submit], a.button {
     font-size: 13px;
 }
 
-/* messages */
+/* Messages */
 ul.messages {
     margin: 10px 100px;
     padding: 0;
@@ -207,7 +207,7 @@ ul.messages li a.close {
     float: left;
 }
 
-/* social-auth */
+/* Social-auth */
 .social {
     float: right;
 }
@@ -237,9 +237,7 @@ ul.messages li a.close {
     background: #de1710;
 }
 
-
-/* images */
-
+/* Images */
 .image-preview, .image-detail {
     max-width: 300px;
     float: left;
@@ -319,7 +317,7 @@ a.like, a.follow {
     flex: 1; /* Заставляем элементы растягиваться равномерно */
 }
 
-/* users */
+/* Users */
 #people-list img {
     width: 180px;
     height: 180px;
@@ -353,7 +351,7 @@ img.user-detail {
     margin-top: 40px;
 }
 
-/* actions */
+/* Actions */
 .action {
     clear: both;
     overflow: auto;
@@ -369,11 +367,7 @@ img.user-detail {
     color: #ccc;
 }
 
-
-/*buttons*/
-
-
-
+/* Buttons */
 .submit {
     background-color: #4CAF50; /* Задний фон кнопки */
     border: none; /* Убираем рамку */
@@ -408,30 +402,31 @@ img.user-detail {
     background-color: #006cd8;
 }
 
-
-
+/* Transaction page styles */
 .transaction-page {
     display: flex;
     flex-direction: column; /* Располагаем элементы по вертикали */
     align-items: center; /* Центруем элементы по горизонтали */
     text-align: center;
+    max-width: 600px; /* Ограничиваем ширину формы */
+    margin: 0 auto; /* Центрируем форму на странице */
 }
 
 .form-control {
     margin-bottom: 10px; /* Отступ между полями */
 }
 
-.transaction-page {
-    margin: 20px;
+.select2-container {
+    margin-bottom: 10px; /* Отступ между выпадающими списками */
 }
 
 label {
-    display: block;
+    display: block; /* Убедитесь, что метки занимают всю ширину */
     margin: 10px 0 5px;
 }
 
 select {
-    width: 50%;
+    width: 100%; /* Ширина выпадающего списка 100% */
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;

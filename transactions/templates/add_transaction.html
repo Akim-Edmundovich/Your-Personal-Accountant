@@ -1,109 +1,59 @@
-{#{% extends 'base.html' %}#}
-{#{% load static %}#}
-{##}
-{#{% block title %}Add Transaction{% endblock %}#}
-{##}
-{#{% block content %}#}
-{#	<h1>Add Transaction</h1>#}
-{##}
-{#	<div class="transaction-page">#}
-{#		<!-- Кнопки для выбора типа транзакции -->#}
-{#		<div>#}
-{#			<button id="transaction-btn" class="transaction-btn" data-type="expense">#}
-{#				Expense#}
-{#			</button>#}
-{#			<button id="transaction-btn" class="transaction-btn" data-type="income">#}
-{#				Income#}
-{#			</button>#}
-{#		</div>#}
-{##}
-{#		<input type="hidden" id="transaction_type" name="transaction_type" value="expense">#}
-{##}
-{#		<!-- Форма для ввода суммы и описания -->#}
-{#		<form method="post" id="form-rows">#}
-{#			{% csrf_token %}#}
-{##}
-{#			<div class="category-grid">#}
-{#				{% for category in categories %}#}
-{#					<div class="category-button" data-id="{{ category.id }}">{{ category.name }}</div>#}
-{#				{% endfor %}#}
-{#			</div>#}
-{##}
-{#			<!-- Скрытое поле для выбранной категории -->#}
-{#			<input type="hidden" id="category" name="category" value="">#}
-{##}
-{#			<!-- Список подкатегорий -->#}
-{#			<div class="subcategory-grid">#}
-{#				<!-- Подкатегории будут динамически загружаться через JS -->#}
-{#			</div>#}
-{##}
-{#			<!-- Скрытое поле для выбранной подкатегории -->#}
-{#			<input type="hidden" id="subcategory" name="subcategory" value="">#}
-{##}
-{#			<!-- Поля формы -->#}
-{#			{{ form.as_p }}#}
-{##}
-{#			<input type="hidden" id="transaction_type" name="transaction_type" value="expense">#}
-{##}
-{#			<button class="submit" type="submit">Submit</button>#}
-{##}
-{#		</form>#}
-{#	</div>#}
-{##}
-{#	<script src="{% static 'js/transaction.js' %}"></script>#}
-{#{% endblock %}#}
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Add Transaction{% endblock %}
 
 {% block content %}
-<h1>Add Transaction</h1>
+    <h1>Add Transaction</h1>
 
-<div class="transaction-page">
-    <!-- Кнопки для выбора типа транзакции -->
-    <div>
-        <button class="transaction-btn" data-type="expense">
-            Expense
-        </button>
-        <button class="transaction-btn" data-type="income">
-            Income
-        </button>
-    </div>
+    <div class="transaction-page">
+        <div>
+            <button class="transaction-btn" data-type="expense">Expense</button>
+            <button class="transaction-btn" data-type="income">Income</button>
+        </div>
 
-{#    <input type="hidden" id="transaction_type" name="transaction_type" value="expense">#}
 
-    <!-- Форма для ввода суммы и описания -->
-    <form method="post" id="form-rows">
-        {% csrf_token %}
-		<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
-        <!-- Выпадающий список для выбора категории -->
-        <label for="category-select">Выберите категорию:</label>
-        <select id="category-select" name="category">
-            <option value="">Выберите категорию</option>
-            <!-- Опции будут добавлены через JavaScript -->
-        </select>
 
-        <!-- Скрытое поле для выбранной категории -->
-        <input type="hidden" id="category" name="category" value="">
+        <form method="post" id="transaction-form">
+        <input type="hidden" id="transaction_type" name="transaction_type" value="expense">
+            {% csrf_token %}
 
-        <!-- Выпадающий список для выбора подкатегории -->
-        <div id="subcategory-container" >
-                <select id="subcategory-select" name="subcategory">
+            <!-- Список категорий -->
+            <select id="category-select" name="category" class="select2" style="width: 100%;">
+                <option value="">Выберите категорию</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Список подкатегорий -->
+            <div id="subcategory-container" style="margin-top: 10px;">
+                <select id="subcategory-select" name="subcategory" class="select2" style="width: 100%;">
                     <option value="">Выберите подкатегорию</option>
                     <!-- Подкатегории будут динамически загружаться через JS -->
                 </select>
             </div>
 
-        <!-- Скрытое поле для выбранной подкатегории -->
-        <div id="transaction-fields" >
-	        {{ form.as_table}}
+            <!-- Поля для ввода Amount, Quantity и Description -->
+            <div id="transaction-fields" style="margin-top: 10px;">
+                {{ form.as_p }}
             </div>
 
-        <button class="submit" type="submit">Submit</button>
-    </form>
-</div>
+            <button class="submit" type="submit" style="margin-top: 10px;">Submit</button>
+        </form>
+    </div>
 
-<script src="{% static 'js/transaction.js' %}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'js/transaction.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                width: '100%', // Задаем ширину
+                placeholder: 'Выберите',
+                allowClear: true
+            });
+        });
+    </script>
 {% endblock %}
