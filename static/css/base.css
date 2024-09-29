@@ -372,9 +372,7 @@ img.user-detail {
 
 /*buttons*/
 
-button {
-    margin-top: 10px; /* Небольшой отступ сверху для кнопки */
-}
+
 
 .submit {
     background-color: #4CAF50; /* Задний фон кнопки */
@@ -410,70 +408,6 @@ button {
     background-color: #006cd8;
 }
 
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
-    justify-content: center; /* Центровка сетки */
-}
-
-.subcategory-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    justify-content: center; /* Центровка сетки */
-}
-
-
-.category-button {
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    background-color: #878787;
-    color: white;
-    font-size: 14px;
-    border-radius: 5px;
-    box-shadow: 1px 1px 1px #333;
-    transition: .2s;
-
-    &:hover {
-        box-shadow: 10px 10px 10px #72b867;
-        transform: scale(1.05);
-        background-color: white;
-        color: black;
-    }
-}
-
-.category-button.active {
-    background-color: green; /* Цвет при нажатии */
-    color: white;
-}
-
-
-.subcategory-button {
-    width: 100px;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    background-color: #978a4f;
-    color: white;
-    font-size: 14px;
-    border-radius: 5px;
-    box-shadow: 1px 1px 1px #333;
-    transition: .2s;
-
-    &:hover {
-        box-shadow: 10px 10px 10px #edd986;
-        transform: scale(1.05);
-        background-color: white;
-        color: black;
-    }
-}
-
-.subcategory-button.active {
-    background-color: #500f0f; /* Цвет при нажатии */
-    color: white;
-}
 
 
 .transaction-page {
@@ -485,4 +419,35 @@ button {
 
 .form-control {
     margin-bottom: 10px; /* Отступ между полями */
+}
+
+.transaction-page {
+    margin: 20px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+select {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
