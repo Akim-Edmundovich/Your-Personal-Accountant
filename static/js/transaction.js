@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Функция для загрузки категорий по типу транзакции
     function loadCategories(type) {
-        fetch(`get_categories/${type}/`)
-            .then(response => response.json())
-            .then(data => {
+        axios.get(`get_categories/${type}/`)
+            .then(response => {
+                const data = response.data
                 const categorySelect = $('#category-select');
                 categorySelect.empty(); // Очищаем список категорий
                 categorySelect.append('<option value="">Выберите категорию</option>'); // Добавляем заголовок
@@ -58,14 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return; // Прерываем выполнение функции
         }
 
-        fetch(`get_subcategories/${categoryId}/`)
+        axios.get(`get_subcategories/${categoryId}/`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Сеть не в порядке');
-                }
-                return response.json();
-            })
-            .then(data => {
+                const data = response.data
+
                 const subcategorySelect = $('#subcategory-select');
                 subcategorySelect.empty(); // Очищаем список подкатегорий
                 subcategorySelect.append('<option value="">Выберите подкатегорию</option>'); // Добавляем заголовок

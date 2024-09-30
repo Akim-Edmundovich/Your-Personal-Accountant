@@ -19,7 +19,8 @@
             {% csrf_token %}
 
             <!-- Список категорий -->
-            <select id="category-select" name="category" class="select2" style="width: 100%;">
+            <select id="category-select" name="category" class="select2"
+                    style="width: 100%;">
                 <option value="">Выберите категорию</option>
                 {% for category in categories %}
                     <option value="{{ category.id }}">{{ category.name }}</option>

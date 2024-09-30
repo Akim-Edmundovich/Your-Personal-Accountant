@@ -1,5 +1,6 @@
 from django.db import models
 from account.models import CustomUser
+from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
@@ -36,12 +37,23 @@ class Transaction(models.Model):
         ('income', 'Income'),
     )
 
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser,
+                             on_delete=models.CASCADE)
+
     type = models.CharField(max_length=7,
                             choices=TRANSACTION_TYPES)
-    amount = models.DecimalField(max_digits=10, decimal_places=1, blank=False)
-    quantity = models.DecimalField(max_digits=10, decimal_places=1, null=True,
-                                   blank=True)
+
+    amount = models.DecimalField(max_digits=10,
+                                 decimal_places=1,
+                                 blank=False,
+                                 validators=[MinValueValidator(0.1)])
+
+    quantity = models.DecimalField(max_digits=10,
+                                   decimal_places=1,
+                                   null=True,
+                                   blank=True,
+                                   validators=[MinValueValidator(0.1)])
+
     quantity_type = models.CharField(max_length=4, choices=[
         ("шт", "шт"),
         ("кг", "кг"),
@@ -49,10 +61,13 @@ class Transaction(models.Model):
         ("см", "см"),
     ], null=True, blank=True)
     description = models.CharField(max_length=250, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+    category = models.ForeignKey(Category,
+                                 on_delete=models.CASCADE,
                                  blank=False)
-    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE,
-                                    null=True, blank=True)
+    subcategory = models.ForeignKey(Subcategory,
+                                    on_delete=models.CASCADE,
+                                    null=True,
+                                    blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

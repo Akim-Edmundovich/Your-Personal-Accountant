@@ -1,14 +1,9 @@
-{% extends "base.html" %}
-
-{% block title %}Delete category{% endblock %}
-
 {% block content %}
-  <h1>Delete category "{{ object.name }}"</h1>
   <div class="module">
     <form action="" method="post">
       {% csrf_token %}
-      <p>Are you sure you want to delete "{{ object }}"?</p>
-      <input type="submit" value="Confirm">
+      <button type="submit"
+              class="delete-button">Delete "{{ object.name }}"</button>
     </form>
   </div>
 {% endblock %}
