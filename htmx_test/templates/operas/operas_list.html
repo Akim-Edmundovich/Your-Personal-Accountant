@@ -1,0 +1,24 @@
+{% extends 'test_base.html' %}
+
+{% block content %}
+
+	{% block title %}
+		<h4>Operas list</h4>
+	{% endblock %}
+
+	<button hx-get="{% url 'create_opera_form' %}"
+	        hx-target="#operaform"
+	        hx-swap="beforeend">
+		Add opera
+	</button>
+
+	<div id='operaform'></div>
+
+	{% for opera in operas %}
+
+		{% include 'partials/opera_detail.html' %}
+
+	{% endfor %}
+
+
+{% endblock %}

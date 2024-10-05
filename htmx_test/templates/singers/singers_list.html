@@ -1,0 +1,15 @@
+{% extends 'test_base.html' %}
+
+{% block title %}
+	Singers
+{% endblock %}
+
+{% block content %}
+	{% for singer in singers %}
+		<ul>
+		<li>{{ singer.name }} ({{ singer.voice }}). In opera
+			{{ singer.opera }}</li>
+		</ul>
+	{% endfor %}
+
+{% endblock %}

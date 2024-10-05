@@ -1,0 +1,10 @@
+<div hx-target="this" hx-comfirm="Delete???">
+	{{ opera.title }}
+	<button hx-get="{% url 'update_opera' opera.id %}">
+		Edit
+	</button>
+	<button hx-post="{% url 'delete_opera' opera.id %}"
+	hx-swap="outerHTML">
+		Delete
+	</button>
+</div>
