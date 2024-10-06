@@ -3,8 +3,7 @@
 	<button hx-get="{% url 'update_opera' opera.id %}">
 		Edit
 	</button>
-	<button hx-post="{% url 'delete_opera' opera.id %}"
-	hx-swap="outerHTML">
+	<button hx-post="{% url 'delete_opera' opera.id %}">
 		Delete
 	</button>
 </div>

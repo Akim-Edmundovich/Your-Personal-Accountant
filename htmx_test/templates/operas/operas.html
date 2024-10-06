@@ -8,17 +8,19 @@
 
 	<button hx-get="{% url 'create_opera_form' %}"
 	        hx-target="#operaform"
-	        hx-swap="beforeend">
+	        >
 		Add opera
 	</button>
 
-	<div id='operaform'></div>
 
-	{% for opera in operas %}
 
-		{% include 'partials/opera_detail.html' %}
+<div id='operaform'></div>
+	<div id="operalist">
 
-	{% endfor %}
 
+
+		{% include 'operas/list_operas.html' %}
+
+	</div>
 
 {% endblock %}

@@ -8,7 +8,13 @@ from .models import Opera
 def opera_list(request):
     operas = Opera.objects.all()
 
-    return render(request, 'operas/operas_list.html', {'operas': operas})
+    return render(request, 'operas/operas.html', {'operas': operas})
+
+
+def opera_clean_list(request):
+    operas = Opera.objects.all()
+
+    return render(request, 'operas/list_operas.html', {'operas': operas})
 
 
 def create_opera(request):
@@ -35,7 +41,6 @@ def update_opera(request, pk):
             form.save()
             return redirect('detail_opera', pk=opera.id)
 
-
     context = {
         'form': form,
         'opera': opera
@@ -57,7 +62,7 @@ def delete_opera(request, pk):
         opera.delete()
         return HttpResponse('')
 
-    return HttpResponseNotAllowed(['POST'])
+    return HttpResponseNotAllowed('NOT ALLOWED!')
 
 
 def create_opera_form(request):

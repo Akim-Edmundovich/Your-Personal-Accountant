@@ -1,9 +1,10 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [
-    path('', views.opera_list, name='opera_list'),
 
+urlpatterns = [
+    path('', views.opera_list, name='operas'),
+    path('operas/', views.opera_clean_list, name='list_operas'),
     path('opera/<int:pk>/update/', views.update_opera, name='update_opera'),
     path('opera/<int:pk>/detail/', views.detail_opera, name='detail_opera'),
     path('opera/<int:pk>/delete/', views.delete_opera, name='delete_opera'),
