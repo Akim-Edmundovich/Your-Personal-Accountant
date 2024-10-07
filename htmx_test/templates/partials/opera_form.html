@@ -1,5 +1,5 @@
-<div
-{#		hx-target="this"#}
+<div id="operaform"
+     hx-target="this"
      hx-swap="outerHTML">
 
 	<form method="post"
@@ -17,15 +17,15 @@
 			</button>
 
 		{% else %}
-			<button type="submit"
-			        hx-target="#operaform"
-			        hx-post="{% url 'create_opera' %}">
+			<button type="submit">
 				Create
 			</button>
 
-			<button hx-get="{% url 'list_operas' %} "
-			        hx-target="#operalist"
-			        hx-swap="outerHTML">
+			<button
+					hx-get="{% url 'operas' %}"
+			        hx-target="#allcontent"
+			        hx-swap="outerHTML"
+					>
 				Cancel
 			</button>
 		{% endif %}

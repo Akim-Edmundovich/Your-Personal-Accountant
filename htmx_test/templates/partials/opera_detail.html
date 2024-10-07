@@ -1,9 +1,17 @@
-<div hx-target="this" hx-comfirm="Delete???">
+<div id="opera-detail"
+     hx-target="this"
+>
+
 	{{ opera.title }}
 	<button hx-get="{% url 'update_opera' opera.id %}">
 		Edit
 	</button>
 	<button hx-post="{% url 'delete_opera' opera.id %}">
 		Delete
+	</button>
+	<button hx-get="{% url 'opera_singer_list' opera.id%}"
+	hx-swap="outerHTML"
+	hx-target="#allcontent">
+		Singers
 	</button>
 </div>

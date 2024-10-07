@@ -1,25 +1,32 @@
 {% extends 'test_base.html' %}
 
 {% block content %}
-
-	{% block title %}
-		<h4>Operas list</h4>
-	{% endblock %}
-
-	<button hx-get="{% url 'create_opera_form' %}"
-	        hx-target="#operaform"
-	        >
-		Add opera
-	</button>
+	<div id="general"
+	style="background-color: #00cffa"
+	class="column">
 
 
+		<div id="allcontent">
 
-<div id='operaform'></div>
-	<div id="operalist">
+			{% block title %}
+				<h4>Operas list</h4>
+			{% endblock %}
 
+			<button hx-get="{% url 'create_opera_form' %}"
+			        hx-target="#operaform"
+			        hx-swap="beforeend">
+				Add opera
+			</button>
 
+			<div id='operaform'></div>
 
-		{% include 'operas/list_operas.html' %}
+			{% for opera in operas %}
+
+				{% include 'partials/opera_detail.html' %}
+
+			{% endfor %}
+
+		</div>
 
 	</div>
 

@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, render, redirect
 
-from .forms import OperaForm
-from .models import Opera
+from .forms import OperaForm, SingerForm
+from .models import Opera, Singer
 
 
 def opera_list(request):
@@ -68,3 +68,68 @@ def delete_opera(request, pk):
 def create_opera_form(request):
     form = OperaForm()
     return render(request, 'partials/opera_form.html', {'form': form})
+
+
+def opera_singer_list(request, pk):
+    opera = Opera.objects.get(id=pk)
+    singers = Singer.objects.filter(opera=opera)
+
+    return render(request,
+                  'singers/list_singers.html',
+                  {"singers": singers,
+                   'opera': opera})
+
+
+def opera_singer_create(request, pk):
+    opera = Opera.objects.get(id=pk)
+    form = SingerForm(request.POST or None)
+
+    if request.method == "POST":
+        form.save()
+        return redirect('opera_singer_list', opera.id)
+
+    context = {
+        'opera': opera,
+        'form': form
+    }
+    return render(request, 'singers/singer_form.html', context)
+
+
+def create_singer_form(request):
+    form = SingerForm()
+    return render(request, 'singers/singer_form.html', {'form': form})
+
+
+def opera_singer_detail(request, pk):
+    singer = Singer.objects.get(id=pk)
+    context = {
+        'singer': singer
+    }
+
+    return render(request, 'singers/singer_detail.html', context)
+
+
+def opera_singer_update(request, pk):
+    singer = Singer.objects.get(id=pk)
+    form = SingerForm(request.POST or None, instance=singer)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('opera_singer_detail', id=singer.pk)
+
+    context = {
+        'singer': singer,
+        'form': form
+    }
+    return render(request, 'singers/singer_form.html', context)
+
+
+def singer_delete(request, pk):
+    singer = get_object_or_404(Singer, id=pk)
+
+    if request.method == 'POST':
+        singer.delete()
+        return HttpResponse('')
+
+    return HttpResponseNotAllowed('Not allowed delete.')

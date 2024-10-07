@@ -1,0 +1,12 @@
+<div id="singer-detail"
+     hx-target="this">
+
+	{{ singer.name }}
+	<button hx-get="{% url 'opera_singer_update' singer.id %}">
+		Edit
+	</button>
+	<button hx-post="{% url 'singer_delete' singer.id %}">
+		Delete
+	</button>
+
+</div>
