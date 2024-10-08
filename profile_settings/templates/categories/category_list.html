@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}My categories{% endblock %}
+
+{% block content %}
+
+	<div class="container">
+		<div class="column category-column">
+			{% for category in categories %}
+				<ul>
+					<li>
+						{% include 'categories/category_detail.html' %}
+
+					</li>
+				</ul>
+			{% endfor %}
+		</div>
+		<div class="column subcategory-column">
+			<div id="category-detail-column"></div>
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,15 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.views.generic.list import ListView
+from django.http import HttpResponse, HttpResponseNotAllowed
+
+from transactions.forms import CategoryForm, SubcategoryForm
 from transactions.models import Transaction, Category, Subcategory
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, \
-    PermissionRequiredMixin  # Проверка прав доступа
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
 
 @login_required
@@ -23,106 +18,180 @@ def settings(request):
     return render(request, 'settings.html')
 
 
-class ManageCategoryList(ListView):
-    model = Category
-    template_name = 'categories/list.html'
+# ------------ Categories ------------
 
-    def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.filter(user=self.request.user)
+@login_required
+def categories_list(request):
+    categories = Category.objects.all()
 
-
-class OwnerMixin:
-    """Можно использовать в представлениях, которые взаимодействуют
-        с любой моделью, содержащей owner"""
-
-    def get_queryset(self):
-        """Извлечение категорий, созданных текущим пользователем."""
-        qs = super().get_queryset()
-        return qs.filter(user=self.request.user)
+    return render(request, 'categories/category_list.html',
+                  {'categories': categories})
 
 
-class OwnerEditMixin:
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+@login_required
+def create_category(request, pk):
+    type = Transaction.objects.get(id=pk)
+    category = Category.objects.filter(type=type)
+    form = CategoryForm(request.post or None, initial={'type': type})
+
+    if request.method == 'POST':
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.type = form.cleaned_data['type']
+            category.type = type
+            category.save()
+            return redirect('create-category', pk=category.id)
+
+    context = {
+        'form': form,
+        'type': type,
+        'category': category
+    }
+    return render(request,
+                  'categories/category_form.html',
+                  context)
 
 
-class OwnerCategoryMixin(OwnerMixin,
-                         LoginRequiredMixin,
-                         PermissionRequiredMixin):
-    model = Category
-    fields = ['name', 'type']
-    success_url = reverse_lazy('manage_category_list')
+@login_required
+def update_category(request, pk):
+    category = Category.objects.get(id=pk)
+    form = CategoryForm(request.POST or None, instance=category)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('categories_list')
+
+    return render(request,
+                  'categories/category_form.html',
+                  {'form': form})
 
 
-class OwnerCategoryEditMixin(OwnerCategoryMixin,
-                             OwnerEditMixin):
-    template_name = 'categories/form.html'
+@login_required
+def delete_category(request, pk):
+    category = get_object_or_404(Category, id=pk)
+
+    if request.method == 'POST':
+        category.delete()
+        return HttpResponse('')
+
+    return HttpResponseNotAllowed('Not Allowed')
 
 
-class OwnerCategoryCreateMixin(OwnerCategoryMixin,
-                               OwnerEditMixin):
-    template_name = 'categories/create.html'
+@login_required
+def detail_category(request, pk):
+    category = Category.objects.get(id=pk)
+
+    return render(request, 'categories/category_detail.html',
+                  {'category': category})
 
 
-class CategoryCreateView(OwnerCategoryCreateMixin, CreateView):
-    """Создает объект Category"""
-    permission_required = 'categories.add_category'
+@login_required
+def create_category_form(request):
+    form = CategoryForm()
+    context = {
+        'form': form
+    }
+
+    return render(request,
+                  'categories/category_form.html',
+                  context)
 
 
-class CategoryUpdateView(OwnerCategoryEditMixin, UpdateView):
-    """Редактирует объект Category"""
-    permission_required = 'categories.change_category'
+# ------------ Subcategories ------------
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['subcategories'] = Subcategory.objects.filter(
-            category=self.object)
-        return context
+@login_required
+def subcategories_list(request, pk):
+    category = Category.objects.get(id=pk)
+    subcategories = Subcategory.objects.filter(category=category)
 
-
-class CategoryDeleteView(OwnerCategoryEditMixin, DeleteView):
-    """Удаляет объект Category"""
-    template_name = 'categories/delete.html'
-    permission_required = 'categories.delete_categories'
+    return render(request,
+                  'subcategories/subcategory_list.html',
+                  {'category': category,
+                   'subcategories': subcategories})
 
 
-class SubcategoryCreateView(CreateView):
-    model = Subcategory
-    fields = ['category', 'name']
-    template_name = 'subcategories/create.html'
+@login_required
+def subcategory_create(request, pk):
+    category = Category.objects.get(pk)
+    form = SubcategoryForm(request.POST or None, initial={'category': category})
 
-    def form_valid(self, form):
-        form.instance.category = Category.objects.get(pk=self.kwargs['pk'])
-        form.instance.name = self.request.POST.get('subcategory_name')  #######
-        subcategory = form.save()
+    if request.method == 'POST':
+        if form.is_valid():
+            subcategory = form.save(commit=False)
+            subcategory.category = category
+            subcategory.save()
+            return redirect('subcategories_list', category.id)
 
-        if self.request.is_ajax():
-            return JsonResponse({
-                'id': subcategory.id,
-                'name': subcategory.name,
-            })
-        return super().form_valid(form)
+        else:
+            return render(request, 'subcategories/subcategory_form.html',
+                          {'form': form})
 
-    def get_success_url(self):
-        return reverse_lazy('category_update', kwargs={'pk': self.kwargs['pk']})
-
-
-class SubcategoryUpdateView(UpdateView):
-    model = Subcategory
-    fields = ['name']
-    template_name = 'subcategories/form.html'
-
-    def get_success_url(self):
-        return reverse_lazy('category_update',
-                            kwargs={'pk': self.object.category.pk})
+    context = {
+        'category': category,
+        'form': form
+    }
+    return render(request, 'subcategories/subcategory_form.html', context)
 
 
-class SubcategoryDeleteView(DeleteView):
-    model = Subcategory
-    template_name = 'subcategories/delete.html'
+@login_required
+def subcategory_detail(request, pk):
+    category = Category.objects.get(id=pk)
+    form = SubcategoryForm(request.POST or None, initial={'category': category})
 
-    def get_success_url(self):
-        return reverse_lazy('category_update',
-                            kwargs={'pk': self.object.category.pk})
+    if request.method == 'POST':
+        if form.is_valid():
+            subcategory = form.save(commit=False)
+            subcategory.category = category
+            subcategory.save()
+            return redirect('subcategories_list', category.id)
+
+        else:
+            return render(request, 'subcategories/subcategory_form.html',
+                          {'form': form})
+
+    context = {
+        'category': category,
+        'form': form
+    }
+    return render(request,
+                  'subcategories/subcategory_form.html',
+                  context)
+
+
+@login_required
+def subcategory_update(request, pk):
+    subcategory = Subcategory.objects.get(id=pk)
+    form = SubcategoryForm(request.POST or None, instance=subcategory)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('subcategories_list', pk=subcategory.category.id)
+
+    context = {
+        'category': subcategory,
+        'form': form
+    }
+    return render(request,
+                  'subcategories/subcategory_update.html',
+                  context)
+
+
+@login_required
+def subcategory_delete(request, pk):
+    subcategory = get_object_or_404(Subcategory, id=pk)
+
+    if request.method == 'POST':
+        subcategory.delete()
+        return HttpResponse('')
+
+    return HttpResponseNotAllowed('Not Allowed')
+
+
+@login_required
+def subcategory_form(request):
+    form = SubcategoryForm()
+    return render(request,
+                  'subcategories/subcategory_form.html',
+                  {'form': form})

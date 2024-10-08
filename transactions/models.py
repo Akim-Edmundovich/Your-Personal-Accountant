@@ -1,6 +1,7 @@
 from django.db import models
-from account.models import CustomUser
 from django.core.validators import MinValueValidator
+
+from account.models import CustomUser
 
 
 class Category(models.Model):

@@ -25,9 +25,6 @@ SECRET_KEY = 'django-insecure-)+(08&m0#)(wayg16!)1sb@!sn^fw$xix5q!t04=^p7&__kjn*
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,9 +37,16 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'profile_settings',
+    'htmx_test',
     'crispy_forms',
-    'crispy_bootstrap4',
+    'crispy_tailwind',
+
+    'rest_framework',
+
 ]
+
+# Application definition
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'yourAccountment.urls'

@@ -1,9 +1,0 @@
-{% block content %}
-  <div class="module">
-    <form action="" method="post">
-      {% csrf_token %}
-      <button type="submit"
-              class="delete-button">Delete "{{ object.name }}"</button>
-    </form>
-  </div>
-{% endblock %}

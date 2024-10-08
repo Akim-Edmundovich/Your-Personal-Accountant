@@ -4,8 +4,7 @@
 <head>
 	<title>{% block title %}{% endblock %}</title>
 	<link href="{% static "css/base.css" %}" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script src="https://unpkg.com/htmx.org@1.9.2"></script>
+	<script src="https://unpkg.com/htmx.org@2.0.2"></script>
 </head>
 <body>
 <div id="header">
@@ -34,9 +33,16 @@
      {% endif %}
    </span>
 </div>
+
 <div id="content">
 	{% block content %}
 	{% endblock %}
 </div>
+
+ <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        })
+    </script>
 </body>
 </html>

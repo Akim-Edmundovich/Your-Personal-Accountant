@@ -1,0 +1,13 @@
+<div id="category-detail">
+
+	{{ category.name }}
+	<button type="button"
+	        hx-get="{% url 'subcategories_list' category.id%}">
+		Subcategories
+	</button>
+	<button hx-post="{% url 'category_delete' category.id %}"
+	        hx-comfirm="A you sure you are sure?">
+		Delete
+	</button>
+
+</div>
