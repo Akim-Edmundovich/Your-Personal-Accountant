@@ -22,8 +22,8 @@ def create_opera(request):
 
     if request.method == 'POST':
         if form.is_valid():
-            opera = form.save()
-            return redirect('detail_opera', opera.id)
+            form.save()
+            return redirect('operas')
 
         else:
             return render(request, 'partials/opera_form.html',
@@ -39,7 +39,7 @@ def update_opera(request, pk):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('detail_opera', pk=opera.id)
+            return redirect('operas')
 
     context = {
         'form': form,
@@ -82,11 +82,17 @@ def opera_singer_list(request, pk):
 
 def opera_singer_create(request, pk):
     opera = Opera.objects.get(id=pk)
-    form = SingerForm(request.POST or None)
+    form = SingerForm(request.POST or None, initial={'opera': opera})
 
     if request.method == "POST":
-        form.save()
-        return redirect('opera_singer_list', opera.id)
+        if form.is_valid():
+            singer = form.save(commit=False)
+            singer.opera = form.cleaned_data['opera']
+            singer.save()
+            return redirect('opera_singer_list', opera.id)
+
+        else:
+            return render(request, 'singers/singer_form.html', {'form': form})
 
     context = {
         'opera': opera,
@@ -97,7 +103,9 @@ def opera_singer_create(request, pk):
 
 def create_singer_form(request):
     form = SingerForm()
-    return render(request, 'singers/singer_form.html', {'form': form})
+    return render(request,
+                  'singers/singer_form.html',
+                  {'form': form})
 
 
 def opera_singer_detail(request, pk):
@@ -110,19 +118,19 @@ def opera_singer_detail(request, pk):
 
 
 def opera_singer_update(request, pk):
-    singer = Singer.objects.get(id=pk)
+    singer = get_object_or_404(Singer, id=pk)
     form = SingerForm(request.POST or None, instance=singer)
 
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('opera_singer_detail', id=singer.pk)
+            return redirect('opera_singer_list', pk=singer.opera.id)
 
     context = {
         'singer': singer,
         'form': form
     }
-    return render(request, 'singers/singer_form.html', context)
+    return render(request, 'singers/singer_update.html', context)
 
 
 def singer_delete(request, pk):

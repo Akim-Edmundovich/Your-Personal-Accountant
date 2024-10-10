@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseNotAllowed
 
 from transactions.forms import CategoryForm, SubcategoryForm
-from transactions.models import Transaction, Category, Subcategory
+from transactions.models import Transaction, Category, Subcategory, Type
 
 
 @login_required
@@ -18,6 +18,18 @@ def settings(request):
     return render(request, 'settings.html')
 
 
+def categories_by_type(request, type_name='expense'):
+    type_instance = Type.objects.get(name=type_name)
+    categories = Category.objects.filter(type=type_name)
+
+    context = {
+        'type': type_instance,
+        'categories': categories
+    }
+
+    return render(request, 'categories_by_types.html', context)
+
+
 # ------------ Categories ------------
 
 @login_required
@@ -29,23 +41,25 @@ def categories_list(request):
 
 
 @login_required
-def create_category(request, pk):
-    type = Transaction.objects.get(id=pk)
-    category = Category.objects.filter(type=type)
-    form = CategoryForm(request.post or None, initial={'type': type})
+def create_category(request, type_name):
+    type = Type.objects.get(name=type_name)
+    form = CategoryForm(request.POST or None, initial={'type': type})
 
     if request.method == 'POST':
         if form.is_valid():
             category = form.save(commit=False)
-            category.type = form.cleaned_data['type']
+            # category.type = form.cleaned_data['type']
             category.type = type
             category.save()
-            return redirect('create-category', pk=category.id)
+            return redirect('categories_list', pk=type.id)
+
+        else:
+            return render(request, 'categories/category_form.html',
+                          {'form': form})
 
     context = {
         'form': form,
         'type': type,
-        'category': category
     }
     return render(request,
                   'categories/category_form.html',
@@ -87,7 +101,7 @@ def detail_category(request, pk):
 
 
 @login_required
-def create_category_form(request):
+def category_form(request):
     form = CategoryForm()
     context = {
         'form': form
@@ -114,7 +128,8 @@ def subcategories_list(request, pk):
 @login_required
 def subcategory_create(request, pk):
     category = Category.objects.get(pk)
-    form = SubcategoryForm(request.POST or None, initial={'category': category})
+    form = SubcategoryForm(request.POST or None,
+                           initial={'category': category})
 
     if request.method == 'POST':
         if form.is_valid():

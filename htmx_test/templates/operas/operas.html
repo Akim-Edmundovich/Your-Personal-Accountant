@@ -1,33 +1,30 @@
 {% extends 'test_base.html' %}
 
 {% block content %}
-	<div id="general"
-	style="background-color: #00cffa"
-	class="column">
+	<div id="general">
+		{% block title %}{% endblock %}
 
+		<button hx-get="{% url 'create_opera_form' %}"
+		        hx-target="#operaform"
+		        hx-swap="beforeend">
+			Add opera
+		</button>
 
-		<div id="allcontent">
+		<div id='operaform'></div>
 
-			{% block title %}
-				<h4>Operas list</h4>
-			{% endblock %}
+		<div class="container">
+			<div class="column">
+				<h4>Operas</h4>
+				{% for opera in operas %}
+					{% include 'partials/opera_detail.html' %}
+				{% endfor %}
+			</div>
 
-			<button hx-get="{% url 'create_opera_form' %}"
-			        hx-target="#operaform"
-			        hx-swap="beforeend">
-				Add opera
-			</button>
-
-			<div id='operaform'></div>
-
-			{% for opera in operas %}
-
-				{% include 'partials/opera_detail.html' %}
-
-			{% endfor %}
+			<div class="column"
+			     id="main-column">
+				<div id="opera-detail-column"></div>
+			</div>
 
 		</div>
-
 	</div>
-
 {% endblock %}

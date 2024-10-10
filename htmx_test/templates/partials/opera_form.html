@@ -1,18 +1,17 @@
-<div id="operaform"
-     hx-target="this"
-     hx-swap="outerHTML">
+<div hx-swap="innerHTML"
+     hx-target="#general">
 
 	<form method="post"
 	      hx-post="{% url 'create_opera' %}">
 		{% csrf_token %}
 		{{ form.as_p }}
+
 		{% if opera %}
 			<button type="submit"
 			        hx-post="{% url 'update_opera' opera.id %}">
 				Submit
 			</button>
-			<button type="submit"
-			        hx-get="{% url 'detail_opera' opera.id %}">
+			<button hx-get="{% url 'operas' %}">
 				Cancel
 			</button>
 
@@ -21,11 +20,7 @@
 				Create
 			</button>
 
-			<button
-					hx-get="{% url 'operas' %}"
-			        hx-target="#allcontent"
-			        hx-swap="outerHTML"
-					>
+			<button hx-get="{% url 'operas' %}">
 				Cancel
 			</button>
 		{% endif %}

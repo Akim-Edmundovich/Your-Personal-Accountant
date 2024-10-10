@@ -1,12 +1,15 @@
-<div id="category-detail">
+<div id="category-detail"
+     hx-target="this">
 
 	{{ category.name }}
-	<button type="button"
-	        hx-get="{% url 'subcategories_list' category.id%}">
-		Subcategories
+	<button hx-get="{% url 'category_update' category.id %}">
+		Edit
 	</button>
-	<button hx-post="{% url 'category_delete' category.id %}"
-	        hx-comfirm="A you sure you are sure?">
+{#	<button type="button"#}
+{#	        hx-get="{% url 'subcategories_list' category.id %}">#}
+{#		Subcategories#}
+{#	</button>#}
+	<button hx-post="{% url 'category_delete' category.id %}">
 		Delete
 	</button>
 

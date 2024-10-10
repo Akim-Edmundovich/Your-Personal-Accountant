@@ -4,19 +4,20 @@ from . import views
 
 urlpatterns = [
     path('', views.settings, name='settings'),
-]
 
-category_url = [
-    path('categories/', views.categories_list, name='categories_list'),
-    path('category/create/', views.create_category, name='category_create'),
-    path('category/<int:pk>/', views.detail_category, name='category_detail'),
+    path('categories/', views.categories_list,
+         name='categories_list'),
+    path('categories-by-types/<str:type_name>/', views.categories_by_type,
+         name='categories_by_type'),
+    path('type/<int:pk>/category-create/', views.create_category,
+         name='category_create'),
+    path('category/<int:pk>/', views.detail_category,
+         name='category_detail'),
     path('category/<int:pk>/update/', views.update_category,
          name='category_update'),
     path('category/<int:pk>/delete/', views.delete_category,
          name='category_delete'),
-]
 
-subcategory_url = [
     path('category/<int:pk>/subcategories/', views.subcategories_list,
          name='subcategories_list'),
     path('category/<int:pk>/subcategory-detail/', views.subcategory_detail,
@@ -27,7 +28,9 @@ subcategory_url = [
          name='subcategory_update'),
     path('category/<int:pk>/subcategory-delete/', views.subcategory_delete,
          name='subcategory_delete'),
-]
 
-urlpatterns.extend(category_url)
-urlpatterns.extend(subcategory_url)
+    path('subcategory-form/', views.subcategory_form,
+         name='subcategory_form'),
+    path('category-form/', views.category_form,
+         name='category_form'),
+]
