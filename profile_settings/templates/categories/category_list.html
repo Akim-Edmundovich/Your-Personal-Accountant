@@ -1,21 +1,12 @@
-{% block content %}
-	<div id="top-categories-list"></div>
-
-	<button hx-get="{% url 'category_form'%}"
-	        hx-target="#create-category-form"
-	        hx-swap="beforeend">
-		Add Category
-	</button>
-
-	<div id="create-category-form"></div>
+<div id="category-list">
 
 	<div class="container">
+
 		<div class="column category-column">
+
 			{% for category in categories %}
 				<ul>
-					<li>
-						{% include 'categories/category_detail.html' %}
-					</li>
+					{% include 'categories/category_detail.html' %}
 				</ul>
 			{% endfor %}
 		</div>
@@ -23,5 +14,4 @@
 			<div id="category-detail-column"></div>
 		</div>
 	</div>
-
-{% endblock %}
+</div>

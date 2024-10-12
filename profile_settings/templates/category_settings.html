@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+		<button hx-get="{% url 'category_form' %}"
+	        hx-target="#create-category-form"
+	        hx-swap="beforeend">
+		Add Category
+	</button>
+{#<div id="general-category-2"></div>#}
+	<div id="general-category">
+
+	{% include 'categories/categories_by_type.html' %}
+
+	</div>
+
+
+{% endblock %}

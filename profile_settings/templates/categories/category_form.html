@@ -1,33 +1,25 @@
-<div hx-swap="innerHTML"
-     hx-target="#top-categories-list">
+<div id="category-form"
+hx-target="#categories-list"
+>
 
 	<form method="post"
-	      hx-post="{% url 'category_create' type.id %}">
+	      hx-post="{% url 'category_create' form.type.name %}">
 
 		{% csrf_token %}
 		{{ form.as_p }}
 
-{#		{% if category %}#}
-{#			<button type="submit"#}
-{#			        hx-post="{% url 'category_update' category.id %}">#}
-{#				Submit#}
-{#			</button>#}
-{#			<button hx-get="{% url 'categories_list' %}">#}
-{#				Cancel#}
-{#			</button>#}
-{##}
-{#		{% else %}#}
-
-			<button type="submit">
-				Create
-			</button>
-			<button hx-get="{% url 'categories_list' type.id%}">
-				Cancel
-			</button>
-
-{#		{% endif %}#}
+		<button type="submit">
+			Create
+		</button>
+		<button
+				hx-get="{% url 'categories_by_type' %}"
+		        hx-target="#general-category">
+			Cancel
+		</button>
 
 	</form>
+
+
 </div>
 
 

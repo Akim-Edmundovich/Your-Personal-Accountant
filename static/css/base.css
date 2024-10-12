@@ -386,3 +386,26 @@ select {
         margin-bottom: 20px;
     }
 }
+
+/* Tabs */
+
+ #tabs > .tab-list {
+  border-bottom: solid 3px #eee;
+ }
+ #tabs > .tab-list button {
+  border: none;
+  display: inline-block;
+  padding: 5px 10px;
+  cursor:pointer;
+  background-color: transparent;
+ }
+ #tabs > .tab-list button:hover {
+  color: #3b5399;
+ }
+ #tabs > .tab-list button.selected {
+  background-color: #eee;
+ }
+ #tabs > .tab-content {
+  padding:10px;
+  margin-bottom:100px;
+ }

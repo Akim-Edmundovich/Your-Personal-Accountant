@@ -5,12 +5,14 @@
 	<button hx-get="{% url 'category_update' category.id %}">
 		Edit
 	</button>
-{#	<button type="button"#}
-{#	        hx-get="{% url 'subcategories_list' category.id %}">#}
-{#		Subcategories#}
-{#	</button>#}
-	<button hx-post="{% url 'category_delete' category.id %}">
+	<button hx-post="{% url 'category_delete' category.id %}"
+	>
 		Delete
+	</button>
+	<button type="button"
+	        hx-get="{% url 'subcategories_list' category.id %}"
+	        hx-target="#category-detail-column">
+		Subcategories
 	</button>
 
 </div>

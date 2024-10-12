@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from transactions.models import Transaction
-from datetime import datetime
-
 
 
 @login_required

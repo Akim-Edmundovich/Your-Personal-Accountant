@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from .models import Category, Subcategory, Transaction
+from .models import Category, Subcategory, Transaction, Type
+
+
+@admin.register(Type)
+class TypeAdmin(admin.ModelAdmin):
+    list_display = ['name']
 
 
 @admin.register(Category)

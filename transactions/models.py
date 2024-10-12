@@ -9,17 +9,19 @@ class Type(models.Model):
         ('expense', 'Expense'),
         ('income', 'Income'),
     )
-    name = models.CharField(max_length=7,
-                            choices=TRANSACTION_TYPES)
+    name = models.CharField(max_length=7, choices=TRANSACTION_TYPES)
+
+    def __str__(self):
+        return self.name
 
 
 class Category(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
 
     class Meta:
-        unique_together = ('user', 'name')
+        unique_together = ('type', 'name')
         verbose_name_plural = 'Categories'
 
     def __str__(self):
@@ -27,6 +29,7 @@ class Category(models.Model):
 
 
 class Subcategory(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=True)
 
