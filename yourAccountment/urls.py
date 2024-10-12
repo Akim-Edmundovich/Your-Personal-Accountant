@@ -10,6 +10,4 @@ urlpatterns = [
     path('settings/', include('profile_settings.urls')),
     path('social-auth/',
          include('social_django.urls', namespace='social')),
-    path('operas/', include('htmx_test.urls'), name='opera'),
-
 ]
