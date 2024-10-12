@@ -55,7 +55,6 @@ def category_create(request):
 
     context = {
         'form': form,
-        'type': type_instance,
     }
     return render(request,
                   'categories/category_form.html',
@@ -122,10 +121,13 @@ def subcategories_list(request, category_pk):
     category = Category.objects.get(id=category_pk)
     subcategories = Subcategory.objects.filter(category=category)
 
+    context = {
+        'category': category,
+        'subcategories': subcategories
+    }
     return render(request,
                   'subcategories/subcategory_list.html',
-                  {'category': category,
-                   'subcategories': subcategories})
+                  context)
 
 
 @login_required
@@ -164,31 +166,6 @@ def subcategory_detail(request, category_pk):
                    'form': form})
 
 
-# @login_required
-# def subcategory_detail(request, category_pk):
-#     category = Category.objects.get(id=category_pk)
-#     form = SubcategoryForm(request.POST or None, initial={'category': category})
-#
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             subcategory = form.save(commit=False)
-#             subcategory.category = category
-#             subcategory.save()
-#             return redirect('subcategories_list', category.id)
-#
-#         else:
-#             return render(request, 'subcategories/subcategory_form.html',
-#                           {'form': form})
-#
-#     context = {
-#         'category': category,
-#         'form': form
-#     }
-#     return render(request,
-#                   'subcategories/subcategory_form.html',
-#                   context)
-
-
 @login_required
 def subcategory_update(request, category_pk):
     subcategory = Subcategory.objects.get(id=category_pk)
@@ -197,7 +174,7 @@ def subcategory_update(request, category_pk):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('subcategories_list', pk=subcategory.category.id)
+            return redirect('subcategories_list', subcategory.category.id)
 
     context = {
         'subcategory': subcategory,

@@ -1,6 +1,5 @@
 <div id="subcategories-list">
 
-	<h3>Subcategories</h3>
 	<button hx-get="{% url 'subcategory_create' category.id %}"
 	        hx-target="#subcategory-form"
 	        hx-swap="beforeend">
@@ -22,13 +21,14 @@
 	<div id="subcategory-form"></div>
 
 	<div id="subcategory-list">
-		<div class="column category-column">
+{#		<div class="column category-column">#}
 			{% for subcategory in subcategories %}
 				<ul>
+				Subcategories by "{{ category.name }}"<br>
 					{% include 'subcategories/subcategory_detail.html' %}
 				</ul>
 			{% endfor %}
-		</div>
+{#		</div>#}
 	</div>
 
 </div>
