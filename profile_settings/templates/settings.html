@@ -3,7 +3,13 @@
 {% block title %}Settings{% endblock %}
 
 {% block content %}
+<ul>
 
-		<a href="{% url 'category_settings' %}">Categories</a>
+	<li><a href="{% url 'category_settings' %}">Categories</a></li>
+	<li><a href="{% url 'new_categories_list' %}">List</a></li>
+
+</ul>
+
+
 
 {% endblock %}

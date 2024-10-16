@@ -2,11 +2,27 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentType = 'expense';
     loadCategories(currentType);
 
+    const expenseBtn = document.getElementById('expense-btn')
+    const incomeBtn = document.getElementById('income-btn')
+
+    expenseBtn.classList.add('expense-btn')
+
     document.querySelectorAll('.transaction-btn').forEach(button => {
         button.addEventListener('click', function () {
             const type = this.getAttribute('data-type');
             document.getElementById('transaction_type').value = type; // Исправлено на правильный селектор
             loadCategories(type);
+
+
+            if (type === 'expense') {
+                expenseBtn.classList.add('expense-btn')
+                incomeBtn.classList.remove('income-btn')
+            } else {
+                incomeBtn.classList.add('income-btn')
+                expenseBtn.classList.remove('expense-btn')
+            }
+
+
         });
     });
 
@@ -37,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.forEach(category => {
                     const option = document.createElement('option');
                     option.value = category.id;
-                    option.textContent = category.name ;
+                    option.textContent = category.name;
                     categorySelect.appendChild(option);
                 });
 
@@ -97,4 +113,5 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Пожалуйста, выберите категорию.');
         }
     });
+
 });

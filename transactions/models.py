@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.utils import timezone
 
 from account.models import CustomUser
 
@@ -70,7 +71,7 @@ class Transaction(models.Model):
         ("см", "см"),
     ], null=True, blank=True)
     description = models.CharField(max_length=250, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ['-created_at']

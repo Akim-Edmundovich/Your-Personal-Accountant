@@ -4,73 +4,96 @@
 {% block title %}Add Transaction{% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"> <!-- Подключите CSS файл -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
-    <h1>Add Transaction</h1>
+	<h1>Add Transaction</h1>
 
-    <div class="transaction-page">
-        <div class="trans-btn-container">
-            <button class="transaction-btn" data-type="expense">Expense</button>
-            <button class="transaction-btn" data-type="income">Income</button>
-        </div>
+	<div class="transaction-page">
+		<div class="trans-btn-container">
+			<button id="expense-btn" class="transaction-btn"
+			        data-type="expense">Expense
+			</button>
+			<button id="income-btn" class="transaction-btn"
+			        data-type="income">Income
+			</button>
+		</div>
 
-        <form method="post" id="transaction-form">
-            <input type="hidden" id="transaction_type" name="transaction_type" value="expense">
-            {% csrf_token %}
+		<form method="post" id="transaction-form">
+			<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
+			{% csrf_token %}
 
-            <!-- Список категорий -->
-            <div id="category-container">
-                <select id="category-select" name="category" class="select2"></select>
-                <input type="hidden" id="category_id" name="category_id" value="">
-            </div>
+			<!-- Список категорий -->
+			<div id="category-container">
+				<select id="category-select" name="category" class="select2"></select>
+				<input type="hidden" id="category_id" name="category_id" value="">
+			</div>
 
-            <!-- Список подкатегорий -->
-            <div id="subcategory-container">
-                <select id="subcategory-select" name="subcategory" class="select2"></select>
-                <input type="hidden" id="subcategory" name="subcategory" value="">
-            </div>
+			<!-- Список подкатегорий -->
+			<div id="subcategory-container">
+				<select id="subcategory-select" name="subcategory" class="select2"></select>
+				<input type="hidden" id="subcategory" name="subcategory" value="">
+			</div>
 
-            <!-- Поля для ввода суммы и количества -->
-            <div id="amount-quantity-fields">
-                <input type="number" name="amount" min="0" placeholder="$">
-                <input type="number" name="quantity" min="0" placeholder="">
-                <select name="quantity_type">
-                    <option value="" disabled selected hidden></option>
-                    <option>шт</option>
-                    <option>кг</option>
-                    <option>л</option>
-                    <option>см</option>
-                </select>
-            </div>
-            <div id="description-input">
-                <input type="text" name="description" placeholder="Description">
-            </div>
-            <button class="submit" type="submit" style="margin-top: 10px;">
-                Submit
-            </button>
-        </form>
-    </div>
+			<!-- Поля для ввода суммы и количества -->
+			<div id="amount-quantity-fields">
+				<input type="number" maxlength="10" name="amount" min="0" placeholder="$">
+				<input type="number" maxlength="10" name="quantity" min="0" placeholder="">
+				<select name="quantity_type">
+					<option value="" disabled selected hidden></option>
+					<option>шт</option>
+					<option>кг</option>
+					<option>л</option>
+					<option>см</option>
+				</select>
+			</div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="{% static 'js/transaction.js' %}"></script>
-    <script>
-        $(document).ready(function () {
-            $('.select2').select2({
-                width: '100%', // Задаем ширину
-                placeholder: 'Select',
-                allowClear: true
-            });
-            $('#category-select').select2({
-                width: '50%',
-                placeholder: 'Category',
-                allowClear: true
-            });
-            $('#subcategory-select').select2({
-                width: '50%',
-                placeholder: 'Subcategory',
-                allowClear: true
-            });
-        });
-    </script>
+			<div id="description-input">
+				<input type="text" name="description" maxlength="250" placeholder="Description">
+			</div>
+			<div id="created-at-field">
+				<input type="date" name="created_at" id="created-at-input">
+			</div>
+			<button class="submit" type="submit">
+				Submit
+			</button>
+
+
+		</form>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<script src="{% static 'js/transaction.js' %}"></script>
+	<script>
+		$(document).ready(function () {
+			$('.select2').select2({
+				width: '100%', // Задаем ширину
+				placeholder: 'Select',
+				allowClear: true
+			});
+			$('#category-select').select2({
+				width: '100%',
+				placeholder: 'Category',
+				allowClear: true
+			});
+			$('#subcategory-select').select2({
+				width: '100%',
+				placeholder: 'Subcategory',
+				allowClear: true
+			});
+		});
+
+		// Получаем текущую дату
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = String(today.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+		const day = String(today.getDate()).padStart(2, '0');
+
+		// Форматируем дату в формате YYYY-MM-DD
+		const formattedDate = `${year}-${month}-${day}`;
+
+		// Устанавливаем значение поля
+		document.getElementById('created-at-input').value = formattedDate;
+	</script>
+
 {% endblock %}

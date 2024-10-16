@@ -26,13 +26,21 @@ def categories_by_type(request):
 # ------------ Categories ------------
 
 @login_required
-def categories_list(request, type_name):
-    type_instance = Category.objects.get(type=type_name)
-    categories = Category.objects.filter(type=type_instance)
+def categories_list(request):
+    categories = Category.objects.all()
 
-    return render(request, 'categories/category_list.html',
-                  {'categories': categories,
-                   'type': type_instance})
+    return render(request, 'categories/new_categories_list.html',
+                  {'categories': categories})
+
+
+# @login_required
+# def categories_list(request, type_name):
+#     type_instance = Category.objects.get(type=type_name)
+#     categories = Category.objects.filter(type=type_instance)
+#
+#     return render(request, 'categories/category_list.html',
+#                   {'categories': categories,
+#                    'type': type_instance})
 
 
 @login_required
@@ -46,7 +54,7 @@ def category_create(request):
 
             try:
                 category.save()
-                return redirect('categories_list', category.type.name)
+                return redirect('new_categories_list')
             except IntegrityError:
                 form.add_error('name', 'Category already exist.')
         else:

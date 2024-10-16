@@ -3,7 +3,7 @@ hx-target="#categories-list"
 >
 
 	<form method="post"
-	      hx-post="{% url 'category_create' form.type.name %}">
+	      hx-post="{% url 'category_create' form.type %}">
 
 		{% csrf_token %}
 		{{ form.as_p }}

@@ -206,7 +206,7 @@ input, textarea, select {
 
 /* Buttons */
 .submit {
-    background-color: #4CAF50; /* Задний фон кнопки */
+    background-color: #4c68af; /* Задний фон кнопки */
     border: none; /* Убираем рамку */
     color: white; /* Цвет текста */
     padding: 10px 20px; /* Внутренний отступ */
@@ -221,7 +221,7 @@ input, textarea, select {
 }
 
 .submit:hover {
-    background-color: #45a049; /* Изменение цвета при наведении */
+    background-color: #000000; /* Изменение цвета при наведении */
 }
 
 .trans-btn-container {
@@ -231,7 +231,7 @@ input, textarea, select {
 }
 
 .transaction-btn {
-    background-color: #2f3798; /* Задний фон кнопки */
+    background-color: #000000; /* Задний фон кнопки */
     border: none; /* Убираем рамку */
     color: white; /* Цвет текста */
     padding: 10px 20px; /* Внутренний отступ */
@@ -245,32 +245,80 @@ input, textarea, select {
     transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
 }
 
-.transaction-btn:hover {
-    background-color: #091e4e; /* Изменение цвета при наведении */
+.expense-btn {
+    background-color: #ac1d21; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 30px; /* Размер текста */
+    margin: 10px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
 }
 
+/*.expense-btn:hover {*/
+/*    background-color: #982f33; !* Изменение цвета при наведении *!*/
+/*}*/
+
+.income-btn {
+    background-color: #2f9831; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 30px; /* Размер текста */
+    margin: 10px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+/*#income-btn:hover {*/
+/*    background-color: #2f9831; !* Изменение цвета при наведении *!*/
+/*}*/
+
 .transaction-page {
+    display: block;
+    justify-content: center;
     text-align: center;
 }
 
+/* Общие стили для контейнеров */
 #category-container,
 #subcategory-container,
-#amount-quantity-fields,
-#description-input {
-    margin: 10px auto; /* Центрирование элементов с автоматическими отступами */
-    width: 50%; /* Задайте ширину для всех контейнеров */
-}
-
 #amount-quantity-fields {
-    display: flex; /* Используйте flexbox для выравнивания полей */
-    justify-content: center; /* Центрирование содержимого */
-    gap: 10px; /* Промежуток между элементами */
+    margin: 10px auto; /* Центрирование элементов с автоматическими отступами */
+    width: 50%;
 }
 
-input[type="number"],
-select {
-    max-width: 20%; /* Задайте максимальную ширину для input и select */
+/* Стили для полей ввода суммы и количества */
+#amount-quantity-fields {
+    display: flex;
+    justify-content: space-between; /* Разделение элементов с равными отступами */
 }
+
+/*Стили для input и select*/
+#amount-quantity-fields input,
+#amount-quantity-fields select {
+    width: 30%;
+    padding: 5px;
+    text-align: center;
+
+}
+
+/* Стили для поля описания и даты */
+#description-input {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 
 /*---------------------------------------------------*/
 

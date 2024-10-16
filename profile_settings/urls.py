@@ -2,14 +2,18 @@ from django.urls import path
 
 from . import views
 
+# app_name = 'settings'
+
 urlpatterns = [
     path('', views.settings, name='settings'),
+    path('new-categories-list/', views.categories_list,
+         name='new_categories_list'),
     path('categories-by-type/', views.categories_by_type,
          name='categories_by_type'),
 
     path('categories/<str:type_name>/', views.categories_list,
          name='categories_list'),
-    path('type/<str:type_name>/category-create/', views.category_create,
+    path('type/category-create/', views.category_create,
          name='category_create'),
     path('category/<int:category_pk>/', views.detail_category,
          name='category_detail'),
