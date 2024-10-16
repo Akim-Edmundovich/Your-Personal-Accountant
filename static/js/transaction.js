@@ -7,10 +7,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     expenseBtn.classList.add('expense-btn')
 
+    const alertField = document.getElementById('alert-field')
+
+
     document.querySelectorAll('.transaction-btn').forEach(button => {
         button.addEventListener('click', function () {
             const type = this.getAttribute('data-type');
-            document.getElementById('transaction_type').value = type; // Исправлено на правильный селектор
+            document.getElementById('transaction_type').value = type;
             loadCategories(type);
 
 
@@ -28,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $('#category-select').on('change', function () {
         const categoryId = $(this).val();
-        $('#category_id').val(categoryId); // Исправлено на правильный селектор
+        $('#category_id').val(categoryId);
         loadSubcategories(categoryId);
     });
 
@@ -107,10 +110,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('transaction-form').addEventListener('submit', function (event) {
-        const categoryId = document.getElementById('category_id').value;
-        if (!categoryId) {
+
+        const amountField = document.querySelector('input[name="amount"]')
+
+        if (!amountField.value) {
             event.preventDefault();
-            alert('Пожалуйста, выберите категорию.');
+            alertField.innerText = 'Enter amount'
+            alertField.style.color = 'red'
+        }
+
+        const categoryId = document.getElementById('category_id');
+
+        if (!categoryId.value) {
+            event.preventDefault();
+            alertField.innerText = 'Select category'
+            alertField.style.color = 'red'
+        }
+
+        const dateField = document.querySelector('input[name="created_at"]')
+
+        if (!dateField.value) {
+            event.preventDefault();
+
+            alertField.innerText = 'Select date'
+            alertField.style.color = 'red'
         }
     });
 

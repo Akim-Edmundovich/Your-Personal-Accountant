@@ -22,6 +22,23 @@
 			<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
 			{% csrf_token %}
 
+			<!-- Поля для ввода суммы и количества -->
+			<div id="amount-quantity-fields">
+				<input type="number" maxlength="10" name="amount" min="0"
+				       placeholder="0 $">
+
+				<input type="number" maxlength="10" name="quantity" min="0"
+				       placeholder="0">
+
+				<select name="quantity_type">
+					<option value="" disabled selected hidden></option>
+					<option>шт</option>
+					<option>кг</option>
+					<option>л</option>
+					<option>см</option>
+				</select>
+			</div>
+
 			<!-- Список категорий -->
 			<div id="category-container">
 				<select id="category-select" name="category" class="select2"></select>
@@ -34,25 +51,14 @@
 				<input type="hidden" id="subcategory" name="subcategory" value="">
 			</div>
 
-			<!-- Поля для ввода суммы и количества -->
-			<div id="amount-quantity-fields">
-				<input type="number" maxlength="10" name="amount" min="0" placeholder="$">
-				<input type="number" maxlength="10" name="quantity" min="0" placeholder="">
-				<select name="quantity_type">
-					<option value="" disabled selected hidden></option>
-					<option>шт</option>
-					<option>кг</option>
-					<option>л</option>
-					<option>см</option>
-				</select>
-			</div>
 
 			<div id="description-input">
 				<input type="text" name="description" maxlength="250" placeholder="Description">
 			</div>
 			<div id="created-at-field">
-				<input type="date" name="created_at" id="created-at-input">
+				<input type="date" name="created_at" id="created-at-input" max="">
 			</div>
+			<div id="alert-field"></div>
 			<button class="submit" type="submit">
 				Submit
 			</button>
@@ -94,6 +100,8 @@
 
 		// Устанавливаем значение поля
 		document.getElementById('created-at-input').value = formattedDate;
+		document.getElementById('created-at-input').max = formattedDate;
+
 	</script>
 
 {% endblock %}

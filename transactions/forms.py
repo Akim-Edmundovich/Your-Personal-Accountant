@@ -7,7 +7,7 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = ['category', 'subcategory', 'amount',
-                  'quantity', 'quantity_type', 'description']
+                  'quantity', 'quantity_type', 'description', 'created_at']
 
 
 class CategoryForm(forms.ModelForm):
