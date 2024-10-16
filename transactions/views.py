@@ -18,6 +18,7 @@ def add_transaction(request):
             transaction.user = request.user
             transaction.type = transaction_type
 
+            transaction.quantity_type = request.POST.get('quantity_type')
             category_id = request.POST.get('category')
             subcategory_id = request.POST.get('subcategory')
 

@@ -4,65 +4,73 @@
 {% block title %}Add Transaction{% endblock %}
 
 {% block content %}
-	<h1>Add Transaction</h1>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"> <!-- Подключите CSS файл -->
 
-	<div class="transaction-page">
-		<div>
-			<button class="transaction-btn" data-type="expense">Expense</button>
-			<button class="transaction-btn" data-type="income">Income</button>
-		</div>
+    <h1>Add Transaction</h1>
 
-		<form method="post" id="transaction-form">
-			<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
-			{% csrf_token %}
+    <div class="transaction-page">
+        <div class="trans-btn-container">
+            <button class="transaction-btn" data-type="expense">Expense</button>
+            <button class="transaction-btn" data-type="income">Income</button>
+        </div>
 
-			<!-- Список категорий -->
-			<select id="category-select" name="category"
-			        class="select2" style="width: 100%;"></select>
+        <form method="post" id="transaction-form">
+            <input type="hidden" id="transaction_type" name="transaction_type" value="expense">
+            {% csrf_token %}
 
-			<div class="error">
-				{{ form.category.errors }}
-			</div>
+            <!-- Список категорий -->
+            <div id="category-container">
+                <select id="category-select" name="category" class="select2"></select>
+                <input type="hidden" id="category_id" name="category_id" value="">
+            </div>
 
-			<input type="hidden" id="category_id" name="category_id" value="">
+            <!-- Список подкатегорий -->
+            <div id="subcategory-container">
+                <select id="subcategory-select" name="subcategory" class="select2"></select>
+                <input type="hidden" id="subcategory" name="subcategory" value="">
+            </div>
 
-			<!-- Список подкатегорий -->
-			<div id="subcategory-container" style="margin-top: 10px;">
-				<select id="subcategory-select" name="subcategory"
-				        class="select2" style="width: 100%;"></select>
-			</div>
-			<input type="hidden" id="subcategory" name="subcategory" value="">
+            <!-- Поля для ввода суммы и количества -->
+            <div id="amount-quantity-fields">
+                <input type="number" name="amount" min="0" placeholder="$">
+                <input type="number" name="quantity" min="0" placeholder="">
+                <select name="quantity_type">
+                    <option value="" disabled selected hidden></option>
+                    <option>шт</option>
+                    <option>кг</option>
+                    <option>л</option>
+                    <option>см</option>
+                </select>
+            </div>
+            <div id="description-input">
+                <input type="text" name="description" placeholder="Description">
+            </div>
+            <button class="submit" type="submit" style="margin-top: 10px;">
+                Submit
+            </button>
+        </form>
+    </div>
 
-			<div id="transaction-fields" style="margin-top: 10px;">
-				<input type="number" id="amount-input" name="amount">
-			</div>
-
-			<button class="submit" type="submit" style="margin-top: 10px;">
-				Submit
-			</button>
-		</form>
-	</div>
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-	<script src="{% static 'js/transaction.js' %}"></script>
-	<script>
-		$(document).ready(function () {
-			$('.select2').select2({
-				width: '50%', // Задаем ширину
-				placeholder: 'Выберите',
-				allowClear: true
-			});
-			$('#category-select').select2({
-				width: '50%',
-				placeholder: 'Category',
-				allowClear: true
-			})
-			$('#subcategory-select').select2({
-				width: '50%',
-				placeholder: 'Subcategory',
-				allowClear: true
-			})
-		});
-	</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{% static 'js/transaction.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%', // Задаем ширину
+                placeholder: 'Select',
+                allowClear: true
+            });
+            $('#category-select').select2({
+                width: '50%',
+                placeholder: 'Category',
+                allowClear: true
+            });
+            $('#subcategory-select').select2({
+                width: '50%',
+                placeholder: 'Subcategory',
+                allowClear: true
+            });
+        });
+    </script>
 {% endblock %}

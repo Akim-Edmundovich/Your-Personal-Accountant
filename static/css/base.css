@@ -121,7 +121,6 @@ input, textarea, select {
 }
 
 
-
 .errorlist {
     color: #cc0033;
     clear: both;
@@ -170,8 +169,6 @@ input, textarea, select {
 .social li.google {
     background: #de1710;
 }
-
-
 
 
 .form-row {
@@ -227,57 +224,65 @@ input, textarea, select {
     background-color: #45a049; /* Изменение цвета при наведении */
 }
 
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 700px;
-  background: #e5e5e5;
-  box-shadow: 0 48px 80px -32px rgba(0,0,0,0.3);
-}
-.input {
-  position: absolute;
-  opacity: 0;
-}
-.label {
-  width: 100%;
-  padding: 20px 30px;
-  background: #e5e5e5;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 18px;
-  color: #7f7f7f;
-  transition: background 0.1s, color 0.1s;
-}
-.label:hover {
-  background: #d8d8d8;
-}
-.label:active {
-  background: #ccc;
-}
-.input:focus + .label {
-  z-index: 1;
-}
-.input:checked + .label {
-  background: #fff;
-  color: #000;
-}
-@media (min-width: 600px) {
-  .label {
-    width: auto;
-  }
-}
-.panel {
-  display: none;
-  padding: 20px 30px 30px;
-  background: #fff;
-}
-@media (min-width: 600px) {
-  .panel {
-    order: 99;
-  }
-}
-.input:checked + .label + .panel {
-  display: block;
+.trans-btn-container {
+    display: flex;
+    justify-content: center;
+
 }
 
+.transaction-btn {
+    background-color: #2f3798; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 16px; /* Размер текста */
+    margin: 10px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.transaction-btn:hover {
+    background-color: #091e4e; /* Изменение цвета при наведении */
+}
+
+.transaction-page {
+    text-align: center;
+}
+
+#category-container,
+#subcategory-container,
+#amount-quantity-fields,
+#description-input {
+    margin: 10px auto; /* Центрирование элементов с автоматическими отступами */
+    width: 50%; /* Задайте ширину для всех контейнеров */
+}
+
+#amount-quantity-fields {
+    display: flex; /* Используйте flexbox для выравнивания полей */
+    justify-content: center; /* Центрирование содержимого */
+    gap: 10px; /* Промежуток между элементами */
+}
+
+input[type="number"],
+select {
+    max-width: 20%; /* Задайте максимальную ширину для input и select */
+}
+
+/*---------------------------------------------------*/
+
+@media (min-width: 600px) {
+    .label {
+        width: auto;
+    }
+}
+
+.panel {
+    display: none;
+    padding: 20px 30px 30px;
+    background: #fff;
+}
 
