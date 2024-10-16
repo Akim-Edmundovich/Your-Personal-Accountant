@@ -4,20 +4,16 @@ from django.core.validators import MinValueValidator
 from account.models import CustomUser
 
 
-class Type(models.Model):
+class Category(models.Model):
     TRANSACTION_TYPES = (
         ('expense', 'Expense'),
         ('income', 'Income'),
     )
-    name = models.CharField(max_length=7, choices=TRANSACTION_TYPES)
-
-    def __str__(self):
-        return self.name
-
-
-class Category(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    type = models.ForeignKey(Type, on_delete=models.CASCADE)
+    type = models.CharField(max_length=7,
+                            choices=TRANSACTION_TYPES,
+                            null=False,
+                            blank=False)
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -42,8 +38,15 @@ class Subcategory(models.Model):
 
 
 class Transaction(models.Model):
+    TRANSACTION_TYPES = (
+        ('expense', 'Expense'),
+        ('income', 'Income'),
+    )
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    type = models.ForeignKey(Type, on_delete=models.CASCADE)
+    type = models.CharField(max_length=7,
+                            choices=TRANSACTION_TYPES,
+                            null=False,
+                            blank=False)
     category = models.ForeignKey(Category,
                                  on_delete=models.CASCADE,
                                  blank=False)

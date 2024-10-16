@@ -54,4 +54,4 @@ document.addEventListener('click', function(event) {
                 console.error('Error:', error);
             });
         }
-    });}
+    });})

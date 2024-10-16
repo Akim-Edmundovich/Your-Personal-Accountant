@@ -1,83 +1,99 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Загружаем категории при загрузке страницы
     let currentType = 'expense';
     loadCategories(currentType);
 
-    // Обработчик события на кнопки типа транзакции
     document.querySelectorAll('.transaction-btn').forEach(button => {
         button.addEventListener('click', function () {
             const type = this.getAttribute('data-type');
-            document.getElementById('transaction_type').value = type;
-            loadCategories(type); // Загружаем категории для выбранного типа
+            document.getElementById('transaction_type').value = type; // Исправлено на правильный селектор
+            loadCategories(type);
         });
     });
 
-    // Обработчик события для выбора категории
     $('#category-select').on('change', function () {
         const categoryId = $(this).val();
-        $('#category').val(categoryId); // Устанавливаем значение скрытого поля
-        loadSubcategories(categoryId); // Загружаем подкатегории для выбранной категории
+        $('#category_id').val(categoryId); // Исправлено на правильный селектор
+        loadSubcategories(categoryId);
     });
 
-    // Обработчик события для выбора подкатегории
     $('#subcategory-select').on('change', function () {
         const subcategoryId = $(this).val();
-        $('#subcategory').val(subcategoryId); // Устанавливаем значение скрытого поля
+        $('#subcategory').val(subcategoryId);
     });
 
-    // Функция для загрузки категорий по типу транзакции
     function loadCategories(type) {
-        axios.get(`get_categories/${type}/`)
+        axios.get(`/transaction/get_categories/${type}/`)
             .then(response => {
-                const data = response.data
-                const categorySelect = $('#category-select');
-                categorySelect.empty(); // Очищаем список категорий
-                categorySelect.append('<option value="">Выберите категорию</option>'); // Добавляем заголовок
+                const data = response.data;
+                const categorySelect = document.getElementById('category-select');
+                categorySelect.innerHTML = ''; // Очищаем список категорий
+
+                // Создаем и добавляем опцию "Выберите категорию"
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Category';
+                categorySelect.appendChild(defaultOption);
 
                 data.forEach(category => {
-                    categorySelect.append(new Option(category.name, category.id)); // Добавляем категорию в выпадающий список
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name ;
+                    categorySelect.appendChild(option);
                 });
 
-                // Очищаем подкатегории
-                const subcategorySelect = $('#subcategory-select');
-                subcategorySelect.empty(); // Очищаем список подкатегорий
-                subcategorySelect.append('<option value="">Выберите подкатегорию</option>'); // Добавляем заголовок
-                $('#subcategory').val(''); // Обнуляем скрытое поле подкатегории
+                const subcategorySelect = document.getElementById('subcategory-select');
+                subcategorySelect.innerHTML = ''; // Очищаем список подкатегорий
+                const defaultSubOption = document.createElement('option');
+                defaultSubOption.value = '';
+                defaultSubOption.textContent = 'Subcategory';
+                subcategorySelect.appendChild(defaultSubOption);
+                $('#subcategory').val('');
             })
-            .catch(error => console.error('Ошибка загрузки категорий:', error)); // Обработка ошибок
+            .catch(error => {
+                console.error('Ошибка загрузки категорий:', error);
+                alert('Ошибка загрузки категорий. Попробуйте еще раз.');
+            });
     }
 
-    // Функция для загрузки подкатегорий по ID категории
     function loadSubcategories(categoryId) {
         if (!categoryId) {
-            // Если категория не выбрана, очищаем подкатегории
-            const subcategorySelect = $('#subcategory-select');
-            subcategorySelect.empty(); // Очищаем список подкатегорий
-            subcategorySelect.append('<option value="">Выберите подкатегорию</option>'); // Добавляем заголовок
-            $('#subcategory').val(''); // Обнуляем скрытое поле подкатегории
-            return; // Прерываем выполнение функции
+            const subcategorySelect = document.getElementById('subcategory-select');
+            subcategorySelect.innerHTML = ''; // Очищаем подкатегории
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Subcategory';
+            subcategorySelect.appendChild(defaultOption);
+            $('#subcategory').val('');
+            return;
         }
 
-        axios.get(`get_subcategories/${categoryId}/`)
+        axios.get(`/transaction/get_subcategories/${categoryId}/`)
             .then(response => {
-                const data = response.data
-
-                const subcategorySelect = $('#subcategory-select');
-                subcategorySelect.empty(); // Очищаем список подкатегорий
-                subcategorySelect.append('<option value="">Выберите подкатегорию</option>'); // Добавляем заголовок
+                const data = response.data;
+                const subcategorySelect = document.getElementById('subcategory-select');
+                subcategorySelect.innerHTML = ''; // Очищаем подкатегории
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Subcategory';
+                subcategorySelect.appendChild(defaultOption);
 
                 data.forEach(subcategory => {
-                    subcategorySelect.append(new Option(subcategory.name, subcategory.id)); // Добавляем субкатегорию в выпадающий список
+                    const option = document.createElement('option');
+                    option.value = subcategory.id;
+                    option.textContent = subcategory.name;
+                    subcategorySelect.appendChild(option);
                 });
             })
-            .catch(error => console.error('Ошибка загрузки подкатегорий:', error)); // Обработка ошибок
+            .catch(error => {
+                console.error('Ошибка загрузки подкатегорий:', error);
+                alert('Ошибка загрузки подкатегорий. Попробуйте еще раз.');
+            });
     }
 
-    // Обработчик отправки формы
     document.getElementById('transaction-form').addEventListener('submit', function (event) {
-        const categoryId = document.getElementById('category').value;
+        const categoryId = document.getElementById('category_id').value;
         if (!categoryId) {
-            event.preventDefault(); // Остановить отправку формы, если категория не выбрана
+            event.preventDefault();
             alert('Пожалуйста, выберите категорию.');
         }
     });

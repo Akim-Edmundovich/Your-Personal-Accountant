@@ -6,7 +6,8 @@ from .models import Transaction, Category, Subcategory
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ['amount', 'quantity', 'quantity_type', 'description']
+        fields = ['category', 'subcategory', 'amount',
+                  'quantity', 'quantity_type', 'description']
 
 
 class CategoryForm(forms.ModelForm):

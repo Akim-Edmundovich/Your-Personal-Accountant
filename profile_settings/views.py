@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseNotAllowed
 
 from transactions.forms import CategoryForm, SubcategoryForm
-from transactions.models import Transaction, Category, Subcategory, Type
+from transactions.models import Transaction, Category, Subcategory
 
 
 @login_required
@@ -27,7 +27,7 @@ def categories_by_type(request):
 
 @login_required
 def categories_list(request, type_name):
-    type_instance = Type.objects.get(name=type_name)
+    type_instance = Category.objects.get(type=type_name)
     categories = Category.objects.filter(type=type_instance)
 
     return render(request, 'categories/category_list.html',
@@ -42,8 +42,8 @@ def category_create(request):
     if request.method == 'POST':
         if form.is_valid():
             category = form.save(commit=False)
-
             category.user = request.user
+
             try:
                 category.save()
                 return redirect('categories_list', category.type.name)
@@ -69,7 +69,6 @@ def update_category(request, pk):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            # return redirect('category_settings')
             return redirect('categories_list', type_name=category.type.name)
 
     return render(request,

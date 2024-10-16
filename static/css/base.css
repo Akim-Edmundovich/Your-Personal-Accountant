@@ -1,4 +1,6 @@
 @import url(//fonts.googleapis.com/css?family=Muli);
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i');
+@import url('https://fonts.googleapis.com/css?family=Bree+Serif');
 
 body {
     margin: 0;
@@ -225,187 +227,57 @@ input, textarea, select {
     background-color: #45a049; /* Изменение цвета при наведении */
 }
 
-.transaction-btn {
-    background-color: #4c95af;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 700px;
+  background: #e5e5e5;
+  box-shadow: 0 48px 80px -32px rgba(0,0,0,0.3);
 }
-
-.transaction-btn:hover {
-    background-color: #006cd8;
+.input {
+  position: absolute;
+  opacity: 0;
 }
-input[type=submit], a.button {
-    font-weight: bold;
-    background: #12c064;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 14px;
-    text-transform: uppercase;
-    border: none; /* Убираем рамку */
-    cursor: pointer; /* Курсор в виде руки */
+.label {
+  width: 100%;
+  padding: 20px 30px;
+  background: #e5e5e5;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  color: #7f7f7f;
+  transition: background 0.1s, color 0.1s;
 }
-
-.delete-button {
-    background-color: #8f0000; /* Задний фон кнопки */
-    border: none; /* Убираем рамку */
-    color: white; /* Цвет текста */
-    padding: 10px 20px; /* Внутренний отступ */
-    text-align: center; /* Выравнивание текста */
-    text-decoration: none; /* Убираем подчеркивание текста */
-    display: inline-block; /* Чтобы кнопки располагались в одну строку */
-    font-size: 16px; /* Размер текста */
-    margin: 5px; /* Внешний отступ между кнопками */
-    cursor: pointer; /* Курсор в виде руки при наведении */
-    border-radius: 5px; /* Скругленные углы */
-    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+.label:hover {
+  background: #d8d8d8;
 }
-.delete-button:hover {
-    background-color: #231e1e;
+.label:active {
+  background: #ccc;
 }
-
-.category_create_button {
-    background-color: #4CAF50; /* Задний фон кнопки */
-    border: none; /* Убираем рамку */
-    color: white; /* Цвет текста */
-    padding: 10px 20px; /* Внутренний отступ */
-    text-align: center; /* Выравнивание текста */
-    text-decoration: none; /* Убираем подчеркивание текста */
-    display: block; /* Чтобы кнопки располагались в одну строку */
-    font-size: 16px; /* Размер текста */
-    margin: 5px auto; /* Внешний отступ между кнопками */
-    cursor: pointer; /* Курсор в виде руки при наведении */
-    border-radius: 5px; /* Скругленные углы */
-    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+.input:focus + .label {
+  z-index: 1;
 }
-.category_create_button:hover {
-    background-color: #387003;
+.input:checked + .label {
+  background: #fff;
+  color: #000;
 }
-
-/* Transaction page styles */
-.transaction-page {
-    display: flex;
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: center; /* Центруем элементы по горизонтали */
-    text-align: center;
-    max-width: 600px; /* Ограничиваем ширину формы */
-    margin: 0 auto; /* Центрируем форму на странице */
+@media (min-width: 600px) {
+  .label {
+    width: auto;
+  }
 }
-
-.form-control {
-    margin-bottom: 10px; /* Отступ между полями */
+.panel {
+  display: none;
+  padding: 20px 30px 30px;
+  background: #fff;
 }
-
-.select2-container {
-    margin-bottom: 10px; /* Отступ между выпадающими списками */
+@media (min-width: 600px) {
+  .panel {
+    order: 99;
+  }
+}
+.input:checked + .label + .panel {
+  display: block;
 }
 
 
-label {
-    display: block; /* Убедитесь, что метки занимают всю ширину */
-    margin: 10px 0 5px;
-}
-
-select {
-    width: 100%; /* Ширина выпадающего списка 100% */
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.category-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 400px;
-    justify-content: center;
-}
-
-.category-page {
-    display: flex;
-    justify-content: center;
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: center; /* Центруем элементы по горизонтали */
-    text-align: center;
-    max-width: 600px; /* Ограничиваем ширину формы */
-    margin: 0 auto; /* Центрируем форму на странице */
-}
-
-/* Основной контейнер */
-.container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px; /* Расстояние между столбцами */
-    margin: 20px 0;
-    flex-wrap: wrap; /* Добавляем гибкость для перехода в один столбец */
-}
-
-/* Оформление столбцов */
-.column {
-    flex: 1;
-    min-width: 300px; /* Минимальная ширина столбцов */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
-/* Кнопка создания подкатегории */
-.create-subcategory-button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 15px;
-}
-
-/* Список подкатегорий */
-.subcategory-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.subcategory-list li {
-    padding: 5px 0;
-    border-bottom: 1px solid #ddd;
-}
-
-/* Адаптивный дизайн: при сужении экрана */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .column {
-        margin-bottom: 20px;
-    }
-}
-
-/* Tabs */
-
- #tabs > .tab-list {
-  border-bottom: solid 3px #eee;
- }
- #tabs > .tab-list button {
-  border: none;
-  display: inline-block;
-  padding: 5px 10px;
-  cursor:pointer;
-  background-color: transparent;
- }
- #tabs > .tab-list button:hover {
-  color: #3b5399;
- }
- #tabs > .tab-list button.selected {
-  background-color: #eee;
- }
- #tabs > .tab-content {
-  padding:10px;
-  margin-bottom:100px;
- }

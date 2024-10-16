@@ -4,57 +4,65 @@
 {% block title %}Add Transaction{% endblock %}
 
 {% block content %}
-    <h1>Add Transaction</h1>
+	<h1>Add Transaction</h1>
 
-    <div class="transaction-page">
-        <div>
-            <button class="transaction-btn" data-type="expense">Expense</button>
-            <button class="transaction-btn" data-type="income">Income</button>
-        </div>
+	<div class="transaction-page">
+		<div>
+			<button class="transaction-btn" data-type="expense">Expense</button>
+			<button class="transaction-btn" data-type="income">Income</button>
+		</div>
 
+		<form method="post" id="transaction-form">
+			<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
+			{% csrf_token %}
 
+			<!-- Список категорий -->
+			<select id="category-select" name="category"
+			        class="select2" style="width: 100%;"></select>
 
-        <form method="post" id="transaction-form">
-        <input type="hidden" id="transaction_type" name="transaction_type" value="expense">
-            {% csrf_token %}
+			<div class="error">
+				{{ form.category.errors }}
+			</div>
 
-            <!-- Список категорий -->
-            <select id="category-select" name="category" class="select2"
-                    style="width: 100%;">
-                <option value="">Выберите категорию</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
+			<input type="hidden" id="category_id" name="category_id" value="">
 
-            <!-- Список подкатегорий -->
-            <div id="subcategory-container" style="margin-top: 10px;">
-                <select id="subcategory-select" name="subcategory" class="select2" style="width: 100%;">
-                    <option value="">Выберите подкатегорию</option>
-                    <!-- Подкатегории будут динамически загружаться через JS -->
-                </select>
-            </div>
+			<!-- Список подкатегорий -->
+			<div id="subcategory-container" style="margin-top: 10px;">
+				<select id="subcategory-select" name="subcategory"
+				        class="select2" style="width: 100%;"></select>
+			</div>
+			<input type="hidden" id="subcategory" name="subcategory" value="">
 
-            <!-- Поля для ввода Amount, Quantity и Description -->
-            <div id="transaction-fields" style="margin-top: 10px;">
-                {{ form.as_p }}
-            </div>
+			<div id="transaction-fields" style="margin-top: 10px;">
+				<input type="number" id="amount-input" name="amount">
+			</div>
 
-            <button class="submit" type="submit" style="margin-top: 10px;">Submit</button>
-        </form>
-    </div>
+			<button class="submit" type="submit" style="margin-top: 10px;">
+				Submit
+			</button>
+		</form>
+	</div>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="{% static 'js/transaction.js' %}"></script>
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                width: '100%', // Задаем ширину
-                placeholder: 'Выберите',
-                allowClear: true
-            });
-        });
-    </script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<script src="{% static 'js/transaction.js' %}"></script>
+	<script>
+		$(document).ready(function () {
+			$('.select2').select2({
+				width: '50%', // Задаем ширину
+				placeholder: 'Выберите',
+				allowClear: true
+			});
+			$('#category-select').select2({
+				width: '50%',
+				placeholder: 'Category',
+				allowClear: true
+			})
+			$('#subcategory-select').select2({
+				width: '50%',
+				placeholder: 'Subcategory',
+				allowClear: true
+			})
+		});
+	</script>
 {% endblock %}

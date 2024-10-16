@@ -1,105 +1,59 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
-from .forms import TransactionForm
-from django.http import HttpResponseBadRequest, JsonResponse
-from .models import Category, Subcategory, Type, Transaction
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-
-@login_required
-def choose_transaction_type(request, type_name):
-    type_instance = Type.objects.get(name=type_name)
-
-    return render(request, 'partials/transaction_type.html',
-                  {'type': type_instance})
+from .models import Category, Subcategory, Transaction
+from .forms import TransactionForm
 
 
 @login_required
-def add_transaction(request, transaction_type: str):
-    type = Transaction.objects.get(type=transaction_type)
-    form = TransactionForm(request.POST or None)
-
+def add_transaction(request):
     if request.method == 'POST':
+        form = TransactionForm(request.POST)
+        transaction_type = request.POST.get('transaction_type')
+
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction.user = request.user
-            transaction.type = type
+            transaction.type = transaction_type
 
             category_id = request.POST.get('category')
-
-            category = Category.objects.get(id=category_id,
-                                            user=request.user)
-
             subcategory_id = request.POST.get('subcategory')
 
-            if subcategory_id:
-                transaction.subcategory = Subcategory.objects.get(
-                    id=subcategory_id
-                )
-            transaction.category = category
-            transaction.save()
+            if not category_id:
+                form.add_error('category', 'Category ID is required')
+                return render(request, 'add_transaction.html', {'form': form})
 
-            return redirect('add_transaction')
+            try:
+                transaction.category = Category.objects.get(
+                    id=category_id,
+                    user=request.user)
+
+                if subcategory_id:
+                    transaction.subcategory = Subcategory.objects.get(
+                        id=subcategory_id,
+                        user=request.user)
+
+            except ObjectDoesNotExist:
+                form.add_error('category',
+                               'Selected category or subcategory does not exist.')
+                return render(request, 'add_transaction.html', {'form': form})
+
+            transaction.save()
+            return redirect('transaction:add-transaction')
 
     else:
         form = TransactionForm()
 
-    categories = Category.objects.filter(user=request.user)
-
-    return render(request, 'add_transaction.html', {
-        'form': form,
-        'categories': categories,
-    })
-
-
-# @login_required
-# def add_transaction(request):
-#     if request.method == 'POST':
-#         transaction_type = request.POST.get('transaction_type')
-#         form = TransactionForm(request.POST)
-#
-#         if form.is_valid():
-#             transaction = form.save(commit=False)
-#             transaction.user = request.user
-#             transaction.type = transaction_type
-#
-#             category_id = request.POST.get('category')
-#
-#             if not category_id:
-#                 return HttpResponseBadRequest('Category id is required.')
-#
-#             try:
-#                 category = Category.objects.get(id=category_id,
-#                                                 user=request.user)
-#                 subcategory_id = request.POST.get('subcategory')
-#
-#                 # Проверка на подкатегорию
-#                 if subcategory_id:
-#                     transaction.subcategory = Subcategory.objects.get(
-#                         id=subcategory_id)
-#
-#                 transaction.category = category
-#             except Category.DoesNotExist:
-#                 return HttpResponseBadRequest('Category does not exist.')
-#             except Subcategory.DoesNotExist:
-#                 # Если подкатегория не найдена, можем оставить её пустой
-#                 transaction.subcategory = None
-#
-#             transaction.save()
-#             return redirect('add_transaction')
-#
-#     else:
-#         form = TransactionForm()
-#
-#     categories = Category.objects.filter(user=request.user)
-#     return render(request, 'add_transaction.html', {
-#         'form': form,
-#         'categories': categories,
-#     })
+    return render(request, 'add_transaction.html',
+                  {'form': form})
 
 
 @login_required
-def get_categories(request, type):
-    categories = Category.objects.filter(type=type)
+def get_categories(request, type_name):
+    categories = Category.objects.filter(type=type_name,
+                                         user=request.user)
     data = [{"id": category.id, "name": category.name} for category in
             categories]
     return JsonResponse(data, safe=False)
@@ -107,6 +61,8 @@ def get_categories(request, type):
 
 @login_required
 def get_subcategories(request, category_id):
-    subcategories = Subcategory.objects.filter(category_id=category_id).values(
-        'id', 'name')
-    return JsonResponse(list(subcategories), safe=False)
+    subcategories = Subcategory.objects.filter(category_id=category_id,
+                                               category__user=request.user)
+    data = [{'id': subcategory.id, 'name': subcategory.name} for subcategory in
+            subcategories]
+    return JsonResponse(data, safe=False)
