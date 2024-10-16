@@ -31,7 +31,9 @@
 				       placeholder="0">
 
 				<select name="quantity_type">
-					<option value="" disabled selected hidden></option>
+					<option id="disabled-value-quantity-type" value="" disabled
+					        selected
+					></option>
 					<option>шт</option>
 					<option>кг</option>
 					<option>л</option>
@@ -80,7 +82,7 @@
 			$('#category-select').select2({
 				width: '100%',
 				placeholder: 'Category',
-				allowClear: true
+				allowClear: true,
 			});
 			$('#subcategory-select').select2({
 				width: '100%',

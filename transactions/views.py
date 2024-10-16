@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-from .models import Category, Subcategory, Transaction
+from .models import Category, Subcategory
 from .forms import TransactionForm
 
 

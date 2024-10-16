@@ -40,6 +40,21 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#subcategory').val(subcategoryId);
     });
 
+    function loadQuantityType() {
+        const quantityField = document.querySelector('input[name="quantity"]')
+        const quantityTypeField = document.querySelector('select[name="quantity_type"]')
+
+        if (!quantityField.value) {
+            quantityTypeField.disabled = true
+        }
+        // Добавляем слушатель изменений для поля количества
+        quantityField.addEventListener('input', function () {
+            quantityTypeField.disabled = !quantityField.value;
+        });
+    }
+
+    loadQuantityType();
+
     function loadCategories(type) {
         axios.get(`/transaction/get_categories/${type}/`)
             .then(response => {
@@ -136,5 +151,4 @@ document.addEventListener('DOMContentLoaded', function () {
             alertField.style.color = 'red'
         }
     });
-
 });
