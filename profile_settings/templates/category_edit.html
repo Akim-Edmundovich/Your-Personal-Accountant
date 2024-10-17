@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="column">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="column">
+        <h3>Subcategories</h3>
+        <ul>
+            {% for subcategory_form in subcategory_forms %}
+                <li>
+                    <form id="subcategory-form-{{ forloop.counter }}" method="post" action="{% url 'settings:subcategory_edit' subcategory_form.instance.id category.id %}">
+                        {% csrf_token %}
+                        {{ subcategory_form.as_p }}
+                        <button type="button" onclick="enableEdit({{ forloop.counter }})">Edit</button>
+                        <button type="submit" style="display:none;" id="confirm-btn-{{ forloop.counter }}">Confirm</button>
+                        <button type="button" onclick="deleteSubcategory({{ subcategory_form.instance.id }})">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script src="{% static 'js/category_edit.js' %}"></script>
+{% endblock %}

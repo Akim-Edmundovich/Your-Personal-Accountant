@@ -312,6 +312,11 @@ input, textarea, select {
 
 }
 
+form input:disabled, form select:disabled, form textarea:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}
+
 /* Стили для поля описания и даты */
 #description-input {
     display: flex;
@@ -319,6 +324,85 @@ input, textarea, select {
     width: 100%;
 }
 
+.container {
+    display: flex; /* Flexbox для создания двух колонок */
+    justify-content: space-between; /* Пространство между колонками */
+    gap: 20px; /* Промежуток между колонками */
+    align-items: flex-start; /* Выравнивание колонок по верху */
+    flex-wrap: wrap; /* Если не помещаются на одну строку, они будут обернуты */
+}
+
+.column {
+    width: 45%; /* Ширина каждой колонки — 45% */
+    box-sizing: border-box; /* Убедитесь, что ширина учитывает padding и margin */
+}
+
+ul {
+    list-style-type: none; /* Убираем стандартные маркеры у списка */
+    padding: 0;
+    margin: 0;
+}
+
+/* ------------------  TABS --------------------- */
+
+ .tabs {
+      width: 600px;
+    }
+
+    .tablist {
+      font-size: 0;
+    }
+
+    .tab {
+      padding: 9px 15px;
+      border: 2px solid transparent;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      font-size: 18px;
+      font-family: inherit;
+    }
+
+    .tab + .tab {
+      margin-left: 2px;
+    }
+
+    .tab[aria-selected="true"] {
+      background: #10F3AF;
+    }
+
+    .tab[aria-selected="false"] {
+      border-width: 0;
+      border-bottom: 2px solid #000000;
+      background: #FFFFFF;
+    }
+
+    .tab:hover {
+      background: #F498AD;
+      cursor: pointer;
+    }
+
+    .tabpanel {
+      padding: 20px 15px;
+      min-height: 5em;
+      min-width: 100px;
+      overflow: auto;
+      color: #000000;
+      background: #10F3AF;
+    }
+
+    .tabpanel--hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 30px;
+      }
+
+      .tabs {
+        width: 100%;
+      }
+    }
 /*---------------------------------------------------*/
 
 @media (min-width: 600px) {

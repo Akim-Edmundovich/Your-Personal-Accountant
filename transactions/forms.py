@@ -19,7 +19,7 @@ class CategoryForm(forms.ModelForm):
 class SubcategoryForm(forms.ModelForm):
     class Meta:
         model = Subcategory
-        fields = ['name', 'category']
+        fields = ['name']
 
         def __init__(self, *args, **kwargs):
             super(SubcategoryForm, self).__init__(*args, **kwargs)

@@ -1,18 +1,28 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Categories{% endblock %}
 
 {% block content %}
+	<h2>Expense</h2>
+	{% for category in categories %}
+		{% if category.type == 'expense' %}
+			<ul>
+				<a href="{% url 'settings:category_edit' category.pk %}">
+					{{ category }}</a>
+			</ul>
 
-		<button hx-get="{% url 'category_form' %}"
-	        hx-target="#create-category-form"
-	        hx-swap="beforeend">
-		Add Category
-	</button>
-{#<div id="general-category-2"></div>#}
-	<div id="general-category">
-
-	{% include 'categories/categories_by_type.html' %}
-
-	</div>
-
-
+		{% endif %}
+	{% endfor %}
+	<h2>Income</h2>
+	{% for category in categories %}
+		{% if category.type == 'income' %}
+			<ul>
+				<a href="{% url 'settings:category_edit' category.pk %}">
+					{{ category }}</a>
+			</ul>
+		{% endif %}
+	{% endfor %}
 {% endblock %}
+

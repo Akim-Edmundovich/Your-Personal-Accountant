@@ -1,57 +1,29 @@
-document.getElementById('add-subcategory-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Останавливаем стандартную отправку формы
+function enableEdit(index) {
+    const form = document.getElementById(`subcategory-form-${index}`);
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => input.disabled = false); // Разблокировка полей
 
-    const subcategoryName = document.getElementById('subcategory-name').value;
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const url = event.target.getAttribute('data-url');  // Получаем URL из атрибута формы
+    const editButton = form.querySelector('button[type="button"]');
+    const confirmButton = form.querySelector(`#confirm-btn-${index}`);
+    editButton.style.display = 'none';  // Скрытие кнопки "Edit"
+    confirmButton.style.display = 'inline';  // Отображение кнопки "Confirm"
+}
 
-    // Отправляем данные через Axios
-    axios.post(url, {
-    subcategory_name: subcategoryName
-}, {
-    headers: {
-        'X-CSRFToken': csrfToken
-    }
-})
-.then(function (response) {
-    const newSubcategory = response.data;  // Убедитесь, что это объект с id и name
-    const subcategoryList = document.getElementById('subcategory-list');
-    const newLi = document.createElement('li');
-    newLi.id = `subcategory-${newSubcategory.id}`;
-    newLi.innerHTML = `
-        <form class="subcategory-edit-form" data-subcategory-id="${newSubcategory.id}">
-            <input type="text" name="name" value="${newSubcategory.name}">  // Используйте newSubcategory.name
-            <button type="submit" class="submit">Save</button>
-        </form>
-        <button class="delete-button" data-subcategory-id="${newSubcategory.id}">Delete</button>
-    `;
-    subcategoryList.appendChild(newLi);
-
-    // Очищаем поле ввода
-    document.getElementById('subcategory-name').value = '';
-})
-
-document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('delete-button')) {
-            const subcategoryId = event.target.getAttribute('data-subcategory-id');
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            // Подтверждение удаления
-            if (!confirm('Are you sure you want to delete this subcategory?')) {
-                return;
+function deleteSubcategory(subcategoryId, index) {
+    const form = document.getElementById(`subcategory-form-${index}`);
+    if (confirm("Are you sure you want to delete this subcategory?")) {
+        fetch(`/settings/subcategory/delete/${subcategoryId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             }
-
-            axios.delete(`/settings/subcategory/${subcategoryId}/delete/`, {
-                headers: {
-                    'X-CSRFToken': csrfToken
+        })
+            .then(response => {
+                if (response.ok) {
+                    form.remove();  // Удаление формы с HTML страницы
+                } else {
+                    alert("Error: Could not delete the subcategory.");
                 }
-            })
-            .then(function(response) {
-                // Удаляем подкатегорию из списка
-                document.getElementById(`subcategory-${subcategoryId}`).remove();
-            })
-            .catch(function(error) {
-                console.error('Error:', error);
             });
-        }
-    });})
+    }
+}
