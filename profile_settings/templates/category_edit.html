@@ -15,18 +15,13 @@
 
     <div class="column">
         <h3>Subcategories</h3>
+	    <a href="{% url 'settings:create_subcategory' category.pk%}">Create
+		    new subcategory</a>
         <ul>
-            {% for subcategory_form in subcategory_forms %}
-                <li>
-                    <form id="subcategory-form-{{ forloop.counter }}" method="post" action="{% url 'settings:subcategory_edit' subcategory_form.instance.id category.id %}">
-                        {% csrf_token %}
-                        {{ subcategory_form.as_p }}
-                        <button type="button" onclick="enableEdit({{ forloop.counter }})">Edit</button>
-                        <button type="submit" style="display:none;" id="confirm-btn-{{ forloop.counter }}">Confirm</button>
-                        <button type="button" onclick="deleteSubcategory({{ subcategory_form.instance.id }})">Delete</button>
-                    </form>
-                </li>
-            {% endfor %}
+			{% for subcategory in subcategories %}
+				{{ subcategory }}
+			{% endfor %}
+
         </ul>
     </div>
 </div>

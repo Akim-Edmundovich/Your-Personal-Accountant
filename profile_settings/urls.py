@@ -11,9 +11,17 @@ urlpatterns = [
     path('category-edit/<int:pk>/', views.category_edit,
          name='category_edit'),
 
-    path('subcategory-edit/<int:subcategory_pk>/<int:category_pk>/',
-         views.subcategory_edit,
-         name='subcategory_edit'),
-    path('subcategory-delete/<int:subcategory_pk>/', views.subcategory_delete,
-         name='subcategory_delete'),
+    path('create_category/', views.create_category,
+         name='create_category'),
+    path('update_category/<int:pk>/', views.update_category,
+         name='update_category'),
+    path('delete_category/<int:pk>', views.delete_category,
+         name='delete_category'),
+
+    path('create_subcategory/<int:pk>/', views.create_subcategory,
+         name='create_subcategory'),
+    path('update_subcategory/<int:pk>/', views.update_subcategory,
+         name='update_subcategory'),
+    path('delete_subcategory/<int:pk>', views.delete_subcategory,
+         name='delete_subcategory'),
 ]

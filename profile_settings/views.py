@@ -1,11 +1,11 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
 
 from transactions.forms import CategoryForm, SubcategoryForm
-from transactions.models import Category, Subcategory
+from transactions.models import *
 
 
 @login_required
@@ -22,30 +22,33 @@ def settings(request):
 # ------------ Categories ------------
 
 @login_required
-def category_edit(request, pk):
-    category = Category.objects.get(id=pk, user=request.user)
-    subcategories = Subcategory.objects.filter(category=category)
+def create_category(request):
+    ...
 
-    SubcategoryFormSet = modelformset_factory(Subcategory,
-                                              form=SubcategoryForm,
-                                              extra=0)
-    subcategory_forms = SubcategoryFormSet(queryset=subcategories)
+
+@login_required
+def update_category(request):
+    ...
+
+
+@login_required
+def delete_category(request):
+    ...
+
+
+@login_required
+def category_edit(request, pk):
+    category = Category.objects.get(id=pk)
+    subcategories = Subcategory.objects.filter(category=category)
     form = CategoryForm(request.POST or None, instance=category)
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
+    context = {
+        'form': form,
+        'category': category,
+        'subcategories': subcategories
+    }
 
-        subcategory_forms = SubcategoryFormSet(request.POST)
-        if subcategory_forms.is_valid():
-            subcategory_forms.save()
-
-        return redirect('settings:category_edit', pk=pk)
-
-    return render(request, 'category_edit.html',
-                  {'form': form,
-                   'subcategory_forms': subcategory_forms,
-                   'category': category})
+    return render(request, 'category_edit.html', context)
 
 
 @login_required
@@ -59,29 +62,29 @@ def categories_list(request):
 # ------------ Subcategories ------------
 
 @login_required
-def subcategory_edit(request, subcategory_pk, category_pk):
-    subcategory = Subcategory.objects.get(category=category_pk,
-                                          id=subcategory_pk,
-                                          user=request.user)
-    form = SubcategoryForm(request.POST or None,
-                           instance=subcategory)
+def create_subcategory(request, pk):
+    SubcategoryFormSet = inlineformset_factory(Category,
+                                               Subcategory,
+                                               fields=['name'],
+                                               extra=2,
+                                               can_delete=True)
+    category = Category.objects.get(id=pk)
 
-    if form.is_valid():
-        form.save()
-        return redirect('settings:category_edit')
+    if request.method == 'POST':
+        formset = SubcategoryFormSet(request.POST, instance=category)
+        if formset.is_valid():
+            return redirect('settings:category_edit', pk=pk)
 
-    return render(request, 'subcategory_edit.html',
-                  {'form': form})
+    else:
+        formset = SubcategoryFormSet()
+    return render(request, 'test.html', {'formset': formset})
 
 
 @login_required
-def subcategory_delete(request, subcategory_pk):
-    try:
-        subcategory = Subcategory.objects.get(id=subcategory_pk)
-        subcategory.delete()
-        return JsonResponse({'success': True})
+def update_subcategory(request, pk):
+    ...
 
-    except Subcategory.DoesNotExist:
-        return JsonResponse({'success': False, 'error': 'Subcategory not found'},
-                            status=404)
 
+@login_required
+def delete_subcategory(request, pk):
+    ...
