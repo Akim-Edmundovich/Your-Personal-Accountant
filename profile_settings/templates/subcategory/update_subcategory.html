@@ -3,13 +3,17 @@
 {% load static %}
 
 {% block content %}
-	<h3>Edit {{ subcategory.name }}</h3>
-
+	<h2>Edit <b>{{ subcategory.name }}</b></h2>
 	<form method="post">
 		{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Save">
+		{{ form.name }}
+		<button type="submit" value="Save"
+		        class="submit">Save
+		</button>
+		<button type="button" class="delete"
+		        onclick="location.href='{% url 'settings:update_category' category.id %}'">
+			Cancel
+		</button>
 	</form>
-
 
 {% endblock %}

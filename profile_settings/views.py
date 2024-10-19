@@ -45,16 +45,39 @@ def categories_page(request):
 def update_category(request, pk):
     category = Category.objects.get(id=pk)
     subcategories = Subcategory.objects.filter(category=category)
-
-    form = CategoryForm(instance=category)
+    category_form = CategoryForm(instance=category)
+    subcategory_form = SubcategoryForm()
 
     if request.method == 'POST':
-        form = CategoryForm(request.POST, instance=category)
-        if form.is_valid():
-            form.save()
-            return redirect('settings:list_categories')
+        print('POST data:', request.POST)
 
-    context = {'form': form,
+        category_form = CategoryForm(request.POST, instance=category)
+
+        if category_form.is_valid():
+            category = category_form.save(commit=False)
+            category.user = request.user
+            if not Category.objects.filter(name=category.name).exists():
+                category.save()
+                return redirect('settings:categories_page')
+            else:
+                category_form.add_error('name', 'Category already exists!')
+
+        subcategory_form = SubcategoryForm(request.POST)
+        if subcategory_form.is_valid():
+            subcategory = subcategory_form.save(commit=False)
+            subcategory.category = category
+            subcategory.user = request.user
+
+            if not Subcategory.objects.filter(category=category,
+                                              name=subcategory.name).exists():
+                subcategory.save()
+                return redirect('settings:update_category', category.id)
+            else:
+                subcategory_form.add_error('name', 'Subcategory already '
+                                                   'exists!')
+
+    context = {'category_form': category_form,
+               'subcategory_form': subcategory_form,
                'subcategories': subcategories,
                'category': category}
 
@@ -67,7 +90,7 @@ def delete_category(request, pk):
 
     if request.method == 'POST':
         category.delete()
-        return redirect('settings:list_categories')
+        return redirect('settings:categories_page')
 
     context = {'category': category}
     return render(request, 'category/delete_category.html', context)
@@ -76,49 +99,52 @@ def delete_category(request, pk):
 # ------------ Subcategories ------------
 
 
-@login_required
-def create_subcategory(request, pk):
-    SubcategoryFormSet = formset_factory(SubcategoryForm,
-                                         extra=2,
-                                         can_delete=True,
-                                         can_delete_extra=True,
-                                         )
-    category = Category.objects.get(id=pk)
-
-    if request.method == 'POST':
-        formset = SubcategoryFormSet(request.POST)
-
-        if formset.is_valid():
-            for form in formset:
-                if form.cleaned_data.get('DELETE'):
-                    if form.instance.pk:
-                        form.instance.delete()
-                else:
-                    subcategory = form.save(commit=False)
-                    subcategory.category = category
-                    subcategory.user = request.user
-                    if form.cleaned_data:
-                        if form.cleaned_data[
-                            'name'
-                        ] not in Subcategory.objects.filter(
-                            category=category
-                        ):
-                            subcategory.save()
-            return redirect('settings:update_category', category.id)
-
-    formset = SubcategoryFormSet()
-
-    context = {
-        'formset': formset,
-        'category': category
-    }
-
-    return render(request, 'subcategory/create_subcategory.html', context)
+# @login_required
+# def create_subcategory(request, pk):
+#     SubcategoryFormSet = formset_factory(SubcategoryForm,
+#                                          extra=2,
+#                                          can_delete=True,
+#                                          can_delete_extra=True,
+#                                          )
+#     category = Category.objects.get(id=pk)
+#
+#     if request.method == 'POST':
+#         formset = SubcategoryFormSet(request.POST)
+#
+#         if formset.is_valid():
+#             for form in formset:
+#                 if form.cleaned_data.get('DELETE'):
+#                     if form.instance.pk:
+#                         form.instance.delete()
+#                 else:
+#                     subcategory = form.save(commit=False)
+#                     subcategory.category = category
+#                     subcategory.user = request.user
+#                     if form.cleaned_data:
+#                         if not Subcategory.objects.filter(
+#                                 name=form.cleaned_data[
+#                                     'name'
+#                                 ]).exists():
+#                             subcategory.save()
+#                             return redirect('settings:categories_page')
+#                         else:
+#                             form.add_error('name', 'Subcategory already exists!')
+#             return redirect('settings:update_category', category.id)
+#
+#     formset = SubcategoryFormSet()
+#
+#     context = {
+#         'formset': formset,
+#         'category': category
+#     }
+#
+#     return render(request, 'subcategory/create_subcategory.html', context)
 
 
 @login_required
 def update_subcategory(request, pk):
     subcategory = Subcategory.objects.get(id=pk)
+    category = Category.objects.get(subcategory=subcategory)
     form = SubcategoryForm(instance=subcategory)
 
     if request.method == 'POST':
@@ -128,7 +154,8 @@ def update_subcategory(request, pk):
             return redirect('settings:update_category', subcategory.category.id)
 
     context = {'form': form,
-               'subcategory': subcategory}
+               'subcategory': subcategory,
+               'category': category}
     return render(request, 'subcategory/update_subcategory.html', context)
 
 
