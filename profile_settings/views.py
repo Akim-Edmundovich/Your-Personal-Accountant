@@ -22,15 +22,7 @@ def settings(request):
 # ------------ Categories ------------
 
 @login_required
-def list_categories(request):
-    categories = Category.objects.all()
-
-    return render(request, 'category/list_categories.html',
-                  {'categories': categories})
-
-
-@login_required
-def create_category(request):
+def categories_page(request):
     form = CategoryForm(initial={'type': 'expense'})
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -39,14 +31,14 @@ def create_category(request):
             category.user = request.user
             if not Category.objects.filter(name=category.name).exists():
                 category.save()
-                return redirect('settings:list_categories')
+                return redirect('settings:categories_page')
             else:
                 form.add_error('name', 'Category already exists!')
-    categories = Category.objects.filter(user=request.user)
 
+    categories = Category.objects.filter(user=request.user)
     context = {'form': form,
                'categories': categories}
-    return render(request, 'category/create_category.html', context)
+    return render(request, 'category/categories_page.html', context)
 
 
 @login_required

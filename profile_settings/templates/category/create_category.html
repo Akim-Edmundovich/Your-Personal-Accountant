@@ -1,15 +1,10 @@
+<!-- category_form.html -->
 <form method="post">
-	{% csrf_token %}
-	{% if form.non_field_errors %}
-		<div class="error">
-			{{ form.non_field_errors }}
-		</div>
-	{% endif %}
-	{{ form.type }}
-	{{ form.name }}
-	<button type="submit" value="Save"
-	        class="submit">Save
-	</button>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <div class="error">{{ form.non_field_errors }}</div>
+    {% endif %}
+    {{ form.type }}  <!-- Отображаем поле типа -->
+    {{ form.name }}  <!-- Отображаем поле имени -->
+    <button type="submit" class="submit">Save</button>
 </form>
-
-

@@ -6,13 +6,12 @@
 
 {% block content %}
 
-	{% include 'category/create_category.html' with form=form %}
-
-{#	<div>#}
-{#		<form method="get" action="{% url 'settings:create_category' %}">#}
-{#			<button type="submit" class="submit">Add category</button>#}
-{#		</form>#}
-{#	</div>#}
+	<div>
+		<h2>Create new category</h2>
+		<div class="column">
+			{% include 'category/create_category.html' with form=form %}
+		</div>
+	</div>
 
 	<div class="tables-container">
 		<!-- Левая колонка с таблицей для категорий 'expense' -->
