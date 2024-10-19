@@ -104,12 +104,6 @@ form p {
     overflow: auto;
 }
 
-label {
-    clear: both;
-    color: #333;
-    margin-bottom: 4px;
-    display: block; /* Убедитесь, что метки занимают всю ширину */
-}
 
 input, textarea, select {
     clear: both;
@@ -206,7 +200,7 @@ input, textarea, select {
 
 /* Buttons */
 .submit {
-    background-color: #4c68af; /* Задний фон кнопки */
+    background-color: #4cbf7a; /* Задний фон кнопки */
     border: none; /* Убираем рамку */
     color: white; /* Цвет текста */
     padding: 10px 20px; /* Внутренний отступ */
@@ -223,6 +217,45 @@ input, textarea, select {
 .submit:hover {
     background-color: #000000; /* Изменение цвета при наведении */
 }
+
+.delete {
+    background-color: #bf4c4c; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 16px; /* Размер текста */
+    margin: 5px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.delete:hover {
+    background-color: #000000; /* Изменение цвета при наведении */
+}
+
+.edit-btn {
+    background-color: #4c6baf;
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 16px; /* Размер текста */
+    margin: 5px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.edit-btn:hover {
+    background-color: #000000;
+}
+
 
 .trans-btn-container {
     display: flex;
@@ -260,9 +293,6 @@ input, textarea, select {
     transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
 }
 
-/*.expense-btn:hover {*/
-/*    background-color: #982f33; !* Изменение цвета при наведении *!*/
-/*}*/
 
 .income-btn {
     background-color: #2f9831; /* Задний фон кнопки */
@@ -279,10 +309,45 @@ input, textarea, select {
     transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
 }
 
-/*#income-btn:hover {*/
-/*    background-color: #2f9831; !* Изменение цвета при наведении *!*/
-/*}*/
+.table-edit-btn {
+    width: 100%;
+    margin: 10px;
+    background-color: #4c6baf;
+    color: white;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
 
+.table-edit-btn:hover {
+    background-color: #000000;
+}
+
+.table-delete-btn {
+    width: 100px;
+    margin: 10px;
+    background-color: #af4c4c;
+    color: white;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.table-delete-btn:hover {
+    background-color: #000000;
+}
+
+
+input[type="checkbox"][name$="DELETE"] {
+    display: none;
+}
+
+
+/* ---------------------------- */
 .transaction-page {
     display: block;
     justify-content: center;
@@ -343,66 +408,37 @@ ul {
     margin: 0;
 }
 
-/* ------------------  TABS --------------------- */
+/* ------------------  TABEL --------------------- */
 
- .tabs {
-      width: 600px;
-    }
 
-    .tablist {
-      font-size: 0;
-    }
+table {
+    width: 100%; /* Таблицы занимают всю ширину колонки */
+    border-collapse: separate;
+}
 
-    .tab {
-      padding: 9px 15px;
-      border: 2px solid transparent;
-      border-top-left-radius: 6px;
-      border-top-right-radius: 6px;
-      font-size: 18px;
-      font-family: inherit;
-    }
 
-    .tab + .tab {
-      margin-left: 2px;
-    }
+th, td {
+    border: 1px solid #b1b1b1;
+    border-radius: 5px;
+    text-align: center;
+}
 
-    .tab[aria-selected="true"] {
-      background: #10F3AF;
-    }
+td.table-edit-btn, td.table-delete-btn {
+    width: 100px; /* Ограничиваем ширину ячейки */
+    cursor: pointer;
+}
 
-    .tab[aria-selected="false"] {
-      border-width: 0;
-      border-bottom: 2px solid #000000;
-      background: #FFFFFF;
-    }
+.tables-container {
+    justify-content: center;
+    display: flex;
 
-    .tab:hover {
-      background: #F498AD;
-      cursor: pointer;
-    }
+}
 
-    .tabpanel {
-      padding: 20px 15px;
-      min-height: 5em;
-      min-width: 100px;
-      overflow: auto;
-      color: #000000;
-      background: #10F3AF;
-    }
+.table-column {
+    width: 45%;
 
-    .tabpanel--hidden {
-      display: none;
-    }
+}
 
-    @media (max-width: 768px) {
-      body {
-        padding: 30px;
-      }
-
-      .tabs {
-        width: 100%;
-      }
-    }
 /*---------------------------------------------------*/
 
 @media (min-width: 600px) {

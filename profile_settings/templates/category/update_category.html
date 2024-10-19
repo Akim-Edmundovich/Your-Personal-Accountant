@@ -3,20 +3,49 @@
 {% load static %}
 
 {% block content %}
+	<div class="container" style="display: block; justify-content: center">
+		<div class="column">
+			<form method="post">
+				{% csrf_token %}
+				{{ form.type }}
+				{{ form.name }}
+				<button type="submit" value="Save"
+				        class="submit">Save
+				</button>
+			</form>
+		</div>
 
-	<form method="post">
-	{% csrf_token %}
-	{{ form }}
-	<input type="submit" value="Save">
-	</form>
+		<div class="table-column">
+			<div style="margin-bottom: 10px; margin-top: 50px;">
+				<form method="get" action="{% url 'settings:create_subcategory' category.id %}">
+					<button type="submit" class="submit" style="width: auto">
+						Add subcategory
+					</button>
+				</form>
+			</div>
+			{% if subcategories %}
+				<table>
+					{% for subcategory in subcategories %}
+						<tr>
+							<td>{{ subcategory.name }}</td>
+							<td class="table-edit-btn"
+							    onclick="location.href='{% url 'settings:update_subcategory' subcategory.id %}'">
+								Edit
+							</td>
+							<td class="table-delete-btn"
+							    onclick="location.href='{% url 'settings:delete_subcategory' subcategory.id %}'">
+								Delete
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				No subcategories
+			{% endif %}
 
-	<h3>Subcategories</h3>
-	<input type="button" name="create" value="Add subcategory">
-	{% for subcategory in subcategories %}
-		<ul>
-		<li>{{ subcategory }}</li>
-		</ul>
-	{% endfor %}
+		</div>
+	</div>
+
 
 
 {% endblock %}

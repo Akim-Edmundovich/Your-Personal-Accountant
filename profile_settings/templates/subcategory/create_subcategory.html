@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+	<h2>Create subcategory for <a href="
+{% url 'settings:update_category' category.id %}"><b
+	>{{ category.name }}</b></a></h2>
+
+	<form method="post">
+		{{ formset.management_form }}
+		{% csrf_token %}
+
+		<!-- Контейнер для форм подкатегорий -->
+		<div id="formset-container">
+			<!-- Отображение всех существующих форм formset -->
+			{% for form in formset %}
+				<div class="subcategory-form">
+					Name: {{ form.name }}
+					{{ form.DELETE }}
+					<button type="button" class="remove-form-btn delete">Delete
+					</button>
+				</div>
+			{% endfor %}
+		</div>
+
+		<div class="container">
+			<div class="column">
+				<button type="submit" class="submit">
+					Save
+				</button>
+			</div>
+			<div class="column">
+				<button type="button" id="add-form-btn" class="edit-btn">
+					+
+				</button>
+			</div>
+		</div>
+
+
+	</form>
+
+	<!-- Шаблон пустой формы -->
+	<script type="text/template" id="empty-form-template">
+		<div class="subcategory-form">
+			{{ formset.empty_form.as_p|escapejs }}
+		</div>
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const formsetContainer = document.getElementById('formset-container');
+			const addFormBtn = document.getElementById('add-form-btn');
+			let formCount = {{ formset.total_form_count }};  // Текущее количество форм
+			const totalFormsInput = document.getElementById('id_form-TOTAL_FORMS');  // Поле TOTAL_FORMS
+
+			// Обработчик нажатия на кнопку "Add New Subcategory"
+			addFormBtn.addEventListener('click', function () {
+				// Клонируем первую форму и меняем её индексы
+				const newForm = document.querySelector('.subcategory-form').cloneNode(true);
+				newForm.innerHTML = newForm.innerHTML.replace(/form-(\d+)/g, `form-${formCount}`);
+
+				// Очищаем значения полей в новой форме
+				const inputs = newForm.querySelectorAll('input');
+				inputs.forEach(input => {
+					if (input.type !== 'hidden' && input.type !== 'checkbox') {
+						input.value = '';
+					}
+					if (input.type === 'checkbox') {
+						input.checked = false;
+					}
+				});
+
+				// Добавляем новую форму в контейнер
+				formsetContainer.appendChild(newForm);
+
+				formCount++;  // Увеличиваем счётчик форм
+				totalFormsInput.value = formCount;  // Обновляем поле TOTAL_FORMS
+
+				// Добавляем обработчик удаления для новой формы
+				addDeleteHandler(newForm);
+			});
+
+			// Изначальный обработчик удаления для уже существующих форм
+			document.querySelectorAll('.subcategory-form').forEach(form => {
+				addDeleteHandler(form);
+			});
+
+			function addDeleteHandler(formElement) {
+				const deleteButton = formElement.querySelector('.remove-form-btn');
+
+				deleteButton.addEventListener('click', function () {
+					// Проверяем текущее количество форм
+					if (formCount > 2) {
+						const deleteField = formElement.querySelector('input[type="checkbox"][name$="DELETE"]');
+						deleteField.checked = true;  // Установить поле DELETE как отмеченное
+						formElement.style.display = 'none';  // Скрыть форму визуально
+						formCount--;  // Уменьшаем количество форм
+						totalFormsInput.value = formCount;  // Обновляем поле TOTAL_FORMS
+					} else {
+						console.log('Нельзя удалить формы по умолчанию.');  // Сообщение в консоли
+					}
+				});
+			}
+		});
+
+	</script>
+
+
+{% endblock %}

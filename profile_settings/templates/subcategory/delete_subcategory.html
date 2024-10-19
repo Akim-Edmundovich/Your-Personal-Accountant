@@ -4,16 +4,16 @@
 
 {% block content %}
 
-	<h2>Delete category <b>{{ category.name }}</b>?</h2>
+	<h2>Delete subcategory <b>{{ subcategory.name }}</b>?</h2>
 
 	<div class="column">
-		<form action="{% url 'settings:delete_category' category.id %}"
+		<form action="{% url 'settings:delete_subcategory' subcategory.id %}"
 		      method="post">
 			{% csrf_token %}
 
 			<button type="button"
 			        class="edit-btn" onclick="location.href=
-					'{% url 'settings:list_categories' %}'">
+					'{% url 'settings:update_category' subcategory.category.id %}'">
 				Cancel
 			</button>
 			<button type="submit" class="delete">
@@ -23,3 +23,4 @@
 	</div>
 
 {% endblock %}
+

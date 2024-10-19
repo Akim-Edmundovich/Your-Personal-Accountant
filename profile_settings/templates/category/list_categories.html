@@ -6,32 +6,59 @@
 
 {% block content %}
 
-	<a href="{% url 'settings:create_category' %}">Add category</a>
+	{% include 'category/create_category.html' with form=form %}
 
-	<h2>Expense</h2>
-	{% for category in categories %}
-		{% if category.type == 'expense' %}
-			<ul>
-				{{ category.name }}
-				<a href="{% url 'settings:update_category' category.id %}">
-					Edit</a>
-				<a href="{% url 'settings:delete_category' category.id %}">
-					Delete</a>
-			</ul>
+{#	<div>#}
+{#		<form method="get" action="{% url 'settings:create_category' %}">#}
+{#			<button type="submit" class="submit">Add category</button>#}
+{#		</form>#}
+{#	</div>#}
 
-		{% endif %}
-	{% endfor %}
-	<h2>Income</h2>
-	{% for category in categories %}
-		{% if category.type == 'income' %}
-			<ul>
-				{{ category.name }}
-				<a href="{% url 'settings:update_category' category.id %}">
-					Edit</a>
-				<a href="{% url 'settings:delete_category' category.id %}">
-					Delete</a>
-			</ul>
-		{% endif %}
-	{% endfor %}
+	<div class="tables-container">
+		<!-- Левая колонка с таблицей для категорий 'expense' -->
+		<div class="table-column" style="margin-right: 100px">
+			<h2>Expense</h2>
+			<table>
+				{% for category in categories %}
+					{% if category.type == 'expense' %}
+						<tr>
+							<td>{{ category.name }}</td>
+							<td class="table-edit-btn"
+							    onclick="location.href='{% url 'settings:update_category' category.id %}'">
+								Edit
+							</td>
+							<td class="table-delete-btn"
+							    onclick="location.href='{% url 'settings:delete_category' category.id %}'">
+								Delete
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+
+		<!-- Правая колонка с таблицей для категорий 'income' -->
+		<div class="table-column" id="left-table">
+			<h2>Income</h2>
+			<table>
+				{% for category in categories %}
+					{% if category.type == 'income' %}
+						<tr>
+							<td>{{ category.name }}</td>
+							<td class="table-edit-btn"
+							    onclick="location.href='{% url 'settings:update_category' category.id %}'">
+								Edit
+							</td>
+							<td class="table-delete-btn"
+							    onclick="location.href='{% url 'settings:delete_category' category.id %}'">
+								Delete
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
 {% endblock %}
 

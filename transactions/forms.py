@@ -1,25 +1,26 @@
-from django import forms
+from django.forms import ModelForm, Textarea
 
 from .models import Transaction, Category, Subcategory
 
 
-class TransactionForm(forms.ModelForm):
+class TransactionForm(ModelForm):
     class Meta:
         model = Transaction
         fields = ['category', 'subcategory', 'amount',
                   'quantity', 'quantity_type', 'description', 'created_at']
 
 
-class CategoryForm(forms.ModelForm):
+class CategoryForm(ModelForm):
     class Meta:
         model = Category
-        fields = ['name', 'type']
+        fields = ['type', 'name']
 
 
-class SubcategoryForm(forms.ModelForm):
+class SubcategoryForm(ModelForm):
     class Meta:
         model = Subcategory
         fields = ['name']
+
 
         def __init__(self, *args, **kwargs):
             super(SubcategoryForm, self).__init__(*args, **kwargs)
