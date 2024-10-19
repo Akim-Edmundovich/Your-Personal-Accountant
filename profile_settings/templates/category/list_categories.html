@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+
+	<a href="{% url 'settings:create_category' %}">Add category</a>
+
+	<h2>Expense</h2>
+	{% for category in categories %}
+		{% if category.type == 'expense' %}
+			<ul>
+				{{ category.name }}
+				<a href="{% url 'settings:update_category' category.id %}">
+					Edit</a>
+				<a href="{% url 'settings:delete_category' category.id %}">
+					Delete</a>
+			</ul>
+
+		{% endif %}
+	{% endfor %}
+	<h2>Income</h2>
+	{% for category in categories %}
+		{% if category.type == 'income' %}
+			<ul>
+				{{ category.name }}
+				<a href="{% url 'settings:update_category' category.id %}">
+					Edit</a>
+				<a href="{% url 'settings:delete_category' category.id %}">
+					Delete</a>
+			</ul>
+		{% endif %}
+	{% endfor %}
+{% endblock %}
+

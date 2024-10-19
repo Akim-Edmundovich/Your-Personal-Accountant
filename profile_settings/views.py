@@ -22,62 +22,82 @@ def settings(request):
 # ------------ Categories ------------
 
 @login_required
-def create_category(request):
-    ...
-
-
-@login_required
-def update_category(request):
-    ...
-
-
-@login_required
-def delete_category(request):
-    ...
-
-
-@login_required
-def category_edit(request, pk):
-    category = Category.objects.get(id=pk)
-    subcategories = Subcategory.objects.filter(category=category)
-    form = CategoryForm(request.POST or None, instance=category)
-
-    context = {
-        'form': form,
-        'category': category,
-        'subcategories': subcategories
-    }
-
-    return render(request, 'category_edit.html', context)
-
-
-@login_required
-def categories_list(request):
+def list_categories(request):
     categories = Category.objects.all()
 
-    return render(request, 'category_settings.html',
+    return render(request, 'category/list_categories.html',
                   {'categories': categories})
+
+
+@login_required
+def create_category(request):
+    form = CategoryForm()
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
+            return redirect('settings:list_categories')
+
+    context = {'form': form}
+    return render(request, 'category/create_category.html', context)
+
+
+@login_required
+def update_category(request, pk):
+    category = Category.objects.get(id=pk)
+    subcategories = Subcategory.objects.filter(category=category)
+
+    form = CategoryForm(instance=category)
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('settings:list_categories')
+
+    context = {'form': form, 'subcategories': subcategories}
+    return render(request, 'category/update_category.html', context)
+
+
+@login_required
+def delete_category(request, pk):
+    category = get_object_or_404(Category, id=pk)
+
+    if request.method == 'POST':
+        category.delete()
+        return redirect('settings:list_categories')
+
+    context = {'category': category}
+    return render(request, 'category/delete_category.html', context)
 
 
 # ------------ Subcategories ------------
 
+
 @login_required
 def create_subcategory(request, pk):
-    SubcategoryFormSet = inlineformset_factory(Category,
-                                               Subcategory,
-                                               fields=['name'],
-                                               extra=2,
-                                               can_delete=True)
     category = Category.objects.get(id=pk)
+    form = SubcategoryForm()
 
     if request.method == 'POST':
-        formset = SubcategoryFormSet(request.POST, instance=category)
-        if formset.is_valid():
-            return redirect('settings:category_edit', pk=pk)
+        form = SubcategoryForm(request.POST)
+        if form.is_valid():
+            subcategory = form.save(commit=False)
+            subcategory.category = category
+            subcategory.user = request.user
+            subcategory.save()
+            return redirect('settings:update_category', category.id)
 
-    else:
-        formset = SubcategoryFormSet()
-    return render(request, 'test.html', {'formset': formset})
+    context = {
+        'form': form,
+        'category': category
+    }
+
+    return render(request, )
+
+
 
 
 @login_required

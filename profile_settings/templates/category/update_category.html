@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+	<form method="post">
+	{% csrf_token %}
+	{{ form }}
+	<input type="submit" value="Save">
+	</form>
+
+	<h3>Subcategories</h3>
+	<input type="button" name="create" value="Add subcategory">
+	{% for subcategory in subcategories %}
+		<ul>
+		<li>{{ subcategory }}</li>
+		</ul>
+	{% endfor %}
+
+
+{% endblock %}
