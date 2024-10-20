@@ -7,11 +7,12 @@
 	<form method="post">
 		{% csrf_token %}
 		{{ form.name }}
+
 		<button type="submit" value="Save"
 		        class="submit">Save
 		</button>
 		<button type="button" class="delete"
-		        onclick="location.href='{% url 'settings:update_category' category.id %}'">
+		        onclick="location.href='{% url 'settings:page_update_category' category.id %}'">
 			Cancel
 		</button>
 	</form>

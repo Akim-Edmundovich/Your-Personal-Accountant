@@ -12,8 +12,8 @@
 			{% csrf_token %}
 
 			<button type="button"
-			        class="edit-btn" onclick="location.href=
-					'{% url 'settings:update_category' subcategory.category.id %}'">
+			        class="edit-btn"
+			        onclick="location.href='{% url 'settings:page_update_category' subcategory.category.id %}'">
 				Cancel
 			</button>
 			<button type="submit" class="delete">

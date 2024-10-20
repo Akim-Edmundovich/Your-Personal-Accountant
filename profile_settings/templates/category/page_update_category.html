@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+	<a href="{% url 'settings:page_categories' %}">Categories list</a>
+	<div class="container" style="display: block; justify-content: center">
+		<div class="column">
+			<form method="post"
+			      action="{% url 'settings:update_category' category.id %}">
+				{% csrf_token %}
+				<select name="type">
+					<option value="expense">Expense</option>
+					<option value="income">Income</option>
+				</select>
+				<input type="text" name="category_name" value="{{ category.name }}" placeholder="Category">
+				<button type="submit"   class="submit">Save</button>
+			</form>
+		</div>
+		<div class="column">
+			<h2>Subcategories</h2>
+			<form method="post"
+			      action="{% url 'settings:create_subcategory' %}">
+				{% csrf_token %}
+				<input type="text" name="subcategory_name"
+				       placeholder="Subcategory">
+				<!-- Добавляем скрытое поле для передачи ID категории -->
+				<input type="hidden" name="category_id" value="{{ category.id }}">
+				<button type="submit" class="submit">Add</button>
+			</form>
+			{% if subcategory_form.non_field_errors %}
+				<div class="error">{{ subcategory_form.non_field_errors }}</div>
+			{% endif %}
+		</div>
+
+		<div class="table-column">
+			{% if subcategories %}
+				<table>
+					{% for subcategory in subcategories %}
+						<tr>
+							<td>{{ subcategory.name }}</td>
+							<td class="table-edit-btn" onclick="location.href='{% url 'settings:update_subcategory' subcategory.id %}'">
+								Edit
+							</td>
+							<td class="table-delete-btn" onclick="location.href='{% url 'settings:delete_subcategory' subcategory.id %}'">
+								Delete
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				No subcategories
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.forms import formset_factory, inlineformset_factory
 
 from transactions.forms import *
 from transactions.models import *
@@ -22,7 +21,7 @@ def settings(request):
 # ------------ Categories ------------
 
 @login_required
-def categories_page(request):
+def page_categories(request):
     form = CategoryForm(initial={'type': 'expense'})
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -31,57 +30,53 @@ def categories_page(request):
             category.user = request.user
             if not Category.objects.filter(name=category.name).exists():
                 category.save()
-                return redirect('settings:categories_page')
+                return redirect('settings:page_categories')
             else:
                 form.add_error('name', 'Category already exists!')
 
     categories = Category.objects.filter(user=request.user)
     context = {'form': form,
                'categories': categories}
-    return render(request, 'category/categories_page.html', context)
+    return render(request, 'category/page_categories.html', context)
+
+
+@login_required
+def page_update_category(request, pk):
+    category = Category.objects.get(id=pk)
+    subcategories = Subcategory.objects.filter(category=category)
+
+    context = {
+        'category': category,
+        'subcategories': subcategories
+    }
+    return render(request, 'category/page_update_category.html', context)
 
 
 @login_required
 def update_category(request, pk):
-    category = Category.objects.get(id=pk)
-    subcategories = Subcategory.objects.filter(category=category)
-    category_form = CategoryForm(instance=category)
-    subcategory_form = SubcategoryForm()
+    category = Category.objects.get(id=pk, user=request.user)
 
     if request.method == 'POST':
-        print('POST data:', request.POST)
+        name = request.POST.get('category_name')
+        type = request.POST.get('type')
 
-        category_form = CategoryForm(request.POST, instance=category)
+        print(f'Category name: {name}, type: {type}')
 
-        if category_form.is_valid():
-            category = category_form.save(commit=False)
-            category.user = request.user
-            if not Category.objects.filter(name=category.name).exists():
+        try:
+            if not Category.objects.filter(user=request.user,
+                                           name=name,
+                                           type=type).exclude(id=category.id).exists():
+                category.name = name
+                category.type = type
                 category.save()
-                return redirect('settings:categories_page')
+                print(f'Category "{name}" was updated')
             else:
-                category_form.add_error('name', 'Category already exists!')
+                print(f'Category "{name}" already exists.')
 
-        subcategory_form = SubcategoryForm(request.POST)
-        if subcategory_form.is_valid():
-            subcategory = subcategory_form.save(commit=False)
-            subcategory.category = category
-            subcategory.user = request.user
+        except Exception as e:
+            print(f'Error while creating category {e}')
 
-            if not Subcategory.objects.filter(category=category,
-                                              name=subcategory.name).exists():
-                subcategory.save()
-                return redirect('settings:update_category', category.id)
-            else:
-                subcategory_form.add_error('name', 'Subcategory already '
-                                                   'exists!')
-
-    context = {'category_form': category_form,
-               'subcategory_form': subcategory_form,
-               'subcategories': subcategories,
-               'category': category}
-
-    return render(request, 'category/update_category.html', context)
+    return redirect('settings:page_categories')
 
 
 @login_required
@@ -90,7 +85,7 @@ def delete_category(request, pk):
 
     if request.method == 'POST':
         category.delete()
-        return redirect('settings:categories_page')
+        return redirect('settings:page_categories')
 
     context = {'category': category}
     return render(request, 'category/delete_category.html', context)
@@ -99,46 +94,23 @@ def delete_category(request, pk):
 # ------------ Subcategories ------------
 
 
-# @login_required
-# def create_subcategory(request, pk):
-#     SubcategoryFormSet = formset_factory(SubcategoryForm,
-#                                          extra=2,
-#                                          can_delete=True,
-#                                          can_delete_extra=True,
-#                                          )
-#     category = Category.objects.get(id=pk)
-#
-#     if request.method == 'POST':
-#         formset = SubcategoryFormSet(request.POST)
-#
-#         if formset.is_valid():
-#             for form in formset:
-#                 if form.cleaned_data.get('DELETE'):
-#                     if form.instance.pk:
-#                         form.instance.delete()
-#                 else:
-#                     subcategory = form.save(commit=False)
-#                     subcategory.category = category
-#                     subcategory.user = request.user
-#                     if form.cleaned_data:
-#                         if not Subcategory.objects.filter(
-#                                 name=form.cleaned_data[
-#                                     'name'
-#                                 ]).exists():
-#                             subcategory.save()
-#                             return redirect('settings:categories_page')
-#                         else:
-#                             form.add_error('name', 'Subcategory already exists!')
-#             return redirect('settings:update_category', category.id)
-#
-#     formset = SubcategoryFormSet()
-#
-#     context = {
-#         'formset': formset,
-#         'category': category
-#     }
-#
-#     return render(request, 'subcategory/create_subcategory.html', context)
+@login_required
+def create_subcategory(request):
+    if request.method == 'POST':
+        name = request.POST.get('subcategory_name')
+        category_id = request.POST.get('category_id')
+
+        try:
+            category = Category.objects.get(id=category_id)
+            subcategory_obj = Subcategory.objects.create(name=name,
+                                                         category=category,
+                                                         user=request.user)
+
+            subcategory_obj.save()
+        except Exception as e:
+            print(f'Error while creating subcategory {e}')
+
+    return redirect('settings:page_update_category', pk=category_id)
 
 
 @login_required
@@ -151,7 +123,8 @@ def update_subcategory(request, pk):
         form = SubcategoryForm(request.POST, instance=subcategory)
         if form.is_valid():
             form.save()
-            return redirect('settings:update_category', subcategory.category.id)
+            return redirect('settings:page_update_category',
+                            subcategory.category.id)
 
     context = {'form': form,
                'subcategory': subcategory,
@@ -165,7 +138,8 @@ def delete_subcategory(request, pk):
 
     if request.method == 'POST':
         subcategory.delete()
-        return redirect('settings:update_category', subcategory.category.id)
+        return redirect('settings:page_update_category',
+                        subcategory.category.id)
 
     context = {
         'subcategory': subcategory

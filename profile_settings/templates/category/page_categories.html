@@ -5,11 +5,11 @@
 {% block title %}Categories{% endblock %}
 
 {% block content %}
-
+	<a href="{% url 'settings:settings_page' %}">Settings</a>
 	<div>
 		<h2>Create new category</h2>
 		<div class="column">
-			{% include 'category/create_category.html' with form=form %}
+			{% include 'category/create_category_form.html' with form=form %}
 		</div>
 	</div>
 
@@ -23,7 +23,7 @@
 						<tr>
 							<td>{{ category.name }}</td>
 							<td class="table-edit-btn"
-							    onclick="location.href='{% url 'settings:update_category' category.id %}'">
+							    onclick="location.href='{% url 'settings:page_update_category' category.id %}'">
 								Edit
 							</td>
 							<td class="table-delete-btn"
@@ -45,7 +45,7 @@
 						<tr>
 							<td>{{ category.name }}</td>
 							<td class="table-edit-btn"
-							    onclick="location.href='{% url 'settings:update_category' category.id %}'">
+							    onclick="location.href='{% url 'settings:page_update_category' category.id %}'">
 								Edit
 							</td>
 							<td class="table-delete-btn"
