@@ -416,6 +416,11 @@ table {
     border-collapse: separate;
 }
 
+/* Специфические стили для таблиц с ID "transactions" */
+table#transactions {
+    border-collapse: collapse; /* Границы ячеек сливаются */
+    background-color: #f5f5f5; /* Фон таблицы */
+}
 
 th, td {
     border: 1px solid #b1b1b1;

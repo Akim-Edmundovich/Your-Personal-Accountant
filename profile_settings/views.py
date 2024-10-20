@@ -74,7 +74,7 @@ def update_category(request, pk):
                 print(f'Category "{name}" already exists.')
 
         except Exception as e:
-            print(f'Error while creating category {e}')
+            print(f'Error while updating category {e}')
 
     return redirect('settings:page_categories')
 

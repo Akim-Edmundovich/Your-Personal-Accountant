@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+	<h1>Change Transaction</h1>
+
+	<div class="transaction-page">
+		<div class="trans-btn-container">
+			<button id="expense-btn" class="transaction-btn"
+			        data-type="expense">Expense
+			</button>
+			<button id="income-btn" class="transaction-btn"
+			        data-type="income">Income
+			</button>
+		</div>
+		<form  action="{% url 'dashboard:update_transaction' transaction.id %}" method="post" id="transaction-form">
+			<input type="hidden" id="transaction_type" name="transaction_type" value="{{ transaction.type }}">
+			{% csrf_token %}
+			<!-- Поля для ввода суммы и количества -->
+			<div id="amount-quantity-fields">
+				<input type="number" maxlength="1" name="amount" min="0"
+				       placeholder="0" value="{{ transaction.amount}}">
+				<input type="number" maxlength="10" name="quantity" min="0"
+				       placeholder="0" value="{{ transaction.quantity}}">
+				<select name="quantity_type">
+					<option value="" {% if not transaction.quantity_type %}selected{% endif %}>Select type</option>
+					<option value="шт" {% if transaction.quantity_type == 'шт' %}selected{% endif %}>шт</option>
+					<option value="кг" {% if transaction.quantity_type == 'кг' %}selected{% endif %}>кг</option>
+					<option value="л" {% if transaction.quantity_type == 'л' %}selected{% endif %}>л</option>
+					<option value="см" {% if transaction.quantity_type == 'см' %}selected{% endif %}>см</option>
+				</select>
+			</div>
+			<!-- Список категорий -->
+			<div id="category-container">
+				<select id="category-select" name="category" class="select2">
+					<option value="">Select category</option>
+					{% for category in categories %}
+						 <option value="{{ category.id }}" {% if category == transaction.category %}selected{% endif %}>
+							{{ category.name }}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+			<!-- Список подкатегорий -->
+			<div id="subcategory-container">
+				<select id="subcategory-select" name="subcategory" class="select2">
+					<option value="">Select subcategory</option>
+					{% for subcategory in subcategories %}
+						<option value="{{ subcategory.id }}" {% if subcategory == transaction.subcategory %}selected{% endif %}>
+							{{ subcategory.name }}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div id="description-input">
+				<input type="text" name="description" maxlength="250" placeholder="Description"
+				       value="{{ transaction.description }}">
+			</div>
+			<div id="created-at-field">
+				<input type="date" name="created_at" id="created-at-input" max=""
+				       value="{{ transaction.created_at|date:'Y-m-d' }}">
+			</div>
+			<div id="alert-field"></div>
+			<button class="submit" type="submit">
+				Submit
+			</button>
+		</form>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<script src="{% static 'js/update_transaction.js' %}"></script>
+{% endblock %}

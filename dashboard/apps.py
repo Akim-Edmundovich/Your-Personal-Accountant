@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class HtmxTestConfig(AppConfig):
+class DashboardConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'htmx_test'
+    name = 'dashboard'

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+
+{% block content %}
+
+	<div id="btns-in-transactions-page" style="margin-bottom: 20px">
+		<button type="button" id="expense-transactions-btn"
+		        style="color: white; border-radius: 5px; border: none; width:
+	        100px; height: 40px; font-size: 1.2em">
+			EXPENSE
+		</button>
+		<button type="button" id="income-transactions-btn"
+		        style="color: white; border-radius: 5px; border: none; width:
+	        100px; height: 40px; font-size: 1.2em">
+			INCOME
+		</button>
+	</div>
+	<div class="container">
+		<div class="column">
+			<div id="expense-transactions-list" style="">
+				<table id="transactions">
+					<tr>
+						<th>Category</th>
+						<th>Amount</th>
+					</tr>
+					{% for expense in expenses %}
+						<tr>
+							<td>
+								<a href="{% url 'dashboard:detail_transaction' expense.id %}">
+									{{ expense.category }}
+								</a>
+							</td>
+							<td>{{ expense.amount }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<div id="income-transactions-list"
+			     style="display: none;">
+				<table id="transactions">
+					<tr>
+						<th>Category</th>
+						<th>Amount</th>
+					</tr>
+					{% for income in incomes %}
+						<tr>
+							<td>
+								<a href="{% url 'dashboard:detail_transaction' income.id %}">
+									{{ income.category }}
+								</a>
+							</td>
+							<td>{{ income.amount }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const transactionsList = document.getElementById('transactions-list')
+		const expenseList = document.getElementById('expense-transactions-list')
+		const incomeList = document.getElementById('income-transactions-list')
+		const expenseBtn = document.getElementById('expense-transactions-btn')
+		const incomeBtn = document.getElementById('income-transactions-btn')
+
+		expenseBtn.style.backgroundColor = 'red'
+		incomeBtn.style.backgroundColor = 'black'
+
+
+		expenseBtn.addEventListener('click', function () {
+			expenseList.style.display = 'block'
+			incomeList.style.display = 'none'
+			expenseBtn.style.backgroundColor = 'red'
+			incomeBtn.style.backgroundColor = 'black'
+		})
+
+		incomeBtn.addEventListener('click', function () {
+			incomeList.style.display = 'block'
+			expenseList.style.display = 'none'
+
+			incomeBtn.style.backgroundColor = 'green'
+			expenseBtn.style.backgroundColor = 'black'
+		})
+
+	</script>
+
+{% endblock %}

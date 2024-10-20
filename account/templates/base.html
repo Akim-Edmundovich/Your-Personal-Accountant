@@ -5,7 +5,6 @@
 	<title>{% block title %}{% endblock %}</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script src="https://unpkg.com/htmx.org@2.0.2"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -18,7 +17,7 @@
 	{% if request.user.is_authenticated %}
 		<ul class="menu">
 			<li {% if section == "dashboard" %}class="selected"{% endif %}>
-				<a href="{% url "dashboard" %}">My dashboard</a>
+				<a href="{% url "dashboard:list_transactions" %}">My dashboard</a>
 				<a href="{% url "transaction:add-transaction" %}">Transactions</a>
 				<a href="{% url "settings:settings_page" %}">Settings</a>
 			</li>

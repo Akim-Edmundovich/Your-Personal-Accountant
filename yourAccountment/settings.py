@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'profile_settings',
-    'htmx_test',
+    'dashboard',
 ]
 
 # Application definition
