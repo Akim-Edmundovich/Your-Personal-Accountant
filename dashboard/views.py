@@ -16,6 +16,11 @@ def list_transactions(request):
 
 
 @login_required
+def test(request):
+    return render(request, 'index.html')
+
+
+@login_required
 def detail_transaction(request, pk):
     transaction = Transaction.objects.get(id=pk)
     categories = Category.objects.all()
@@ -43,7 +48,6 @@ def update_transaction(request, pk):
         created_at = request.POST.get('created_at')
 
         try:
-
 
             transaction.type = type
             # transaction.category = category

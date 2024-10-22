@@ -11,4 +11,6 @@ urlpatterns = [
     path('update-transaction/<int:pk>', views.update_transaction,
          name='update_transaction'),
 
+    path('test/', views.test, name='test'),
+
 ]
