@@ -12,22 +12,28 @@
 
 	<div class="transaction-page">
 		<div class="trans-btn-container">
-			<button id="expense-btn" class="transaction-btn"
-			        data-type="expense">Expense
-			</button>
-			<button id="income-btn" class="transaction-btn"
-			        data-type="income">Income
-			</button>
+			<button class="transaction-btn" type="button" name="expense" id="transaction-btn">Expense</button>
+			<button class="transaction-btn" type="button" name="income" id="transaction-btn">Income</button>
 		</div>
-		<form  action="{% url 'dashboard:update_transaction' transaction.id %}" method="post" id="transaction-form">
-			<input type="hidden" id="transaction_type" name="transaction_type" value="{{ transaction.type }}">
+
+		<form action="{% url 'dashboard:update_transaction' transaction.id %}" method="post" id="transaction-form">
+			<input type="hidden" id=user-"transaction_type" name="transaction_type" value="{{ transaction.type }}">
+			<input type="hidden" id="user-transaction-category" name="transaction-category" value="{{ transaction.category }}">
+			<input type="hidden" id="user-transaction-subcategory" name="transaction-subcategory" value="{{ transaction.subcategory }}">
+			<input type="hidden" id="user-transaction-amount" name="transaction-amount" value="{{ transaction.amount }}">
+			<input type="hidden" id="user-transaction-quantity" name="transaction-quantity" value="{{ transaction.quantity }}">
+			<input type="hidden" id="user-transaction-quantity_type" name="transaction-quantity_type" value="{{ transaction.quantity_type }}">
+			<input type="hidden" id="user-transaction-description" name="transaction-description" value="{{ transaction.description }}">
+			<input type="hidden" id="user-transaction-created_at" name="transaction-created_at" value="{{ transaction.created_at }}">
+
+
 			{% csrf_token %}
 			<!-- Поля для ввода суммы и количества -->
 			<div id="amount-quantity-fields">
 				<input type="number" maxlength="1" name="amount" min="0"
-				       placeholder="0" value="{{ transaction.amount}}">
+				       placeholder="0" value="{{ transaction.amount }}">
 				<input type="number" maxlength="10" name="quantity" min="0"
-				       placeholder="0" value="{{ transaction.quantity}}">
+				       placeholder="0" value="{{ transaction.quantity }}">
 				<select name="quantity_type">
 					<option value="" {% if not transaction.quantity_type %}selected{% endif %}>Select type</option>
 					<option value="шт" {% if transaction.quantity_type == 'шт' %}selected{% endif %}>шт</option>
@@ -38,25 +44,13 @@
 			</div>
 			<!-- Список категорий -->
 			<div id="category-container">
-				<select id="category-select" name="category" class="select2">
-					<option value="">Select category</option>
-					{% for category in categories %}
-						 <option value="{{ category.id }}" {% if category == transaction.category %}selected{% endif %}>
-							{{ category.name }}
-						</option>
-					{% endfor %}
-				</select>
+				<label for="category-select">Categories</label>
+				<select id="category-select" class="select2"></select>
 			</div>
 			<!-- Список подкатегорий -->
 			<div id="subcategory-container">
-				<select id="subcategory-select" name="subcategory" class="select2">
-					<option value="">Select subcategory</option>
-					{% for subcategory in subcategories %}
-						<option value="{{ subcategory.id }}" {% if subcategory == transaction.subcategory %}selected{% endif %}>
-							{{ subcategory.name }}
-						</option>
-					{% endfor %}
-				</select>
+				<label for="subcategory-select">Subcategories</label>
+				<select id="subcategory-select" class="select2"></select>
 			</div>
 			<div id="description-input">
 				<input type="text" name="description" maxlength="250" placeholder="Description"

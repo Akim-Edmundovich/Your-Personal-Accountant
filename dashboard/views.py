@@ -40,27 +40,30 @@ def update_transaction(request, pk):
 
     if request.method == 'POST':
         type = request.POST.get('transaction_type')
-        category_id = request.POST.get('category')
-        subcategory_id = request.POST.get('subcategory')
+        category = request.POST.get('category')
+        subcategory = request.POST.get('subcategory')
         quantity = request.POST.get('quantity')
         quantity_type = request.POST.get('quantity_type')
         description = request.POST.get('description')
         created_at = request.POST.get('created_at')
 
-        try:
+        print(f'{type} - {category} - {subcategory} - '
+              f'{quantity} - {quantity_type} - {description} - {created_at}')
 
-            transaction.type = type
-            # transaction.category = category
-            # transaction.subcategory = subcategory
-            transaction.quantity = quantity
-            transaction.quantity_type = quantity_type
-            transaction.description = description
-            transaction.created_at = created_at
+        # try:
+        #
+        #     transaction.type = type
+        #     # transaction.category = category
+        #     # transaction.subcategory = subcategory
+        #     transaction.quantity = quantity
+        #     transaction.quantity_type = quantity_type
+        #     transaction.description = description
+        #     transaction.created_at = created_at
+        #
+        #     transaction.save()
+        return redirect('dashboard:list_transactions')
 
-            transaction.save()
-            return redirect('dashboard:list_transactions')
-
-        except Exception as e:
-            print(f'Error while updating transaction: {e}')
+        # except Exception as e:
+        #     print(f'Error while updating transaction: {e}')
 
     return redirect('dashboard:list_transactions')
