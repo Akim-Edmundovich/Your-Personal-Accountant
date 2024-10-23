@@ -33,7 +33,7 @@
 				<input type="number" maxlength="1" name="amount" min="0"
 				       placeholder="0" value="{{ transaction.amount }}">
 				<input type="number" maxlength="10" name="quantity" min="0"
-				       placeholder="0" value="{{ transaction.quantity }}">
+				       placeholder="0" value="{% if transaction.quantity %}{{ transaction.quantity }}{% else %}0{% endif %}">
 				<select name="quantity_type">
 					<option value="">Select type</option>
 					<option value="шт">шт</option>
