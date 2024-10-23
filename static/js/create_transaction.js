@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const expenseBtn = document.getElementById('expense-btn')
     const incomeBtn = document.getElementById('income-btn')
 
+
     expenseBtn.classList.add('expense-btn')
 
     const alertField = document.getElementById('alert-field')

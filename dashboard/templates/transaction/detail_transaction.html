@@ -17,7 +17,7 @@
 		</div>
 
 		<form action="{% url 'dashboard:update_transaction' transaction.id %}" method="post" id="transaction-form">
-			<input type="hidden" id=user-"transaction_type" name="transaction_type" value="{{ transaction.type }}">
+			<input type="hidden" id="user-transaction-type" name="transaction_type" value="{{ transaction.type }}">
 			<input type="hidden" id="user-transaction-category" name="transaction-category" value="{{ transaction.category }}">
 			<input type="hidden" id="user-transaction-subcategory" name="transaction-subcategory" value="{{ transaction.subcategory }}">
 			<input type="hidden" id="user-transaction-amount" name="transaction-amount" value="{{ transaction.amount }}">
@@ -36,10 +36,10 @@
 				       placeholder="0" value="{{ transaction.quantity }}">
 				<select name="quantity_type">
 					<option value="" {% if not transaction.quantity_type %}selected{% endif %}>Select type</option>
-					<option value="шт" {% if transaction.quantity_type == 'шт' %}selected{% endif %}>шт</option>
-					<option value="кг" {% if transaction.quantity_type == 'кг' %}selected{% endif %}>кг</option>
-					<option value="л" {% if transaction.quantity_type == 'л' %}selected{% endif %}>л</option>
-					<option value="см" {% if transaction.quantity_type == 'см' %}selected{% endif %}>см</option>
+					<option value="шт">шт</option>
+					<option value="кг">кг</option>
+					<option value="л" >л</option>
+					<option value="см" >см</option>
 				</select>
 			</div>
 			<!-- Список категорий -->

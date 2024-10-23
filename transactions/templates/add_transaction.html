@@ -18,7 +18,7 @@
 			</button>
 		</div>
 
-		<form method="post" id="transaction-form">
+		<form method="post" id="transaction-form" name="ddd">
 			<input type="hidden" id="transaction_type" name="transaction_type" value="expense">
 			{% csrf_token %}
 
@@ -31,9 +31,7 @@
 				       placeholder="0">
 
 				<select name="quantity_type">
-					<option id="disabled-value-quantity-type" value="" disabled
-					        selected
-					></option>
+					<option id="disabled-value-quantity-type" value=""></option>
 					<option>шт</option>
 					<option>кг</option>
 					<option>л</option>

@@ -17,6 +17,30 @@ function newElement(tag, param) {
     return el
 }
 
+// ------------------- Local Storage -------------------
+
+// Сохранение формы при перезагрузке страницы
+
+let formData = {}
+const form = document.querySelector('form')
+const LS = localStorage
+
+
+form.addEventListener('input', function (event) {
+    console.log(event.target.name)
+    // formData[event.target.name] = event.target.value
+    // LS.setItem('formData', JSON.stringify(formData))
+})
+
+// Восстановление формы при перезагрузке страницы
+if (LS.getItem('formData')) {
+    console.log()
+    formData = JSON.parse(LS.getItem('formData'))
+    for (let key in formData) {
+        form.elements[key].value = formData[key]
+    }
+}
+
 
 // ------------------- Данные по умолчанию -------------------
 
@@ -31,7 +55,6 @@ const userSelectedDescription = document.getElementById('user-transaction-descri
 const userSelectedDate = document.getElementById('user-transaction-created_at')
 
 
-
 // ------------------- Действия -------------------
 
 document.querySelectorAll('#transaction-btn')
@@ -44,9 +67,45 @@ document.querySelectorAll('#transaction-btn')
 document.getElementById('category-select').onchange = function (event) {
     const selectedValue = event.target.value
     loadSubcategories(selectedValue)
-
 }
 
+
+const expenseBtn = document.querySelector('button[name="expense"]')
+const incomeBtn = document.querySelector('button[name="income"]')
+
+
+if (userSelectedType.value === 'expense') {
+    expenseBtn.classList.add('expense-btn')
+    incomeBtn.classList.remove('income-btn')
+} else {
+    incomeBtn.classList.add('income-btn')
+    expenseBtn.classList.remove('expense-btn')
+}
+
+
+const alertField = document.getElementById('alert-field')
+
+
+document.querySelectorAll('.transaction-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const type = this.getAttribute('name');
+        document.getElementById('user-transaction-type').value = type;
+        loadCategories(type);
+
+
+        if (type === 'expense') {
+            expenseBtn.classList.add('expense-btn')
+            incomeBtn.classList.remove('income-btn')
+        } else {
+            incomeBtn.classList.add('income-btn')
+            expenseBtn.classList.remove('expense-btn')
+        }
+
+
+    });
+});
+
+loadCategories(userSelectedType.value)
 
 // ------------------- Загрузка данных -------------------
 
@@ -61,12 +120,15 @@ function loadCategories(type) {
                 let option = newElement('option', '')
                 option.value = category.id
                 option.textContent = category.name
+
+                if (category.name === userSelectedCategory.value) {
+                    option.setAttribute('selected', 'selected')
+                }
                 categorySelect.appendChild(option)
             }
 
             const selectedCategoryId = categorySelect.value
             loadSubcategories(selectedCategoryId)
-
         })
 }
 
@@ -95,6 +157,10 @@ function loadSubcategories(category) {
                 let option = newElement('option', '')
                 option.value = subcategory.id
                 option.textContent = subcategory.name
+
+                if (subcategory.name === userSelectedSubcategory.value) {
+                    option.setAttribute('selected', 'selected')
+                }
                 subcategorySelect.appendChild(option)
             }
         })
@@ -102,6 +168,7 @@ function loadSubcategories(category) {
 
 
 // ------------------- Настройка select2 -------------------
+
 $(document).ready(function () {
     $('.select2').select2({
         width: '100%',
@@ -123,6 +190,7 @@ document.getElementById('created-at-input').max = formattedDate;
 
 
 // ------------------- Обработка отправки формы -------------------
+
 document.getElementById('transaction-form').addEventListener('submit', function (event) {
     const alertField = document.getElementById('alert-field');
     const amountField = document.querySelector('input[name="amount"]');
