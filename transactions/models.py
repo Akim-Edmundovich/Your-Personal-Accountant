@@ -63,6 +63,7 @@ class Transaction(models.Model):
                                    decimal_places=1,
                                    null=True,
                                    blank=True,
+                                   default=0,
                                    validators=[MinValueValidator(0.1)])
     quantity_type = models.CharField(max_length=4, choices=[
         ("шт", "шт"),

@@ -32,7 +32,7 @@
 			<div id="amount-quantity-fields">
 				<input type="number" maxlength="1" name="amount" min="0"
 				       placeholder="0" value="{{ transaction.amount }}">
-				<input type="number" maxlength="10" name="quantity" min="0"
+				<input type="number" maxlength="10" name="quantity" min="0" step="0.1"
 				       placeholder="0" value="{% if transaction.quantity %}{{ transaction.quantity }}{% else %}0{% endif %}">
 				<select name="quantity_type">
 					<option value="">Select type</option>
@@ -76,4 +76,12 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 	<script src="{% static 'js/update_transaction.js' %}"></script>
+	<script>
+		document.querySelector('input[name="quantity"]').addEventListener('keydown', function(e) {
+    // Запрещаем ввод запятой
+    if (e.key === ',') {
+        e.preventDefault();
+    }
+});
+	</script>
 {% endblock %}
