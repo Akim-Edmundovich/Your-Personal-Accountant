@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+	<h2>Delete transaction
+		<b>{{ transaction.category }} - {{ transaction.subcategory }} - {{ transaction.amount }}</b>?
+	</h2>
+
+	<div class="column">
+		<form action="{% url 'dashboard:delete_transaction' transaction.id %}"
+		      method="post">
+			{% csrf_token %}
+
+			<button type="button"
+			        class="edit-btn" onclick="location.href=
+					'{% url 'dashboard:list_transactions' %}'">
+				Cancel
+			</button>
+			<button type="submit" class="delete">
+				Confirm
+			</button>
+		</form>
+	</div>
+
+{% endblock %}

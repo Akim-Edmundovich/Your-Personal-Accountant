@@ -35,22 +35,22 @@
 				<input type="number" maxlength="10" name="quantity" min="0"
 				       placeholder="0" value="{{ transaction.quantity }}">
 				<select name="quantity_type">
-					<option value="" {% if not transaction.quantity_type %}selected{% endif %}>Select type</option>
+					<option value="">Select type</option>
 					<option value="шт">шт</option>
 					<option value="кг">кг</option>
-					<option value="л" >л</option>
-					<option value="см" >см</option>
+					<option value="л">л</option>
+					<option value="см">см</option>
 				</select>
 			</div>
 			<!-- Список категорий -->
 			<div id="category-container">
 				<label for="category-select">Categories</label>
-				<select id="category-select" class="select2"></select>
+				<select id="category-select" name="category" class="select2"></select>
 			</div>
 			<!-- Список подкатегорий -->
 			<div id="subcategory-container">
 				<label for="subcategory-select">Subcategories</label>
-				<select id="subcategory-select" class="select2"></select>
+				<select id="subcategory-select" name="subcategory" class="select2"></select>
 			</div>
 			<div id="description-input">
 				<input type="text" name="description" maxlength="250" placeholder="Description"
@@ -65,6 +65,12 @@
 				Submit
 			</button>
 		</form>
+
+		<button class="delete"
+		        onclick="location.href='{% url 'dashboard:delete_transaction' transaction.id %}'">
+			Delete
+		</button>
+
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

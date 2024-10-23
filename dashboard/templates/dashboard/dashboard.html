@@ -25,7 +25,11 @@
 				<table id="transactions">
 					<tr>
 						<th>Category</th>
+						<th>Subcategory</th>
 						<th>Amount</th>
+						<th>Quantity</th>
+						<th>Quantity type</th>
+						<th>Comment</th>
 					</tr>
 					{% for expense in expenses %}
 						<tr>
@@ -34,7 +38,15 @@
 									{{ expense.category }}
 								</a>
 							</td>
+							<td>
+								{% if expense.subcategory %}{{ expense.subcategory }}{% else %}{% endif %}</td>
 							<td>{{ expense.amount }}</td>
+							<td>
+								{% if expense.quantity %}{{ expense.quantity }}{% else %}{% endif %}</td>
+							<td>
+								{% if expense.quantity_type %}{{ expense.quantity_type }}{% else %}{% endif %}</td>
+							<td>
+								{% if expense.description %}{{ expense.description }}{% else %}{% endif %}</td>
 						</tr>
 					{% endfor %}
 				</table>
@@ -44,7 +56,11 @@
 				<table id="transactions">
 					<tr>
 						<th>Category</th>
+						<th>Subcategory</th>
 						<th>Amount</th>
+						<th>Quantity</th>
+						<th>Quantity type</th>
+						<th>Comment</th>
 					</tr>
 					{% for income in incomes %}
 						<tr>
@@ -53,7 +69,15 @@
 									{{ income.category }}
 								</a>
 							</td>
+							<td>
+								{% if income.subcategory %}{{ income.subcategory }}{% else %}{% endif %}</td>
 							<td>{{ income.amount }}</td>
+							<td>
+								{% if income.quantity %}{{ income.quantity }}{% else %}{% endif %}</td>
+							<td>
+								{% if income.quantity_type %}{{ income.quantity_type }}{% else %}{% endif %}</td>
+							<td>
+								{% if income.description %}{{ income.description }}{% else %}{% endif %}</td>
 						</tr>
 					{% endfor %}
 				</table>

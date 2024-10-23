@@ -21,25 +21,25 @@ function newElement(tag, param) {
 
 // Сохранение формы при перезагрузке страницы
 
-let formData = {}
-const form = document.querySelector('form')
-const LS = localStorage
-
-
-form.addEventListener('input', function (event) {
-    console.log(event.target.name)
-    // formData[event.target.name] = event.target.value
-    // LS.setItem('formData', JSON.stringify(formData))
-})
-
-// Восстановление формы при перезагрузке страницы
-if (LS.getItem('formData')) {
-    console.log()
-    formData = JSON.parse(LS.getItem('formData'))
-    for (let key in formData) {
-        form.elements[key].value = formData[key]
-    }
-}
+// let formData = {}
+// const form = document.querySelector('form')
+// const LS = localStorage
+//
+//
+// form.addEventListener('input', function (event) {
+//     console.log(event.target.name)
+//     // formData[event.target.name] = event.target.value
+//     // LS.setItem('formData', JSON.stringify(formData))
+// })
+//
+// // Восстановление формы при перезагрузке страницы
+// if (LS.getItem('formData')) {
+//     console.log()
+//     formData = JSON.parse(LS.getItem('formData'))
+//     for (let key in formData) {
+//         form.elements[key].value = formData[key]
+//     }
+// }
 
 
 // ------------------- Данные по умолчанию -------------------
@@ -165,6 +165,7 @@ function loadSubcategories(category) {
             }
         })
 }
+
 
 
 // ------------------- Настройка select2 -------------------
