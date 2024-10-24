@@ -19,43 +19,44 @@ function newElement(tag, param) {
 
 // ------------------- Local Storage -------------------
 
-// Сохранение формы при перезагрузке страницы
-
-// let formData = {}
-// const form = document.querySelector('form')
-// const LS = localStorage
-//
-//
-// form.addEventListener('input', function (event) {
-//     console.log(event.target.name)
-//     // formData[event.target.name] = event.target.value
-//     // LS.setItem('formData', JSON.stringify(formData))
-// })
-//
-// // Восстановление формы при перезагрузке страницы
-// if (LS.getItem('formData')) {
-//     console.log()
-//     formData = JSON.parse(LS.getItem('formData'))
-//     for (let key in formData) {
-//         form.elements[key].value = formData[key]
-//     }
-// }
-
 
 // ------------------- Данные по умолчанию -------------------
-
 
 const userSelectedType = document.getElementById('user-transaction-type')
 const userSelectedCategory = document.getElementById('user-transaction-category')
 const userSelectedSubcategory = document.getElementById('user-transaction-subcategory')
 const userSelectedAmount = document.getElementById('user-transaction-amount')
-const userSelectedQuantity = document.getElementById('user-transaction-quantity')
-const userSelectedQuantityType = document.getElementById('user-transaction-quantity_type')
+const userSelectedQuantity = document.getElementById("user-transaction-quantity")
+const userSelectedQuantityType = document.getElementById("user-transaction-quantity-type")
 const userSelectedDescription = document.getElementById('user-transaction-description')
 const userSelectedDate = document.getElementById('user-transaction-created_at')
 
 
 // ------------------- Действия -------------------
+
+console.log('Value ' + userSelectedQuantityType.value)
+console.log('Value ' + userSelectedQuantity.value)
+
+
+function loadQuantityType() {
+    const quantityField = document.querySelector('input[name="quantity"]')
+    const quantityTypeField = document.querySelector('select[name="quantity_type"]')
+
+    console.log(quantityTypeField.value + ' type')
+
+    if (!quantityField.value || quantityTypeField.value === 0) {
+        quantityTypeField.disabled = true
+        quantityTypeField.value = ''
+    } else {
+        quantityTypeField.value = userSelectedQuantityType.value
+    }
+    // Добавляем слушатель изменений для поля количества
+    quantityField.addEventListener('input', function () {
+        quantityTypeField.disabled = !quantityField.value;
+    })
+}
+
+loadQuantityType()
 
 document.querySelectorAll('#transaction-btn')
     .forEach(button => {
@@ -167,7 +168,6 @@ function loadSubcategories(category) {
 }
 
 
-
 // ------------------- Настройка select2 -------------------
 
 $(document).ready(function () {
@@ -197,6 +197,12 @@ document.getElementById('transaction-form').addEventListener('submit', function 
     const amountField = document.querySelector('input[name="amount"]');
     const categoryField = document.getElementById('category-select');
 
+    const quantity = document.querySelector('input[name="quantity"]')
+
+    if (!quantity.value || quantity.value === 0) {
+        quantity.value = 0
+    }
+
     alertField.innerText = '';
 
     if (!amountField.value) {
@@ -212,4 +218,6 @@ document.getElementById('transaction-form').addEventListener('submit', function 
         alertField.style.color = 'red';
         return;
     }
+
+
 });
