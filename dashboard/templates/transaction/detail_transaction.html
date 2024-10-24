@@ -17,6 +17,8 @@
 		</div>
 
 		<form action="{% url 'dashboard:update_transaction' transaction.id %}" method="post" id="transaction-form">
+
+
 			<input type="hidden" id="user-transaction-type" name="transaction_type" value="{{ transaction.type }}">
 			<input type="hidden" id="user-transaction-category" name="transaction-category" value="{{ transaction.category }}">
 			<input type="hidden" id="user-transaction-subcategory" name="transaction-subcategory" value="{{ transaction.subcategory }}">
@@ -25,8 +27,6 @@
 			<input type="hidden" id="user-transaction-quantity-type" name="transaction-quantity_type" value="{{ transaction.quantity_type }}">
 			<input type="hidden" id="user-transaction-description" name="transaction-description" value="{{ transaction.description }}">
 			<input type="hidden" id="user-transaction-created-at" name="transaction-created_at" value="{{ transaction.created_at }}">
-
-
 			{% csrf_token %}
 			<!-- Поля для ввода суммы и количества -->
 			<div id="amount-quantity-fields">
@@ -77,11 +77,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 	<script src="{% static 'js/update_transaction.js' %}"></script>
 	<script>
-		document.querySelector('input[name="quantity"]').addEventListener('keydown', function(e) {
-    // Запрещаем ввод запятой
-    if (e.key === ',') {
-        e.preventDefault();
-    }
-});
+
 	</script>
 {% endblock %}

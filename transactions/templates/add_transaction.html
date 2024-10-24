@@ -62,53 +62,15 @@
 			<button class="submit" type="submit">
 				Submit
 			</button>
-
-
 		</form>
+		<button id="clear-btn" class="delete">
+			Clear
+		</button>
+
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 	<script src="{% static 'js/create_transaction.js' %}"></script>
-	<script>
-		$(document).ready(function () {
-			$('.select2').select2({
-				width: '100%', // Задаем ширину
-				placeholder: 'Select',
-				allowClear: true
-			});
-			$('#category-select').select2({
-				width: '100%',
-				placeholder: 'Category',
-				allowClear: true,
-			});
-			$('#subcategory-select').select2({
-				width: '100%',
-				placeholder: 'Subcategory',
-				allowClear: true
-			});
-		});
-
-		// Получаем текущую дату
-		const today = new Date();
-		const year = today.getFullYear();
-		const month = String(today.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
-		const day = String(today.getDate()).padStart(2, '0');
-
-		// Форматируем дату в формате YYYY-MM-DD
-		const formattedDate = `${year}-${month}-${day}`;
-
-		// Устанавливаем значение поля
-		document.getElementById('created-at-input').value = formattedDate;
-		document.getElementById('created-at-input').max = formattedDate;
-
-
-		document.querySelector('input[name="quantity"]').addEventListener('keydown', function (e) {
-			// Запрещаем ввод запятой
-			if (e.key === ',') {
-				e.preventDefault();
-			}
-		});
-	</script>
 
 {% endblock %}

@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#subcategory').val(subcategoryId);
     });
 
+
     function loadQuantityType() {
         const quantityField = document.querySelector('input[name="quantity"]')
         const quantityTypeField = document.querySelector('select[name="quantity_type"]')
@@ -125,7 +126,37 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    document.getElementById('transaction-form').addEventListener('submit', function (event) {
+    let formData = {}
+    const form = document.getElementById('transaction-form')
+    const LS = localStorage
+
+    form.addEventListener('input', function (event) {
+        formData[event.target.name] = event.target.value
+        LS.setItem('formData', JSON.stringify(formData))
+    })
+
+    // Восстановление данных
+    if (LS.getItem('formData')) {
+        formData = JSON.parse(LS.getItem('formData'))
+        console.log(formData)
+
+        for (let key in formData) {
+            if ('button' in formData) {
+
+            } else {
+                form.elements[key].value = formData[key]
+            }
+        }
+        // Очистка формы и данных
+        document.getElementById('clear-btn').addEventListener('click', function () {
+            LS.removeItem('formData')
+            formData = {}
+            form.reset()
+        })
+    }
+
+
+    form.addEventListener('submit', function (event) {
 
         const amountField = document.querySelector('input[name="amount"]')
 
@@ -150,6 +181,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
             alertField.innerText = 'Select date'
             alertField.style.color = 'red'
+        }
+    });
+
+    $(document).ready(function () {
+        $('.select2').select2({
+            width: '100%', // Задаем ширину
+            placeholder: 'Select',
+            allowClear: true
+        });
+        $('#category-select').select2({
+            width: '100%',
+            placeholder: 'Category',
+            allowClear: true,
+        });
+        $('#subcategory-select').select2({
+            width: '100%',
+            placeholder: 'Subcategory',
+            allowClear: true
+        });
+    });
+
+    // Получаем текущую дату
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+    const day = String(today.getDate()).padStart(2, '0');
+
+    // Форматируем дату в формате YYYY-MM-DD
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // Устанавливаем значение поля
+    document.getElementById('created-at-input').value = formattedDate;
+    document.getElementById('created-at-input').max = formattedDate;
+
+
+    document.querySelector('input[name="quantity"]').addEventListener('keydown', function (e) {
+        // Запрещаем ввод запятой
+        if (e.key === ',') {
+            e.preventDefault();
         }
     });
 });

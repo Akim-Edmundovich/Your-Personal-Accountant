@@ -7,6 +7,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+	<link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 </head>
@@ -17,9 +19,9 @@
 	{% if request.user.is_authenticated %}
 		<ul class="menu">
 			<li {% if section == "dashboard" %}class="selected"{% endif %}>
-				<a href="{% url "dashboard:list_transactions" %}">My dashboard</a>
-				<a href="{% url "transaction:add-transaction" %}">Transactions</a>
-				<a href="{% url "settings:settings_page" %}">Settings</a>
+				<a class="submit" href="{% url "dashboard:list_transactions" %}">Dashboard</a>
+				<a class="submit" href="{% url "transaction:add-transaction" %}">Add transaction</a>
+				<a class="submit" href="{% url "settings:settings_page" %}">Settings</a>
 			</li>
 
 		</ul>

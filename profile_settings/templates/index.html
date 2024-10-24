@@ -6,25 +6,25 @@
 
 	{% block title %}TEST{% endblock %}
 
-	<input type="hidden" id="user-transaction-type" name="transaction-type" value="{{ transaction.type }}">
-	<input type="hidden" id="transaction-type" name="transaction-type" value="{{ cate }}">
-	<input type="hidden" id="transaction-type" name="transaction-type" value="{{ transaction.type }}">
-	<input type="hidden" id="transaction-type" name="transaction-type" value="{{ transaction.type }}">
-	<input type="hidden" id="transaction-type" name="transaction-type" value="{{ transaction.type }}">
-	<input type="hidden" id="transaction-type" name="transaction-type" value="{{ transaction.type }}">
-	<input type="hidden" id="transaction-type" name="transaction-type" value="{{ transaction.type }}">
-	<input type="hidden" id="transaction-type" name="transaction-type" value="{{ transaction.type }}">
+	<form id="test-form">
 
+		<div>
+			<label for="category-select">Categories</label>
+			<input id="category-select" name="category" class="select2">
+		</div>
 
-	<button type="button" name="expense" id="transaction-btn">Expense</button>
-	<button type="button" name="income" id="transaction-btn">Income</button>
+		<div>
+			<label for="subcategory-select">Subcategories</label>
+			<input id="subcategory-select" name="subcategory" class="select2">
+		</div>
+		<label for="category-select">Select</label>
+		<select name="category-select-option" id="category-select">
 
-	<label for="category-select">Categories</label>
-	<select id="category-select" class="select2"></select>
-
-	<label for="subcategory-select">Subcategories</label>
-	<select id="subcategory-select" class="select2"></select>
-
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+		</select>
+	</form>
 	<script src='../../static/js/test.js'></script>
-
 {% endblock %}
