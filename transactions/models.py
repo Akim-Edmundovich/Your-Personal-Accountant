@@ -72,7 +72,7 @@ class Transaction(models.Model):
         ("см", "см"),
     ], null=True, blank=True)
     description = models.CharField(max_length=250, blank=True)
-    created_at = models.DateTimeField(default=timezone.now, blank=False)
+    created_at = models.DateField(default=timezone.now, blank=False)
 
     class Meta:
         ordering = ['-created_at']

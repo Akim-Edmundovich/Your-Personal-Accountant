@@ -5,26 +5,42 @@
 {% block content %}
 
 	{% block title %}TEST{% endblock %}
+	<div class="container">
 
-	<form id="test-form">
+		<form id="test-form">
+			<div id="type">
+				<select id="select-transaction" name="transaction-type">
+					<option value="expense">Expense</option>
+					<option value="income">Income</option>
+				</select>
+			</div>
 
-		<div>
-			<label for="category-select">Categories</label>
-			<input id="category-select" name="category" class="select2">
-		</div>
+			<div>
+				<label for="category-select">Category select</label>
+				<select id="category-select"></select></div>
+			<div>
+				<label for="subcategory-select">Subcategory select</label>
+				<select id="subcategory-select" class="select2"></select>
+			</div>
+			<div>
+				<button type="button" id="save-subcategory-btn" style="display:none;">
+					Save subcategory
+				</button>
+			</div>
+		</form>
 
-		<div>
-			<label for="subcategory-select">Subcategories</label>
-			<input id="subcategory-select" name="subcategory" class="select2">
-		</div>
-		<label for="category-select">Select</label>
-		<select name="category-select-option" id="category-select">
+	</div>
 
-			<option>1</option>
-			<option>2</option>
-			<option>3</option>
-			<option>4</option>
-		</select>
-	</form>
+
 	<script src='../../static/js/test.js'></script>
+	<script>
+		$(document).ready(function () {
+			$('.select2').select2({
+				width: '200px',
+				placeholder: 'Subcategory'
+			})
+
+		})
+	</script>
+
 {% endblock %}

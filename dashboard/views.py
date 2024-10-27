@@ -1,7 +1,17 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from django.utils import timezone
+
+from datetime import timedelta, date
 
 from transactions.models import *
+
+
+@login_required
+def test(request):
+    return render(request, 'index.html')
 
 
 @login_required
@@ -13,11 +23,6 @@ def list_transactions(request):
                'incomes': incomes}
 
     return render(request, 'dashboard/dashboard.html', context)
-
-
-@login_required
-def test(request):
-    return render(request, 'index.html')
 
 
 @login_required
@@ -90,3 +95,36 @@ def delete_transaction(request, pk):
 
     context = {'transaction': transaction}
     return render(request, 'transaction/delete_transaction.html', context)
+
+
+@login_required
+def filter_transactions(request, filter_type):
+    today = timezone.now().date()
+    transactions = Transaction.objects.none()  # Пустой QuerySet по умолчанию
+
+    if filter_type == 'day':
+        transactions = Transaction.objects.filter(type='expense', created_at=today)
+
+    elif filter_type == 'week':
+        start_date = today - timedelta(days=today.weekday())
+        end_date = start_date + timedelta(days=6)
+        transactions = Transaction.objects.filter(type='expense',
+            created_at__range=[start_date, end_date])
+
+    elif filter_type == 'month':
+        transactions = Transaction.objects.filter(type='expense', created_at__year=today.year,
+                                                  created_at__month=today.month)
+    elif filter_type == 'year':
+        transactions = Transaction.objects.filter(type='expense', created_at__year=today.year)
+
+    elif filter_type == 'period':
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+
+        if start_date and end_date:
+            transactions = Transaction.objects.filter(type='expense',
+                created_at__range=[start_date, end_date])
+
+    html = render_to_string('dashboard/filter_transactions.html',
+                            {'transactions': transactions})
+    return JsonResponse({'html': html})

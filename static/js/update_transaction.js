@@ -28,14 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const userSelectedType = document.getElementById('user-transaction-type')
     const userSelectedCategory = document.getElementById('user-transaction-category')
     const userSelectedSubcategory = document.getElementById('user-transaction-subcategory')
-    const userSelectedAmount = document.getElementById('user-transaction-amount')
-    const userSelectedQuantity = document.getElementById("user-transaction-quantity")
     const userSelectedQuantityType = document.getElementById("user-transaction-quantity-type")
-    const userSelectedDescription = document.getElementById('user-transaction-description')
-    const userSelectedDate = document.getElementById('user-transaction-created_at')
 
 // ------------------- Действия -------------------
-
 
     function loadQuantityType() {
         const quantityField = document.querySelector('input[name="quantity"]')
@@ -194,19 +189,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('transaction-form')
 
     form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const fd = new FormData(form)
-        const obj = Object.entries(fd)
-        const json = JSON.stringify(obj)
-        console.log(json)
-
-        localStorage.setItem('form', json)
-
-
         const alertField = document.getElementById('alert-field');
         const amountField = document.querySelector('input[name="amount"]');
         const categoryField = document.getElementById('category-select');
-
         const quantity = document.querySelector('input[name="quantity"]')
 
         if (!quantity.value || quantity.value === 0) {

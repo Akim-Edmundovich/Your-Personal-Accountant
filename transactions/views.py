@@ -32,23 +32,22 @@ def add_transaction(request):
                     user=request.user)
 
                 if subcategory_id:
-                    transaction.subcategory = Subcategory.objects.get(
-                        id=subcategory_id,
-                        user=request.user)
+                    transaction.subcategory = Subcategory.objects.get(id=subcategory_id, user=request.user)
 
             except ObjectDoesNotExist:
                 form.add_error('category',
-                               'Selected category or subcategory does not exist.')
+                               'Selected category does not exist.')
                 return render(request, 'add_transaction.html', {'form': form})
 
             transaction.save()
+
+            print(transaction.type + 'SAVED')
             return redirect('transaction:add-transaction')
 
     else:
         form = TransactionForm()
 
-    return render(request, 'add_transaction.html',
-                  {'form': form})
+    return render(request, 'add_transaction.html', {'form': form})
 
 
 @login_required

@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#subcategory').val(subcategoryId);
     });
 
-
     function loadQuantityType() {
         const quantityField = document.querySelector('input[name="quantity"]')
         const quantityTypeField = document.querySelector('select[name="quantity_type"]')
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!quantityField.value) {
             quantityTypeField.disabled = true
         }
-        // Добавляем слушатель изменений для поля количества
+        // Слушатель изменений для поля количества
         quantityField.addEventListener('input', function () {
             quantityTypeField.disabled = !quantityField.value;
         });
@@ -126,62 +125,69 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    // ----------- Local Storage -------------
     let formData = {}
     const form = document.getElementById('transaction-form')
-    const LS = localStorage
+    // const LS = localStorage
+    //
+    // form.addEventListener('input', function (event) {
+    //     formData[event.target.name] = event.target.value
+    //     LS.setItem('formData', JSON.stringify(formData))
+    // })
+    //
+    // // Восстановление данных
+    // if (LS.getItem('formData')) {
+    //     formData = JSON.parse(LS.getItem('formData'))
+    //     console.log(formData)
+    //
+    //     for (let key in formData) {
+    //         if ('button' in formData) {
+    //
+    //         } else {
+    //             form.elements[key].value = formData[key]
+    //         }
+    //     }
+    //     // Очистка формы и данных
+    //     document.getElementById('clear-btn').addEventListener('click', function () {
+    //         LS.removeItem('formData')
+    //         formData = {}
+    //         form.reset()
+    //     })
+    // }
 
-    form.addEventListener('input', function (event) {
-        formData[event.target.name] = event.target.value
-        LS.setItem('formData', JSON.stringify(formData))
-    })
-
-    // Восстановление данных
-    if (LS.getItem('formData')) {
-        formData = JSON.parse(LS.getItem('formData'))
-        console.log(formData)
-
-        for (let key in formData) {
-            if ('button' in formData) {
-
-            } else {
-                form.elements[key].value = formData[key]
-            }
-        }
-        // Очистка формы и данных
-        document.getElementById('clear-btn').addEventListener('click', function () {
-            LS.removeItem('formData')
-            formData = {}
-            form.reset()
-        })
-    }
-
+    // ------------ Обработка формы -------------
 
     form.addEventListener('submit', function (event) {
 
+        const categoryId = document.getElementById('category_id');
+        const dateField = document.querySelector('input[name="created_at"]')
         const amountField = document.querySelector('input[name="amount"]')
 
         if (!amountField.value) {
             event.preventDefault();
             alertField.innerText = 'Enter amount'
             alertField.style.color = 'red'
+
         }
-
-        const categoryId = document.getElementById('category_id');
-
         if (!categoryId.value) {
             event.preventDefault();
             alertField.innerText = 'Select category'
             alertField.style.color = 'red'
         }
 
-        const dateField = document.querySelector('input[name="created_at"]')
-
         if (!dateField.value) {
             event.preventDefault();
-
             alertField.innerText = 'Select date'
             alertField.style.color = 'red'
         }
+
+        // if (amountField.value && categoryId.value && dateField.value) {
+        //     LS.removeItem('formData')
+        //     formData = {}
+        //     form.reset()
+        // }
+
+
     });
 
     $(document).ready(function () {

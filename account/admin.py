@@ -14,7 +14,7 @@ class CustomUserAdmin(UserAdmin):
     # Фильтры по этим полям
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
 
-    # Оставляем стандартные поля для редактирования
+    # Стандартные поля для редактирования
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
@@ -32,5 +32,5 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
-    # Указываем поле, которое будет использоваться для логина
+    # Поле, которое будет использоваться для логина
     ordering = ('email',)

@@ -65,7 +65,8 @@ def update_category(request, pk):
         try:
             if not Category.objects.filter(user=request.user,
                                            name=name,
-                                           type=type).exclude(id=category.id).exists():
+                                           type=type).exclude(
+                id=category.id).exists():
                 category.name = name
                 category.type = type
                 category.save()
@@ -111,6 +112,8 @@ def create_subcategory(request):
             print(f'Error while creating subcategory {e}')
 
     return redirect('settings:page_update_category', pk=category_id)
+
+
 
 
 @login_required

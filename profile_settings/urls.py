@@ -24,6 +24,7 @@ urlpatterns = [
     path('create-subcategory/', views.create_subcategory,
          name='create_subcategory'),
 
+
     path('update-subcategory/<str:pk>/', views.update_subcategory,
          name='update_subcategory'),
     path('delete-subcategory/<str:pk>', views.delete_subcategory,

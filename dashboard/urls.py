@@ -13,6 +13,9 @@ urlpatterns = [
     path('delete-transaction/<int:pk>', views.delete_transaction,
          name='delete_transaction'),
 
+    path('filter-transactions/<str:filter_type>/', views.filter_transactions,
+         name='filter_transactions'),
+
     path('test/', views.test, name='test'),
 
 ]
