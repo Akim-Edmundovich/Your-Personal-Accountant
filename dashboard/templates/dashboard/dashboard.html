@@ -4,7 +4,6 @@
 
 {% block title %}Settings{% endblock %}
 
-
 {% block content %}
 	
 	<div id="btns-in-transactions-page" style="margin-bottom: 20px">
@@ -19,118 +18,147 @@
 			INCOME
 		</button>
 	</div>
-	<div id="filter-transaction">
-		<button id="filter-day">День</button>
-		<button id="filter-week">Неделя</button>
-		<button id="filter-month">Месяц</button>
-		<button id="filter-year">Год</button>
-		<button id="filter-period">Период</button>
 
-		<!-- Календарь для выбора периода будет отображаться, когда выбран "Период" -->
-		<input type="date" id="start-date" style="display: none;">
-		<input type="date" id="end-date" style="display: none;">
+	<button id="filter-day">День</button>
+	<button id="filter-week">Неделя</button>
+	<button id="filter-month">Месяц</button>
+	<button id="filter-year">Год</button>
+	<button id="filter-period">Период</button>
+	<!-- Календарь для выбора периода -->
+	<input type="date" id="start-date" style="display: none;">
+	<input type="date" id="end-date" style="display: none;">
 
-		<div id="transactions-list">
+	<div id="transactions-list"></div>
 
-		</div>
-	</div>
-
-{#		<div class="container">#}
-{#			<div class="column">#}
-{#				<div id="expense-transactions-list" style="">#}
-{#					<table id="transactions">#}
-{#						<tr>#}
-{#							<th>Date</th>#}
-{#							<th>Category</th>#}
-{#							<th>Subcategory</th>#}
-{#							<th>Amount</th>#}
-{#							<th>Quantity</th>#}
-{#							<th></th>#}
-{#							<th>Comment</th>#}
-{#						</tr>#}
-{#						{% for expense in transactions %}#}
-{#							<tr>#}
-{#								<td>{{ expense.created_at|date:"d.m.Y" }}</td>#}
-{#								<td>#}
-{#									<a href="{% url 'dashboard:detail_transaction' expense.id %}">#}
-{#										{{ expense.category }}#}
-{#									</a>#}
-{#								</td>#}
-{#								<td>#}
-{#									{% if expense.subcategory %}{{ expense.subcategory }}{% else %}{% endif %}</td>#}
-{#								<td>{{ expense.amount }}</td>#}
-{#								<td>#}
-{#									{% if expense.quantity %}{{ expense.quantity }}{% else %}{% endif %}</td>#}
-{#								<td>#}
-{#									{% if expense.quantity_type %}{{ expense.quantity_type }}{% else %}{% endif %}</td>#}
-{#								<td>#}
-{#									{% if expense.description %}{{ expense.description }}{% else %}{% endif %}</td>#}
-{#							</tr>#}
-{#						{% endfor %}#}
-{#					</table>#}
-{#				</div>#}
-{#				<div id="income-transactions-list"#}
-{#				     style="display: none;">#}
-{#					<table id="transactions">#}
-{#						<tr>#}
-{#							<th>Category</th>#}
-{#							<th>Subcategory</th>#}
-{#							<th>Amount</th>#}
-{#							<th>Quantity</th>#}
-{#							<th>Quantity type</th>#}
-{#							<th>Comment</th>#}
-{#						</tr>#}
-{#						{% for income in incomes %}#}
-{#							<tr>#}
-{#								<td>#}
-{#									<a href="{% url 'dashboard:detail_transaction' income.id %}">#}
-{#										{{ income.category }}#}
-{#									</a>#}
-{#								</td>#}
-{#								<td>#}
-{#									{% if income.subcategory %}{{ income.subcategory }}{% else %}{% endif %}</td>#}
-{#								<td>{{ income.amount }}</td>#}
-{#								<td>#}
-{#									{% if income.quantity %}{{ income.quantity }}{% else %}{% endif %}</td>#}
-{#								<td>#}
-{#									{% if income.quantity_type %}{{ income.quantity_type }}{% else %}{% endif %}</td>#}
-{#								<td>#}
-{#									{% if income.description %}{{ income.description }}{% else %}{% endif %}</td>#}
-{#							</tr>#}
-{#						{% endfor %}#}
-{#					</table>#}
-{#				</div>#}
-{#			</div>#}
-{#		</div>#}
 
 	<script>
-		const transactionsList = document.getElementById('transactions-list')
-		const expenseList = document.getElementById('expense-transactions-list')
-		const incomeList = document.getElementById('income-transactions-list')
 		const expenseBtn = document.getElementById('expense-transactions-btn')
 		const incomeBtn = document.getElementById('income-transactions-btn')
+		const transactionsList = document.getElementById('transactions-list')
+		const startDateInput = document.getElementById('start-date');
+		const endDateInput = document.getElementById('end-date');
+
+		const buttons = {
+			day: document.getElementById('filter-day'),
+			week: document.getElementById('filter-week'),
+			month: document.getElementById('filter-month'),
+			year: document.getElementById('filter-year'),
+			period: document.getElementById('filter-period')
+		};
 
 		expenseBtn.style.backgroundColor = 'red'
 		incomeBtn.style.backgroundColor = 'black'
 
+		buttons.period.addEventListener('click', () => {
+			startDateInput.style.display = 'inline';
+			endDateInput.style.display = 'inline';
+		});
+
+		loadExpensesDefault()
 
 		expenseBtn.addEventListener('click', function () {
-			expenseList.style.display = 'block'
-			incomeList.style.display = 'none'
-			expenseBtn.style.backgroundColor = 'red'
-			incomeBtn.style.backgroundColor = 'black'
+			loadExpensesDefault('day')
+
+			buttons.day.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadExpenses('day')
+			});
+			buttons.week.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadExpenses('week')
+			});
+			buttons.month.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadExpenses('month')
+			});
+			buttons.year.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadExpenses('year')
+			});
+
+			buttons.period.addEventListener('click', () => {
+				const startDate = startDateInput.value;
+				const endDate = endDateInput.value;
+				if (startDate && endDate) {
+					loadExpenses('period', startDate, endDate);
+				}
+			});
 		})
 
 		incomeBtn.addEventListener('click', function () {
-			incomeList.style.display = 'block'
-			expenseList.style.display = 'none'
+			loadIncomes('day')
 
-			incomeBtn.style.backgroundColor = 'green'
-			expenseBtn.style.backgroundColor = 'black'
+			buttons.day.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadIncomes('day')
+			});
+			buttons.week.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadIncomes('week')
+			});
+			buttons.month.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadIncomes('month')
+			});
+			buttons.year.addEventListener('click', function (){
+				startDateInput.style.display = 'none'
+				endDateInput.style.display = 'none'
+				loadIncomes('year')
+			});
+
+			buttons.period.addEventListener('click', () => {
+				const startDate = startDateInput.value;
+				const endDate = endDateInput.value;
+				if (startDate && endDate) {
+					loadIncomes('period', startDate, endDate);
+				}
+			});
 		})
 
 
+		function loadExpensesDefault() {
+			axios.get(`expenses-filter-transactions/day/`)
+					.then(response => {
+						transactionsList.innerHTML = response.data.html
+					})
+					.catch(error => console.error('Ошибка:', error));
+		}
+
+		{# EXPENSES #}
+
+		function loadExpenses(filterType, startDate = null, endDate = null) {
+			const params = startDate && endDate ? {
+				start_date: startDate,
+				end_date: endDate
+			} : {};
+			axios.get(`expenses-filter-transactions/${filterType}/`, {params})
+					.then(response => {
+						transactionsList.innerHTML = response.data.html;
+					})
+					.catch(error => console.error('Ошибка:', error));
+		}
+
+		{# INCOMES #}
+
+		function loadIncomes(filterType, startDate = null, endDate = null) {
+			const params = startDate && endDate ? {
+				start_date: startDate,
+				end_date: endDate
+			} : {};
+			axios.get(`incomes-filter-transactions/${filterType}/`, {params})
+					.then(response => {
+						transactionsList.innerHTML = response.data.html;
+					})
+					.catch(error => console.error('Ошибка:', error));
+		}
+
 	</script>
-	<script src="{% static 'js/filter_transactions.js' %}"></script>
 
 {% endblock %}

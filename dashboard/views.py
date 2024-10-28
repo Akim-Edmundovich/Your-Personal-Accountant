@@ -16,13 +16,7 @@ def test(request):
 
 @login_required
 def list_transactions(request):
-    expenses = Transaction.objects.filter(type='expense')
-    incomes = Transaction.objects.filter(type='income')
-
-    context = {'expenses': expenses,
-               'incomes': incomes}
-
-    return render(request, 'dashboard/dashboard.html', context)
+    return render(request, 'dashboard/dashboard.html')
 
 
 @login_required
@@ -98,33 +92,85 @@ def delete_transaction(request, pk):
 
 
 @login_required
-def filter_transactions(request, filter_type):
+def expenses_filter_transactions(request, filter_type):
     today = timezone.now().date()
-    transactions = Transaction.objects.none()  # Пустой QuerySet по умолчанию
+    expenses = Transaction.objects.none()
 
     if filter_type == 'day':
-        transactions = Transaction.objects.filter(type='expense', created_at=today)
+        expenses = Transaction.objects.filter(type='expense', created_at=today)
 
     elif filter_type == 'week':
         start_date = today - timedelta(days=today.weekday())
         end_date = start_date + timedelta(days=6)
-        transactions = Transaction.objects.filter(type='expense',
-            created_at__range=[start_date, end_date])
+
+        expenses = Transaction.objects.filter(type='expense',
+                                              created_at__range=[start_date,
+                                                                 end_date])
 
     elif filter_type == 'month':
-        transactions = Transaction.objects.filter(type='expense', created_at__year=today.year,
-                                                  created_at__month=today.month)
+        expenses = Transaction.objects.filter(type='expense',
+                                              created_at__year=today.year,
+                                              created_at__month=today.month)
+
     elif filter_type == 'year':
-        transactions = Transaction.objects.filter(type='expense', created_at__year=today.year)
+        expenses = Transaction.objects.filter(type='expense',
+                                              created_at__year=today.year)
 
     elif filter_type == 'period':
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
 
         if start_date and end_date:
-            transactions = Transaction.objects.filter(type='expense',
-                created_at__range=[start_date, end_date])
+            expenses = Transaction.objects.filter(type='expense',
+                                                  created_at__range=[
+                                                      start_date, end_date])
 
-    html = render_to_string('dashboard/filter_transactions.html',
-                            {'transactions': transactions})
+    context = {'expenses': expenses}
+
+    html = render_to_string(
+        'dashboard/filter_transactions/expenses_filter_transaction.html',
+        context)
+
+    return JsonResponse({'html': html})
+
+
+
+def incomes_filter_transactions(request, filter_type):
+    today = timezone.now().date()
+    incomes = Transaction.objects.none()
+
+    if filter_type == 'day':
+        incomes = Transaction.objects.filter(type='income', created_at=today)
+
+    elif filter_type == 'week':
+        start_date = today - timedelta(days=today.weekday())
+        end_date = start_date + timedelta(days=6)
+        incomes = Transaction.objects.filter(type='income',
+                                             created_at__range=[start_date,
+                                                                end_date])
+
+    elif filter_type == 'month':
+        incomes = Transaction.objects.filter(type='income',
+                                             created_at__year=today.year,
+                                             created_at__month=today.month)
+
+    elif filter_type == 'year':
+        incomes = Transaction.objects.filter(type='income',
+                                             created_at__year=today.year)
+
+    elif filter_type == 'period':
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+
+        if start_date and end_date:
+            incomes = Transaction.objects.filter(type='income',
+                                                 created_at__range=[
+                                                     start_date, end_date])
+
+    context = {'incomes': incomes}
+
+    html = render_to_string(
+        'dashboard/filter_transactions/incomes_filter_transaction.html',
+        context)
+
     return JsonResponse({'html': html})
