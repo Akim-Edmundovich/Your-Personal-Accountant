@@ -117,14 +117,12 @@ def expenses_filter_transactions(request, filter_type):
                                               created_at__year=today.year)
 
     elif filter_type == 'period':
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
-
-        if start_date and end_date:
+        date_range = request.GET.get('date_range')
+        if date_range:
+            start_date, end_date = date_range.split(',')
             expenses = Transaction.objects.filter(type='expense',
-                                                  created_at__range=[
-                                                      start_date, end_date])
-
+                                                  created_at__range=[start_date,
+                                                                     end_date])
     context = {'expenses': expenses}
 
     html = render_to_string(
@@ -132,7 +130,6 @@ def expenses_filter_transactions(request, filter_type):
         context)
 
     return JsonResponse({'html': html})
-
 
 
 def incomes_filter_transactions(request, filter_type):
@@ -159,13 +156,16 @@ def incomes_filter_transactions(request, filter_type):
                                              created_at__year=today.year)
 
     elif filter_type == 'period':
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
 
-        if start_date and end_date:
+        date_range = request.GET.get('date_range')
+
+        if date_range:
+            start_date, end_date = date_range.split(',')
+
             incomes = Transaction.objects.filter(type='income',
-                                                 created_at__range=[
-                                                     start_date, end_date])
+
+                                                 created_at__range=[start_date,
+                                                                    end_date])
 
     context = {'incomes': incomes}
 
