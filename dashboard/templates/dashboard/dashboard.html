@@ -8,208 +8,28 @@
 	
 	<div id="btns-in-transactions-page" style="margin-bottom: 20px">
 		<button type="button" id="expense-transactions-btn"
-		        style="color: white; border-radius: 5px; border: none; width:
-	        100px; height: 40px; font-size: 1.2em">
+		         class="expense-btn">
 			EXPENSE
 		</button>
 		<button type="button" id="income-transactions-btn"
-		        style="color: white; border-radius: 5px; border: none; width:
-	        100px; height: 40px; font-size: 1.2em">
+		        class="income-btn">
 			INCOME
 		</button>
 	</div>
 
-	<button id="filter-day">День</button>
-	<button id="filter-week">Неделя</button>
-	<button id="filter-month">Месяц</button>
-	<button id="filter-year">Год</button>
-	<button id="filter-period">Период</button>
-	<!-- Календарь для выбора периода -->
-	<input type="text" id="date-range" name="daterange" style="display: none;">
-	{#	<input type="date" id="end-date" style="display: none;">#}
+	<div id="filter-btns">
+		<button id="filter-day" class="filter-btn">День</button>
+		<button id="filter-week" class="filter-btn">Неделя</button>
+		<button id="filter-month" class="filter-btn">Месяц</button>
+		<button id="filter-year" class="filter-btn">Год</button>
+		<input type="text" id="date-range" name="daterange"
+		       style="width: 120px; font-size: 10px; border-radius: 5px; height: 20px"
+		>
+	</div>
+
 
 	<div id="transactions-list"></div>
 
-
-	<script>
-		const expenseBtn = document.getElementById('expense-transactions-btn')
-		const incomeBtn = document.getElementById('income-transactions-btn')
-		const transactionsList = document.getElementById('transactions-list')
-		const dateRangeInput = document.getElementById('date-range');
-
-		const buttons = {
-			day: document.getElementById('filter-day'),
-			week: document.getElementById('filter-week'),
-			month: document.getElementById('filter-month'),
-			year: document.getElementById('filter-year'),
-			period: document.getElementById('filter-period')
-		};
-
-		expenseBtn.style.backgroundColor = 'red'
-		incomeBtn.style.backgroundColor = 'black'
-
-		buttons.period.addEventListener('click', () => {
-			dateRangeInput.style.display = 'inline';
-		});
-
-		loadExpensesDefault()
-
-
-		buttons.day.addEventListener('click', function () {
-			dateRangeInput.style.display = 'none'
-			loadExpenses('day')
-		});
-		buttons.week.addEventListener('click', function () {
-			dateRangeInput.style.display = 'none'
-			loadExpenses('week')
-		});
-		buttons.month.addEventListener('click', function () {
-			dateRangeInput.style.display = 'none'
-			loadExpenses('month')
-		});
-		buttons.year.addEventListener('click', function () {
-			dateRangeInput.style.display = 'none'
-			loadExpenses('year')
-		});
-
-		buttons.period.addEventListener('click', () => {
-			const dateRange = dateRangeInput.value;
-			if (dateRange) {
-				loadExpenses('period', dateRange);
-			}
-		});
-
-		expenseBtn.addEventListener('click', function () {
-			loadExpensesDefault('day')
-
-			expenseBtn.style.backgroundColor = 'red'
-			incomeBtn.style.backgroundColor = 'black'
-
-			buttons.day.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadExpenses('day')
-			});
-			buttons.week.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadExpenses('week')
-			});
-			buttons.month.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadExpenses('month')
-			});
-			buttons.year.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadExpenses('year')
-			});
-
-			buttons.period.addEventListener('click', () => {
-				const dateRange = dateRangeInput.value;
-				if (dateRange) {
-					loadExpenses('period', dateRange);
-				}
-			});
-		})
-
-		incomeBtn.addEventListener('click', function () {
-			loadIncomes('day')
-
-			expenseBtn.style.backgroundColor = 'black'
-			incomeBtn.style.backgroundColor = 'green'
-
-			buttons.day.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadIncomes('day')
-			});
-			buttons.week.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadIncomes('week')
-			});
-			buttons.month.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadIncomes('month')
-			});
-			buttons.year.addEventListener('click', function () {
-				dateRangeInput.style.display = 'none'
-				loadIncomes('year')
-			});
-
-			buttons.period.addEventListener('click', () => {
-				const startDate = dateRangeInput.value;
-				if (startDate) {
-					loadIncomes('period', startDate);
-				}
-			});
-		})
-
-
-		function loadExpensesDefault() {
-			axios.get(`expenses-filter-transactions/day/`)
-					.then(response => {
-						transactionsList.innerHTML = response.data.html
-					})
-					.catch(error => console.error('Ошибка:', error));
-		}
-
-		{# EXPENSES #}
-		$(function () {
-			const dateRangePicker = $('input[name="daterange"]');
-
-			dateRangePicker.daterangepicker({
-				opens: 'left',
-				maxDate: today
-			}, function (start, end) {
-				// Вызываем функцию с выбранным диапазоном дат
-				loadExpenses('period', start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-			});
-		});
-
-		function loadExpenses(filterType, startDate = null, endDate = null) {
-			const params = startDate && endDate ? {
-				date_range: `${startDate},${endDate}`
-			} : {};
-
-			axios.get(`expenses-filter-transactions/${filterType}/`, {params})
-					.then(response => {
-						transactionsList.innerHTML = response.data.html;
-					})
-					.catch(error => console.error('Ошибка:', error));
-		}
-
-		{# INCOMES #}
-
-		$(function () {
-			const dateRangePicker = $('input[name="daterange"]');
-
-			dateRangePicker.daterangepicker({
-				opens: 'left',
-				maxDate: today
-			}, function (start, end) {
-				// Вызываем функцию с выбранным диапазоном дат
-				loadIncomes('period', start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-			});
-		});
-
-		function loadIncomes(filterType, startDate = null, endDate = null) {
-			const params = startDate && endDate ? {
-				date_range: `${startDate},${endDate}`
-			} : {};
-
-			axios.get(`incomes-filter-transactions/${filterType}/`, {params})
-					.then(response => {
-						transactionsList.innerHTML = response.data.html;
-					})
-					.catch(error => console.error('Ошибка:', error));
-		}
-
-
-		// Установка даты и ограничений по дате
-		const today = new Date();
-		const year = today.getFullYear();
-		const month = String(today.getMonth() + 1).padStart(2, '0');
-		const day = String(today.getDate()).padStart(2, '0');
-		const formattedDate = `${year}-${month}-${day}`;
-		dateRangeInput.max = formattedDate;
-
-	</script>
+	<script src="{% static 'js/dashboard_filter_transactions.js' %}"></script>
 
 {% endblock %}

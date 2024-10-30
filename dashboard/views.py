@@ -96,10 +96,10 @@ def expenses_filter_transactions(request, filter_type):
     today = timezone.now().date()
     expenses = Transaction.objects.none()
 
-    if filter_type == 'day':
+    if filter_type == 'day_expense':
         expenses = Transaction.objects.filter(type='expense', created_at=today)
 
-    elif filter_type == 'week':
+    elif filter_type == 'week_expense':
         start_date = today - timedelta(days=today.weekday())
         end_date = start_date + timedelta(days=6)
 
@@ -107,16 +107,16 @@ def expenses_filter_transactions(request, filter_type):
                                               created_at__range=[start_date,
                                                                  end_date])
 
-    elif filter_type == 'month':
+    elif filter_type == 'month_expense':
         expenses = Transaction.objects.filter(type='expense',
                                               created_at__year=today.year,
                                               created_at__month=today.month)
 
-    elif filter_type == 'year':
+    elif filter_type == 'year_expense':
         expenses = Transaction.objects.filter(type='expense',
                                               created_at__year=today.year)
 
-    elif filter_type == 'period':
+    elif filter_type == 'period_expense':
         date_range = request.GET.get('date_range')
         if date_range:
             start_date, end_date = date_range.split(',')
@@ -136,34 +136,32 @@ def incomes_filter_transactions(request, filter_type):
     today = timezone.now().date()
     incomes = Transaction.objects.none()
 
-    if filter_type == 'day':
+    if filter_type == 'day_income':
         incomes = Transaction.objects.filter(type='income', created_at=today)
 
-    elif filter_type == 'week':
+    elif filter_type == 'week_income':
         start_date = today - timedelta(days=today.weekday())
         end_date = start_date + timedelta(days=6)
         incomes = Transaction.objects.filter(type='income',
                                              created_at__range=[start_date,
                                                                 end_date])
 
-    elif filter_type == 'month':
+    elif filter_type == 'month_income':
         incomes = Transaction.objects.filter(type='income',
                                              created_at__year=today.year,
                                              created_at__month=today.month)
 
-    elif filter_type == 'year':
+    elif filter_type == 'year_income':
         incomes = Transaction.objects.filter(type='income',
                                              created_at__year=today.year)
 
-    elif filter_type == 'period':
+    elif filter_type == 'period_income':
 
         date_range = request.GET.get('date_range')
-
         if date_range:
             start_date, end_date = date_range.split(',')
 
             incomes = Transaction.objects.filter(type='income',
-
                                                  created_at__range=[start_date,
                                                                     end_date])
 

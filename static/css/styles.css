@@ -282,11 +282,10 @@ input, textarea, select {
     background-color: #ac1d21; /* Задний фон кнопки */
     border: none; /* Убираем рамку */
     color: white; /* Цвет текста */
-    padding: 10px 20px; /* Внутренний отступ */
     text-align: center; /* Выравнивание текста */
     text-decoration: none; /* Убираем подчеркивание текста */
     display: inline-block; /* Чтобы кнопки располагались в одну строку */
-    font-size: 30px; /* Размер текста */
+    font-size: 20px; /* Размер текста */
     margin: 10px; /* Внешний отступ между кнопками */
     cursor: pointer; /* Курсор в виде руки при наведении */
     border-radius: 5px; /* Скругленные углы */
@@ -298,11 +297,10 @@ input, textarea, select {
     background-color: #2f9831; /* Задний фон кнопки */
     border: none; /* Убираем рамку */
     color: white; /* Цвет текста */
-    padding: 10px 20px; /* Внутренний отступ */
     text-align: center; /* Выравнивание текста */
     text-decoration: none; /* Убираем подчеркивание текста */
     display: inline-block; /* Чтобы кнопки располагались в одну строку */
-    font-size: 30px; /* Размер текста */
+    font-size: 20px; /* Размер текста */
     margin: 10px; /* Внешний отступ между кнопками */
     cursor: pointer; /* Курсор в виде руки при наведении */
     border-radius: 5px; /* Скругленные углы */
@@ -345,6 +343,29 @@ input, textarea, select {
 input[type="checkbox"][name$="DELETE"] {
     display: none;
 }
+
+.filter-btn {
+    width: 70px;
+    height: 30px;
+    margin: 2px;
+    background-color: #4c6baf;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/*.filter-btn:hover {*/
+/*    background-color: #000000;*/
+/*}*/
+
+.black-btn {
+    background-color: #000000;
+
+}
+
+
 
 
 /* ---------------------------- */
