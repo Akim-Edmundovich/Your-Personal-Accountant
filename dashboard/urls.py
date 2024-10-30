@@ -21,5 +21,7 @@ urlpatterns = [
          views.incomes_filter_transactions,
          name='incomes_filter_transactions'),
 
-    path('test/', views.test, name='test'),
+    path('transactions_by_category/',
+         views.transactions_by_category,
+         name='transactions_by_category'),
 ]

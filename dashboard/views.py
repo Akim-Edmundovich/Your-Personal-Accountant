@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
+from django.db.models import Sum
 from django.utils import timezone
 
 from datetime import timedelta, date
@@ -92,6 +93,15 @@ def delete_transaction(request, pk):
 
 
 @login_required
+def transactions_by_category(request):
+    category, amount = Transaction.objects.filter(user=request.user).annotate(
+        total_amount=Sum('amount'))
+
+    return render(request, 'test.html',
+                  {'category': category, 'amount': amount})
+
+
+@login_required
 def expenses_filter_transactions(request, filter_type):
     today = timezone.now().date()
     expenses = Transaction.objects.none()
@@ -102,20 +112,16 @@ def expenses_filter_transactions(request, filter_type):
     elif filter_type == 'week_expense':
         start_date = today - timedelta(days=today.weekday())
         end_date = start_date + timedelta(days=6)
-
         expenses = Transaction.objects.filter(type='expense',
                                               created_at__range=[start_date,
                                                                  end_date])
-
     elif filter_type == 'month_expense':
         expenses = Transaction.objects.filter(type='expense',
                                               created_at__year=today.year,
                                               created_at__month=today.month)
-
     elif filter_type == 'year_expense':
         expenses = Transaction.objects.filter(type='expense',
                                               created_at__year=today.year)
-
     elif filter_type == 'period_expense':
         date_range = request.GET.get('date_range')
         if date_range:
@@ -132,6 +138,7 @@ def expenses_filter_transactions(request, filter_type):
     return JsonResponse({'html': html})
 
 
+@login_required
 def incomes_filter_transactions(request, filter_type):
     today = timezone.now().date()
     incomes = Transaction.objects.none()

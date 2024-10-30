@@ -2,20 +2,33 @@ document.addEventListener('DOMContentLoaded', function () {
     const expenseBtn = document.getElementById('expense-transactions-btn')
     const incomeBtn = document.getElementById('income-transactions-btn')
     const transactionsList = document.getElementById('transactions-list')
-    const dateRangeInput = document.getElementById('date-range');
+    const dateRangeInput = document.querySelector('input[name="daterange"]');
 
-    const buttons = {
-        day: document.getElementById('filter-day'),
-        week: document.getElementById('filter-week'),
-        month: document.getElementById('filter-month'),
-        year: document.getElementById('filter-year'),
-        period: document.getElementById('date-range')
+    const expenseFilterButtons = {
+        day: document.getElementById('expense-filter-day'),
+        week: document.getElementById('expense-filter-week'),
+        month: document.getElementById('expense-filter-month'),
+        year: document.getElementById('expense-filter-year'),
+        period: document.getElementById('expense-date-range')
     };
+
+    const incomeFilterButtons = {
+        day: document.getElementById('income-filter-day'),
+        week: document.getElementById('income-filter-week'),
+        month: document.getElementById('income-filter-month'),
+        year: document.getElementById('income-filter-year'),
+        period: document.getElementById('income-date-range')
+    };
+
 
     expenseBtn.style.backgroundColor = 'red'
     incomeBtn.style.backgroundColor = 'black'
 
-    buttons.period.addEventListener('click', () => {
+    expenseFilterButtons.period.addEventListener('click', () => {
+        dateRangeInput.style.display = 'inline';
+    });
+
+    incomeFilterButtons.period.addEventListener('click', () => {
         dateRangeInput.style.display = 'inline';
     });
 
@@ -24,47 +37,60 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function changeClass(activeBtn) {
-
+    function changeClassExpenseFilter(activeBtn) {
         activeBtn.classList.remove('black-btn')
+        for (const btn in expenseFilterButtons) {
+            if (expenseFilterButtons.hasOwnProperty(btn) && expenseFilterButtons[btn] !== activeBtn) {
 
-        for (const btn in buttons) {
-            if (buttons.hasOwnProperty(btn) && buttons[btn] !== activeBtn) {
+                expenseFilterButtons[btn].classList.add('black-btn');
+            }
+        }
+    }
 
-                    buttons[btn].classList.add('black-btn');
+    function changeClassIncomeFilter(activeBtn) {
+        activeBtn.classList.remove('black-btn')
+        for (const btn in incomeFilterButtons) {
+            if (incomeFilterButtons.hasOwnProperty(btn) && incomeFilterButtons[btn] !== activeBtn) {
 
+                incomeFilterButtons[btn].classList.add('black-btn');
             }
         }
     }
 
 
+    const expenseBntContainer = document.getElementById('expense-filter-btns')
+    const incomeBntContainer = document.getElementById('income-filter-btns')
+
     expenseBtn.addEventListener('click', function () {
         loadExpensesDefault('day_expense')
 
-        changeClass(buttons.day)
+        expenseBntContainer.style.display = ''
+        incomeBntContainer.style.display = 'none'
+
+        changeClassExpenseFilter(expenseFilterButtons.day)
 
         expenseBtn.style.backgroundColor = 'red'
         incomeBtn.style.backgroundColor = 'black'
 
-        buttons.day.addEventListener('click', function () {
-            changeClass(buttons.day)
+        expenseFilterButtons.day.addEventListener('click', function () {
+            changeClassExpenseFilter(expenseFilterButtons.day)
             loadExpenses('day_expense')
         });
-        buttons.week.addEventListener('click', function () {
-            changeClass(buttons.week)
+        expenseFilterButtons.week.addEventListener('click', function () {
+            changeClassExpenseFilter(expenseFilterButtons.week)
             loadExpenses('week_expense')
         });
-        buttons.month.addEventListener('click', function () {
-            changeClass(buttons.month)
+        expenseFilterButtons.month.addEventListener('click', function () {
+            changeClassExpenseFilter(expenseFilterButtons.month)
             loadExpenses('month_expense')
         });
-        buttons.year.addEventListener('click', function () {
-            changeClass(buttons.year)
+        expenseFilterButtons.year.addEventListener('click', function () {
+            changeClassExpenseFilter(expenseFilterButtons.year)
             loadExpenses('year_expense')
         });
 
-        buttons.period.addEventListener('click', () => {
-            changeClass(buttons.period)
+        expenseFilterButtons.period.addEventListener('click', () => {
+            changeClassExpenseFilter(expenseFilterButtons.period)
             const dateRange = dateRangeInput.value;
             if (dateRange) {
                 loadExpenses('period_expense', dateRange);
@@ -75,28 +101,31 @@ document.addEventListener('DOMContentLoaded', function () {
     incomeBtn.addEventListener('click', function () {
         loadIncomes('day_income')
 
+        incomeBntContainer.style.display = ''
+        expenseBntContainer.style.display = 'none'
+
         expenseBtn.style.backgroundColor = 'black'
         incomeBtn.style.backgroundColor = 'green'
 
-        buttons.day.addEventListener('click', function () {
-            changeClass(buttons.day)
+        incomeFilterButtons.day.addEventListener('click', function () {
+            changeClassIncomeFilter(incomeFilterButtons.day)
             loadIncomes('day_income')
         });
-        buttons.week.addEventListener('click', function () {
-            changeClass(buttons.week)
+        incomeFilterButtons.week.addEventListener('click', function () {
+            changeClassIncomeFilter(incomeFilterButtons.week)
             loadIncomes('week_income')
         });
-        buttons.month.addEventListener('click', function () {
-            changeClass(buttons.month)
+        incomeFilterButtons.month.addEventListener('click', function () {
+            changeClassIncomeFilter(incomeFilterButtons.month)
             loadIncomes('month_income')
         });
-        buttons.year.addEventListener('click', function () {
-            changeClass(buttons.year)
+        incomeFilterButtons.year.addEventListener('click', function () {
+            changeClassIncomeFilter(incomeFilterButtons.year)
             loadIncomes('year_income')
         });
 
-        buttons.period.addEventListener('click', () => {
-            changeClass(buttons.period)
+        incomeFilterButtons.period.addEventListener('click', () => {
+            changeClassIncomeFilter(incomeFilterButtons.period)
             const startDate = dateRangeInput.value;
             if (startDate) {
                 loadIncomes('period_income', startDate);

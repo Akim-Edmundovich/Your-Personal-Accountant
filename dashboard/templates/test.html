@@ -1,0 +1,27 @@
+<div class="container">
+	<div class="column">
+		<div id="expense-transactions-list" style="">
+			<table id="transactions">
+				<tr>
+
+					<th>Category</th>
+					<th>Amount</th>
+				</tr>
+				{% for expense in expenses %}
+					<tr>
+						<td>
+							<a href="{% url 'dashboard:detail_transaction' expense.id %}">
+								{{ expense.category }}
+							</a>
+						</td>
+						<td>{{ expense.amount }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+
+{% for cate in category %}
+	{{cate}}
+{% endfor %}

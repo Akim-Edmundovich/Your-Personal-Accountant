@@ -6,9 +6,9 @@
 
 {% block content %}
 	
-	<div id="btns-in-transactions-page" style="margin-bottom: 20px">
+	<div id="btns-in-transactions-page">
 		<button type="button" id="expense-transactions-btn"
-		         class="expense-btn">
+		        class="expense-btn">
 			EXPENSE
 		</button>
 		<button type="button" id="income-transactions-btn"
@@ -17,18 +17,31 @@
 		</button>
 	</div>
 
-	<div id="filter-btns">
-		<button id="filter-day" class="filter-btn">День</button>
-		<button id="filter-week" class="filter-btn">Неделя</button>
-		<button id="filter-month" class="filter-btn">Месяц</button>
-		<button id="filter-year" class="filter-btn">Год</button>
-		<input type="text" id="date-range" name="daterange"
+	<div id="expense-filter-btns" style="">
+		<button id="expense-filter-day" class="filter-btn">День</button>
+		<button id="expense-filter-week" class="filter-btn">Неделя</button>
+		<button id="expense-filter-month" class="filter-btn">Месяц</button>
+		<button id="expense-filter-year" class="filter-btn">Год</button>
+		<input type="text" id="expense-date-range" name="daterange"
+		       style="width: 120px; font-size: 10px; border-radius: 5px; height: 20px"
+		>
+	</div>
+
+	<div id="income-filter-btns" style="display: none">
+		<button id="income-filter-day" class="filter-btn">День</button>
+		<button id="income-filter-week" class="filter-btn">Неделя</button>
+		<button id="income-filter-month" class="filter-btn">Месяц</button>
+		<button id="income-filter-year" class="filter-btn">Год</button>
+		<input type="text" id="income-date-range" name="daterange"
 		       style="width: 120px; font-size: 10px; border-radius: 5px; height: 20px"
 		>
 	</div>
 
 
 	<div id="transactions-list"></div>
+	
+	<a href="{% url 'dashboard:transactions_by_category' %}">SDL:FKJSD:LKFJ</a>
+
 
 	<script src="{% static 'js/dashboard_filter_transactions.js' %}"></script>
 
