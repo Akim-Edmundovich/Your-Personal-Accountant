@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils import timezone
@@ -58,13 +60,13 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10,
                                  decimal_places=1,
                                  blank=False,
-                                 validators=[MinValueValidator(0.1)])
+                                 validators=[MinValueValidator(Decimal('0.1'))])
     quantity = models.DecimalField(max_digits=10,
                                    decimal_places=1,
                                    null=True,
                                    blank=True,
-                                   default=0,
-                                   validators=[MinValueValidator(0.1)])
+                                   default=Decimal('0.0'),
+                                   validators=[MinValueValidator(Decimal('0.1'))])
     quantity_type = models.CharField(max_length=4, choices=[
         ("шт", "шт"),
         ("кг", "кг"),

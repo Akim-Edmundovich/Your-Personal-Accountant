@@ -10,6 +10,7 @@ urlpatterns = [
     path('settings/', include('profile_settings.urls')),
     path('dashboard/', include('dashboard.urls')),
 
+    path('api/', include('transactions.api.urls', namespace='api')),
 
     path('social-auth/',
          include('social_django.urls', namespace='social')),

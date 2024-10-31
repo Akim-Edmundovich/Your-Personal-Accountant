@@ -34,8 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_select2',
 
-    'crispy_forms',
-    'crispy_tailwind',
     'rest_framework',
 
     'account',
@@ -176,3 +174,9 @@ CACHES = {
 
 # Tell select2 which cache configuration to use:
 SELECT2_CACHE_BACKEND: str = "select2"
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

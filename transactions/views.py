@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-from .models import Category, Subcategory
+from .models import *
 from .forms import TransactionForm
 
 
@@ -32,7 +32,8 @@ def add_transaction(request):
                     user=request.user)
 
                 if subcategory_id:
-                    transaction.subcategory = Subcategory.objects.get(id=subcategory_id, user=request.user)
+                    transaction.subcategory = Subcategory.objects.get(
+                        id=subcategory_id, user=request.user)
 
             except ObjectDoesNotExist:
                 form.add_error('category',
@@ -66,3 +67,4 @@ def get_subcategories(request, category_id):
     data = [{'id': subcategory.id, 'name': subcategory.name} for subcategory in
             subcategories]
     return JsonResponse(data, safe=False)
+

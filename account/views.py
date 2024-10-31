@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
+from rest_framework import generics
+
 from transactions.models import Transaction
+from account.models import CustomUser
+from .forms import CustomUserCreationForm
+from account.serializers import CustomUserSerializer
 
 
 @login_required
@@ -28,3 +32,8 @@ def dashboard(request):
         'description')
     return render(request, 'account/dashboard.html',
                   {'transactions': transactions})
+
+
+class CustomUserListView(generics.ListCreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
