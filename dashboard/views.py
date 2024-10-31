@@ -94,11 +94,35 @@ def delete_transaction(request, pk):
 
 @login_required
 def transactions_by_category(request):
-    category, amount = Transaction.objects.filter(user=request.user).annotate(
-        total_amount=Sum('amount'))
+    """Группировка транзакций по категориям с суммой расходов"""
+    categories = Category.objects.all()
+    expense_category_sums = {}
+    income_category_sums = {}
 
-    return render(request, 'test.html',
-                  {'category': category, 'amount': amount})
+    for category in categories:
+        if category.type == 'expense':
+            summ = Transaction.objects.filter(type='expense',
+                                              category=category,
+                                              user=request.user
+                                              ).aggregate(Sum('amount'))
+            total_amount = summ['amount__sum']
+            if total_amount is not None:
+                expense_category_sums[category.name] = total_amount
+        else:
+            summ = Transaction.objects.filter(type='income',
+                                              category=category,
+                                              user=request.user
+                                              ).aggregate(Sum('amount'))
+            total_amount = summ['amount__sum']
+            if total_amount is not None:
+                income_category_sums[category.name] = total_amount
+
+    context = {
+        'expense_category_sums': expense_category_sums,
+        'income_category_sums': income_category_sums
+    }
+
+    return render(request, 'test.html', context)
 
 
 @login_required

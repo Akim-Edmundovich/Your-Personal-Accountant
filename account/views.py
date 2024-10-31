@@ -35,5 +35,5 @@ def dashboard(request):
 
 
 class CustomUserListView(generics.ListCreateAPIView):
-    queryset = CustomUser.objects.all()
+    queryset = CustomUser.objects.all().prefetch_related('user')
     serializer_class = CustomUserSerializer
