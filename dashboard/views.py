@@ -125,34 +125,85 @@ def transactions_by_category(request):
     return render(request, 'test.html', context)
 
 
+# ------------------------------------------------------
+
+def calculate_sum_by_category(user,
+                              transaction_type: str,
+                              filter_type: str,
+                              start_date: date = None,
+                              end_date: date = None):
+    categories = Category.objects.all()
+    category_and_sum = {}
+    today = timezone.now().date()
+
+    for category in categories:
+        date_filter = {}
+
+        if filter_type == f'day_{transaction_type}':
+            date_filter = {'created_at': start_date}
+
+        elif filter_type == f'week_{transaction_type}' or filter_type == f'period_{transaction_type}':
+            if start_date and end_date:
+                date_filter = {'created_at__range': [start_date, end_date]}
+
+        elif filter_type == f'month_{transaction_type}':
+            date_filter = {'created_at__year': today.year,
+                           'created_at__month': today.month}
+
+        elif filter_type == f'year_{transaction_type}' and start_date:
+            date_filter = {'created_at__year': today.year}
+
+        summ = Transaction.objects.filter(type=transaction_type,
+                                          category=category,
+                                          user=user,
+                                          **date_filter,
+                                          ).aggregate(Sum('amount'))
+        total_amount = summ['amount__sum']
+        if total_amount is not None:
+            category_and_sum[category.name] = total_amount
+
+    return category_and_sum
+
+
 @login_required
 def expenses_filter_transactions(request, filter_type):
     today = timezone.now().date()
     expenses = Transaction.objects.none()
 
     if filter_type == 'day_expense':
-        expenses = Transaction.objects.filter(type='expense', created_at=today)
+        expenses = calculate_sum_by_category(request.user,
+                                             'expense',
+                                             'day_expense',
+                                             start_date=today)
 
     elif filter_type == 'week_expense':
         start_date = today - timedelta(days=today.weekday())
         end_date = start_date + timedelta(days=6)
-        expenses = Transaction.objects.filter(type='expense',
-                                              created_at__range=[start_date,
-                                                                 end_date])
+        expenses = calculate_sum_by_category(request.user,
+                                             'expense',
+                                             'week_expense',
+                                             start_date=start_date,
+                                             end_date=end_date)
     elif filter_type == 'month_expense':
-        expenses = Transaction.objects.filter(type='expense',
-                                              created_at__year=today.year,
-                                              created_at__month=today.month)
+        expenses = calculate_sum_by_category(request.user,
+                                             'expense',
+                                             'month_expense',
+                                             )
+
     elif filter_type == 'year_expense':
-        expenses = Transaction.objects.filter(type='expense',
-                                              created_at__year=today.year)
+        expenses = calculate_sum_by_category(request.user,
+                                             'expense',
+                                             'year_expense',
+                                             start_date=today)
     elif filter_type == 'period_expense':
         date_range = request.GET.get('date_range')
         if date_range:
             start_date, end_date = date_range.split(',')
-            expenses = Transaction.objects.filter(type='expense',
-                                                  created_at__range=[start_date,
-                                                                     end_date])
+            expenses = calculate_sum_by_category(request.user,
+                                                 'expense',
+                                                 'period_expense',
+                                                 start_date=start_date,
+                                                 end_date=end_date)
     context = {'expenses': expenses}
 
     html = render_to_string(
@@ -168,34 +219,39 @@ def incomes_filter_transactions(request, filter_type):
     incomes = Transaction.objects.none()
 
     if filter_type == 'day_income':
-        incomes = Transaction.objects.filter(type='income', created_at=today)
+        incomes = calculate_sum_by_category(request.user,
+                                             'income',
+                                             'day_income',
+                                             start_date=today)
 
     elif filter_type == 'week_income':
         start_date = today - timedelta(days=today.weekday())
         end_date = start_date + timedelta(days=6)
-        incomes = Transaction.objects.filter(type='income',
-                                             created_at__range=[start_date,
-                                                                end_date])
-
+        incomes = calculate_sum_by_category(request.user,
+                                             'income',
+                                             'week_income',
+                                             start_date=start_date,
+                                             end_date=end_date)
     elif filter_type == 'month_income':
-        incomes = Transaction.objects.filter(type='income',
-                                             created_at__year=today.year,
-                                             created_at__month=today.month)
+        incomes = calculate_sum_by_category(request.user,
+                                             'income',
+                                             'month_income',
+                                             )
 
     elif filter_type == 'year_income':
-        incomes = Transaction.objects.filter(type='income',
-                                             created_at__year=today.year)
-
+        incomes = calculate_sum_by_category(request.user,
+                                             'income',
+                                             'year_income',
+                                             start_date=today)
     elif filter_type == 'period_income':
-
         date_range = request.GET.get('date_range')
         if date_range:
             start_date, end_date = date_range.split(',')
-
-            incomes = Transaction.objects.filter(type='income',
-                                                 created_at__range=[start_date,
-                                                                    end_date])
-
+            incomes = calculate_sum_by_category(request.user,
+                                                 'income',
+                                                 'period_income',
+                                                 start_date=start_date,
+                                                 end_date=end_date)
     context = {'incomes': incomes}
 
     html = render_to_string(

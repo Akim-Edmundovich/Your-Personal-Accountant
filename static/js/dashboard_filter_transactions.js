@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const expenseBtn = document.getElementById('expense-transactions-btn')
     const incomeBtn = document.getElementById('income-transactions-btn')
     const transactionsList = document.getElementById('transactions-list')
-    const dateRangeInput = document.querySelector('input[name="daterange"]');
+    const expenseDateRangeInput = document.querySelector('input[name="expenseDaterange"]');
+    const incomeDateRangeInput = document.querySelector('input[name="incomeDaterange"]');
 
     const expenseFilterButtons = {
         day: document.getElementById('expense-filter-day'),
@@ -25,11 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
     incomeBtn.style.backgroundColor = 'black'
 
     expenseFilterButtons.period.addEventListener('click', () => {
-        dateRangeInput.style.display = 'inline';
+        expenseDateRangeInput.style.display = 'inline';
     });
 
     incomeFilterButtons.period.addEventListener('click', () => {
-        dateRangeInput.style.display = 'inline';
+        incomeDateRangeInput.style.display = 'inline';
     });
 
     window.onload = function () {
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         expenseFilterButtons.period.addEventListener('click', () => {
             changeClassExpenseFilter(expenseFilterButtons.period)
-            const dateRange = dateRangeInput.value;
+            const dateRange = expenseDateRangeInput.value;
             if (dateRange) {
                 loadExpenses('period_expense', dateRange);
             }
@@ -106,6 +107,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         expenseBtn.style.backgroundColor = 'black'
         incomeBtn.style.backgroundColor = 'green'
+
+        changeClassIncomeFilter(incomeFilterButtons.day)
 
         incomeFilterButtons.day.addEventListener('click', function () {
             changeClassIncomeFilter(incomeFilterButtons.day)
@@ -126,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         incomeFilterButtons.period.addEventListener('click', () => {
             changeClassIncomeFilter(incomeFilterButtons.period)
-            const startDate = dateRangeInput.value;
+            const startDate = incomeDateRangeInput.value;
             if (startDate) {
                 loadIncomes('period_income', startDate);
             }
@@ -144,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // {# EXPENSES #}
     $(function () {
-        const dateRangePicker = $('input[name="daterange"]');
+        const dateRangePicker = $('input[name="expenseDaterange"]');
 
         dateRangePicker.daterangepicker({
             opens: 'left',
@@ -170,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // {# INCOMES #}
 
     $(function () {
-        const dateRangePicker = $('input[name="daterange"]');
+        const dateRangePicker = $('input[name="incomeDaterange"]');
 
         dateRangePicker.daterangepicker({
             "showDropdowns": true,
@@ -201,5 +204,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    dateRangeInput.max = formattedDate;
+    expenseDateRangeInput.max = formattedDate;
+    incomeDateRangeInput.max = formattedDate;
 })

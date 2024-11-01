@@ -183,30 +183,30 @@ REST_FRAMEWORK = {
     ]
 }
 
-# Настройка логирования
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
-
-# Настройка coloredlogs
-logger = logging.getLogger('django.db.backends')
-coloredlogs.install(level='DEBUG',
-                    fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    level_styles={'debug': {'color': 'blue'},
-                                  'info': {'color': 'green'},
-                                  'warning': {'color': 'yellow'},
-                                  'error': {'color': 'red'},
-                                  'critical': {'color': 'red', 'bold': True}})
+# # Настройка логирования
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     },
+# }
+#
+# # Настройка coloredlogs
+# logger = logging.getLogger('django.db.backends')
+# coloredlogs.install(level='DEBUG',
+#                     fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#                     datefmt='%Y-%m-%d %H:%M:%S',
+#                     level_styles={'debug': {'color': 'blue'},
+#                                   'info': {'color': 'green'},
+#                                   'warning': {'color': 'yellow'},
+#                                   'error': {'color': 'red'},
+#                                   'critical': {'color': 'red', 'bold': True}})
