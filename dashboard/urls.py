@@ -5,7 +5,7 @@ from . import views
 app_name = 'dashboard'
 
 urlpatterns = [
-    path('', views.list_transactions, name='list_transactions'),
+    path('', views.dashboard, name='dashboard'),
 
     path('detail-transaction/<int:pk>', views.detail_transaction,
          name='detail_transaction'),
@@ -21,7 +21,7 @@ urlpatterns = [
          views.incomes_filter_transactions,
          name='incomes_filter_transactions'),
 
-    path('transactions_by_category/',
-         views.transactions_by_category,
-         name='transactions_by_category'),
+    path('list-transactions/<str:category>/',
+         views.list_transactions,
+         name='list_transactions')
 ]

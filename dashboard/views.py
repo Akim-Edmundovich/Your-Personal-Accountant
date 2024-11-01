@@ -16,8 +16,17 @@ def test(request):
 
 
 @login_required
-def list_transactions(request):
+def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
+
+
+@login_required
+def list_transactions(request, category):
+    transactions = Transaction.objects.filter(user=request.user,
+                                              category__name=category)
+
+    context = {'transactions': transactions}
+    return render(request, 'dashboard/list_transactions.html', context)
 
 
 @login_required
@@ -90,39 +99,6 @@ def delete_transaction(request, pk):
 
     context = {'transaction': transaction}
     return render(request, 'transaction/delete_transaction.html', context)
-
-
-@login_required
-def transactions_by_category(request):
-    """Группировка транзакций по категориям с суммой расходов"""
-    categories = Category.objects.all()
-    expense_category_sums = {}
-    income_category_sums = {}
-
-    for category in categories:
-        if category.type == 'expense':
-            summ = Transaction.objects.filter(type='expense',
-                                              category=category,
-                                              user=request.user
-                                              ).aggregate(Sum('amount'))
-            total_amount = summ['amount__sum']
-            if total_amount is not None:
-                expense_category_sums[category.name] = total_amount
-        else:
-            summ = Transaction.objects.filter(type='income',
-                                              category=category,
-                                              user=request.user
-                                              ).aggregate(Sum('amount'))
-            total_amount = summ['amount__sum']
-            if total_amount is not None:
-                income_category_sums[category.name] = total_amount
-
-    context = {
-        'expense_category_sums': expense_category_sums,
-        'income_category_sums': income_category_sums
-    }
-
-    return render(request, 'test.html', context)
 
 
 # ------------------------------------------------------
@@ -220,38 +196,38 @@ def incomes_filter_transactions(request, filter_type):
 
     if filter_type == 'day_income':
         incomes = calculate_sum_by_category(request.user,
-                                             'income',
-                                             'day_income',
-                                             start_date=today)
+                                            'income',
+                                            'day_income',
+                                            start_date=today)
 
     elif filter_type == 'week_income':
         start_date = today - timedelta(days=today.weekday())
         end_date = start_date + timedelta(days=6)
         incomes = calculate_sum_by_category(request.user,
-                                             'income',
-                                             'week_income',
-                                             start_date=start_date,
-                                             end_date=end_date)
+                                            'income',
+                                            'week_income',
+                                            start_date=start_date,
+                                            end_date=end_date)
     elif filter_type == 'month_income':
         incomes = calculate_sum_by_category(request.user,
-                                             'income',
-                                             'month_income',
-                                             )
+                                            'income',
+                                            'month_income',
+                                            )
 
     elif filter_type == 'year_income':
         incomes = calculate_sum_by_category(request.user,
-                                             'income',
-                                             'year_income',
-                                             start_date=today)
+                                            'income',
+                                            'year_income',
+                                            start_date=today)
     elif filter_type == 'period_income':
         date_range = request.GET.get('date_range')
         if date_range:
             start_date, end_date = date_range.split(',')
             incomes = calculate_sum_by_category(request.user,
-                                                 'income',
-                                                 'period_income',
-                                                 start_date=start_date,
-                                                 end_date=end_date)
+                                                'income',
+                                                'period_income',
+                                                start_date=start_date,
+                                                end_date=end_date)
     context = {'incomes': incomes}
 
     html = render_to_string(

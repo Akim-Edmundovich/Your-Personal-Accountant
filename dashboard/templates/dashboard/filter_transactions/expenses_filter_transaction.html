@@ -1,57 +1,24 @@
-<div class="container">
-	<div class="column">
-		<div id="expense-transactions-list" style="">
-			<table id="transactions">
-				<tr>
-					<th>Category</th>
-					<th>Amount</th>
-				</tr>
-				{% for expense, sum in expenses.items %}
+
+
+	<div class="container">
+		<div class="column">
+			<div id="expense-transactions-list" style="">
+				<table id="transactions">
 					<tr>
-						<td>{{ expense }}</td>
-						<td>{{ sum }}</td>
+						<th>Category</th>
+						<th>Amount</th>
 					</tr>
-				{% endfor %}
-			</table>
+					{% for expense, sum in expenses.items %}
+						<tr>
+							<td>
+								<a href="{% url 'dashboard:list_transactions' expense %}">{{ expense }}</a>
+							</td>
+							<td>{{ sum }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
 		</div>
 	</div>
-</div>
-
-{#<div class="container">#}
-{#	<div class="column">#}
-{#		<div id="expense-transactions-list" style="">#}
-{#			<table id="transactions">#}
-{#				<tr>#}
-{#					<th>Date</th>#}
-{#					<th>Category</th>#}
-{#					<th>Subcategory</th>#}
-{#					<th>Amount</th>#}
-{#					<th>Quantity</th>#}
-{#					<th></th>#}
-{#					<th>Comment</th>#}
-{#				</tr>#}
-{#				{% for expense in expenses %}#}
-{#					<tr>#}
-{#						<td>{{ expense.created_at|date:"d.m.Y" }}</td>#}
-{#						<td>#}
-{#							<a href="{% url 'dashboard:detail_transaction' expense.id %}">#}
-{#								{{ expense.category }}#}
-{#							</a>#}
-{#						</td>#}
-{#						<td>#}
-{#							{% if expense.subcategory %}{{ expense.subcategory }}{% else %}{% endif %}</td>#}
-{#						<td>{{ expense.amount }}</td>#}
-{#						<td>#}
-{#							{% if expense.quantity %}{{ expense.quantity }}{% else %}{% endif %}</td>#}
-{#						<td>#}
-{#							{% if expense.quantity_type %}{{ expense.quantity_type }}{% else %}{% endif %}</td>#}
-{#						<td>#}
-{#							{% if expense.description %}{{ expense.description }}{% else %}{% endif %}</td>#}
-{#					</tr>#}
-{#				{% endfor %}#}
-{#			</table>#}
-{#		</div>#}
-{#	</div>#}
-{#</div>#}
 
 

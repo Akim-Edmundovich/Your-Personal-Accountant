@@ -22,7 +22,7 @@
 	{% if request.user.is_authenticated %}
 		<ul class="menu">
 			<li {% if section == "dashboard" %}class="selected"{% endif %}>
-				<a class="submit" href="{% url "dashboard:list_transactions" %}">Dashboard</a>
+				<a class="submit" href="{% url "dashboard:dashboard" %}">Dashboard</a>
 				<a class="submit" href="{% url "transaction:add-transaction" %}">Add transaction</a>
 				<a class="submit" href="{% url "settings:settings_page" %}">Settings</a>
 			</li>
