@@ -1,13 +1,25 @@
-<div class="container">
-	<h3>Expenses</h3>
-	{% for category, total in expense_category_sums.items %}
-		<ul>{{ category }} - {{ total }}</ul>
-	{% endfor %}
+{% extends 'base.html' %}
 
-	<h3>Income</h3>
-	{% for category, total in income_category_sums.items %}
-		<ul>{{ category }} - {{ total }}</ul>
-	{% endfor %}
-</div>
+<link rel="stylesheet" href="{{ STATIC_URL }}sortable_listview/bootstrap.min.css">
 
+{% block title %}
+	Expenses
+{% endblock %}
 
+{% block content %}
+	<div class="container">
+		{% include 'sortable_listview/sort_links.html' %}
+		{% for object in object_list %}
+			<div class="panel panel-success">
+				<div class="panel-heading">{{ object.subcategory }}</div>
+				<p>{{ object.amount }}</p>
+				<div class="panel-footer">Published on: {{ object.created_at }}</div>
+			</div>
+		{% endfor %}
+		{% for transaction in transaction_list %}
+			{{ transaction }}
+		{% endfor %}
+
+		{% include 'sortable_listview/pagination.html' %}
+	</div>
+{% endblock %}

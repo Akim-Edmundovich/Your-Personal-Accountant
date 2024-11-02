@@ -1,24 +1,22 @@
-
-
-	<div class="container">
-		<div class="column">
-			<div id="expense-transactions-list" style="">
-				<table id="transactions">
+<div class="container">
+	<div class="column">
+		<div id="expense-transactions-list" style="">
+			<table id="transactions">
+				<tr>
+					<th>Category</th>
+					<th>Amount</th>
+				</tr>
+				{% for expense, sum in expenses.items %}
 					<tr>
-						<th>Category</th>
-						<th>Amount</th>
+						<td>
+							<a href="{% url 'dashboard:list_transactions' expense %}">{{ expense }}</a>
+						</td>
+						<td>{{ sum }}</td>
 					</tr>
-					{% for expense, sum in expenses.items %}
-						<tr>
-							<td>
-								<a href="{% url 'dashboard:list_transactions' expense %}">{{ expense }}</a>
-							</td>
-							<td>{{ sum }}</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
+				{% endfor %}
+			</table>
 		</div>
 	</div>
+</div>
 
 

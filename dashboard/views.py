@@ -25,7 +25,12 @@ def list_transactions(request, category):
     transactions = Transaction.objects.filter(user=request.user,
                                               category__name=category)
 
-    context = {'transactions': transactions}
+    order_by_date = transactions.order_by('-created_at')
+    order_by_amount = transactions.order_by('-amount')
+
+    context = {'transactions': transactions,
+               'order_by_date_desc': order_by_date,
+               'order_by_amount_desc': order_by_amount}
     return render(request, 'dashboard/list_transactions.html', context)
 
 

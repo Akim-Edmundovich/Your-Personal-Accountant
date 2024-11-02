@@ -5,40 +5,41 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-	<div class="column">
-		<div id="expense-transactions-list" style="">
-			<table id="transactions">
-				<tr>
-					<th>Date</th>
-					<th>Category</th>
-					<th>Subcategory</th>
-					<th>Amount</th>
-					<th>Quantity</th>
-					<th></th>
-					<th>Comment</th>
-				</tr>
-				{% for transaction in transactions %}
+	<div class="container">
+		<div class="column">
+			<div id="expense-transactions-list" style="">
+				<table id="transactions">
 					<tr>
-						<td>{{ transaction.created_at|date:"d.m.Y" }}</td>
-						<td>
-							<a href="{% url 'dashboard:detail_transaction' transaction.id %}">
-								{{ transaction.category }}
-							</a>
-						</td>
-						<td>
-							{% if transaction.subcategory %}{{ transaction.subcategory }}{% else %}{% endif %}</td>
-						<td>{{ transaction.amount }}</td>
-						<td>
-							{% if transaction.quantity %}{{ transaction.quantity }}{% else %}{% endif %}</td>
-						<td>
-							{% if transaction.quantity_type %}{{ transaction.quantity_type }}{% else %}{% endif %}</td>
-						<td>
-							{% if transaction.description %}{{ transaction.description }}{% else %}{% endif %}</td>
+						<th>Date<button type="button">*</button></th>
+						<th>Category</th>
+						<th>Subcategory</th>
+						<th>Amount</th>
+						<th>Quantity</th>
+						<th></th>
+						<th>Comment</th>
 					</tr>
-				{% endfor %}
-			</table>
+					{% for transaction in order_by_amount_asc %}
+						<tr>
+							<td>{{ transaction.created_at|date:"d.m.Y" }}</td>
+							<td>
+								<a href="{% url 'dashboard:detail_transaction' transaction.id %}">
+									{{ transaction.category }}
+								</a>
+							</td>
+							<td>
+								{% if transaction.subcategory %}{{ transaction.subcategory }}{% else %}{% endif %}</td>
+							<td>{{ transaction.amount }}</td>
+							<td>
+								{% if transaction.quantity %}{{ transaction.quantity }}{% else %}{% endif %}</td>
+							<td>
+								{% if transaction.quantity_type %}{{ transaction.quantity_type }}{% else %}{% endif %}</td>
+							<td>
+								{% if transaction.description %}{{ transaction.description }}{% else %}{% endif %}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
 		</div>
 	</div>
-</div>
+
 {% endblock %}
