@@ -29,8 +29,8 @@ def list_transactions(request, category):
     order_by_amount = transactions.order_by('-amount')
 
     context = {'transactions': transactions,
-               'order_by_date_desc': order_by_date,
-               'order_by_amount_desc': order_by_amount}
+               'order_by_date': order_by_date,
+               'order_by_amount': order_by_amount, }
     return render(request, 'dashboard/list_transactions.html', context)
 
 
@@ -123,7 +123,8 @@ def calculate_sum_by_category(user,
         if filter_type == f'day_{transaction_type}':
             date_filter = {'created_at': start_date}
 
-        elif filter_type == f'week_{transaction_type}' or filter_type == f'period_{transaction_type}':
+        elif (filter_type == f'week_{transaction_type}' or
+              filter_type == f'period_{transaction_type}'):
             if start_date and end_date:
                 date_filter = {'created_at__range': [start_date, end_date]}
 

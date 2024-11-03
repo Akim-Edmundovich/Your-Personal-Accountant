@@ -1,0 +1,19 @@
+{% for transaction in tra%}
+	<tr>
+		<td>{{ transaction.created_at|date:"d.m.Y" }}</td>
+		<td>
+			<a href="{% url 'dashboard:detail_transaction' transaction.id %}">
+				{{ transaction.category }}
+			</a>
+		</td>
+		<td>
+			{% if transaction.subcategory %}{{ transaction.subcategory }}{% else %}{% endif %}</td>
+		<td>{{ transaction.amount }}</td>
+		<td>
+			{% if transaction.quantity %}{{ transaction.quantity }}{% else %}{% endif %}</td>
+		<td>
+			{% if transaction.quantity_type %}{{ transaction.quantity_type }}{% else %}{% endif %}</td>
+		<td>
+			{% if transaction.description %}{{ transaction.description }}{% else %}{% endif %}</td>
+	</tr>
+{% endfor %}

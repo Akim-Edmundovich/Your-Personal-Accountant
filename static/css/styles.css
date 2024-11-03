@@ -91,6 +91,11 @@ ol {
     padding: 30px 100px;
 }
 
+
+.hidden {
+    display: none;
+}
+
 /* Forms */
 form {
     overflow: auto;

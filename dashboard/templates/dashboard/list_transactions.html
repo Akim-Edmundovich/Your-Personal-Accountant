@@ -5,41 +5,109 @@
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-		<div class="column">
-			<div id="expense-transactions-list" style="">
-				<table id="transactions">
-					<tr>
-						<th>Date<button type="button">*</button></th>
-						<th>Category</th>
-						<th>Subcategory</th>
-						<th>Amount</th>
-						<th>Quantity</th>
-						<th></th>
-						<th>Comment</th>
-					</tr>
-					{% for transaction in order_by_amount_asc %}
-						<tr>
-							<td>{{ transaction.created_at|date:"d.m.Y" }}</td>
-							<td>
-								<a href="{% url 'dashboard:detail_transaction' transaction.id %}">
-									{{ transaction.category }}
-								</a>
-							</td>
-							<td>
-								{% if transaction.subcategory %}{{ transaction.subcategory }}{% else %}{% endif %}</td>
-							<td>{{ transaction.amount }}</td>
-							<td>
-								{% if transaction.quantity %}{{ transaction.quantity }}{% else %}{% endif %}</td>
-							<td>
-								{% if transaction.quantity_type %}{{ transaction.quantity_type }}{% else %}{% endif %}</td>
-							<td>
-								{% if transaction.description %}{{ transaction.description }}{% else %}{% endif %}</td>
-						</tr>
-					{% endfor %}
-				</table>
+
+		<div class="column" style="display: inline-block">
+			Sort by:
+			<div style="display: flex; align-items: center;">
+				<button type="button" id="sort_by_date_btn" class="table-edit-btn">date</button>
+				<button type="button" id="sort_by_amount_btn" class="table-edit-btn">amount</button>
 			</div>
 		</div>
+
+	<div class="container">
+		<div class="column" id="order_by_date_table">
+			<table id="transactions">
+				<tr>
+					<th>Date</th>
+					<th>Category</th>
+					<th>Subcategory</th>
+					<th>Amount</th>
+					<th>Quantity</th>
+					<th></th>
+					<th>Comment</th>
+				</tr>
+
+				{% for transaction in order_by_date %}
+					<tr>
+						<td>{{ transaction.created_at|date:"d.m.Y" }}</td>
+						<td>
+							<a href="{% url 'dashboard:detail_transaction' transaction.id %}">
+								{{ transaction.category }}
+							</a>
+						</td>
+						<td>
+							{% if transaction.subcategory %}{{ transaction.subcategory }}{% else %}{% endif %}</td>
+						<td>{{ transaction.amount }}</td>
+						<td>
+							{% if transaction.quantity %}{{ transaction.quantity }}{% else %}{% endif %}</td>
+						<td>
+							{% if transaction.quantity_type %}{{ transaction.quantity_type }}{% else %}{% endif %}</td>
+						<td>
+							{% if transaction.description %}{{ transaction.description }}{% else %}{% endif %}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div class="column hidden" id="order_by_amount_table">
+			<table id="transactions">
+				<tr>
+					<th>Date</th>
+					<th>Category</th>
+					<th>Subcategory</th>
+					<th>Amount</th>
+					<th>Quantity</th>
+					<th></th>
+					<th>Comment</th>
+				</tr>
+				{% for transaction in order_by_amount %}
+					<tr>
+						<td>{{ transaction.created_at|date:"d.m.Y" }}</td>
+						<td>
+							<a href="{% url 'dashboard:detail_transaction' transaction.id %}">
+								{{ transaction.category }}
+							</a>
+						</td>
+						<td>
+							{% if transaction.subcategory %}{{ transaction.subcategory }}{% else %}{% endif %}</td>
+						<td>{{ transaction.amount }}</td>
+						<td>
+							{% if transaction.quantity %}{{ transaction.quantity }}{% else %}{% endif %}</td>
+						<td>
+							{% if transaction.quantity_type %}{{ transaction.quantity_type }}{% else %}{% endif %}</td>
+						<td>
+							{% if transaction.description %}{{ transaction.description }}{% else %}{% endif %}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
 	</div>
+
+	<script>
+
+		const orderByDate = document.getElementById('order_by_date_table')
+		const orderByAmount = document.getElementById('order_by_amount_table')
+		const buttonSortByDate = document.getElementById('sort_by_date_btn')
+		const buttonSortByAmount = document.getElementById('sort_by_amount_btn')
+
+		buttonSortByDate.style.backgroundColor = 'black'
+
+		buttonSortByDate.addEventListener('click', function () {
+			orderByDate.classList.remove('hidden')
+			orderByAmount.classList.add('hidden')
+
+			buttonSortByDate.style.backgroundColor = 'black'
+			buttonSortByAmount.style.backgroundColor = ''
+
+		})
+		buttonSortByAmount.addEventListener('click', function () {
+			orderByAmount.classList.remove('hidden')
+			orderByDate.classList.add('hidden')
+
+			buttonSortByDate.style.backgroundColor = ''
+			buttonSortByAmount.style.backgroundColor = 'black'
+		})
+
+
+</script>
 
 {% endblock %}
