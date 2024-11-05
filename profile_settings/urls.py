@@ -7,6 +7,11 @@ app_name = 'settings'
 urlpatterns = [
     path('', views.settings, name='settings_page'),
 
+    path('profile-edit-page/', views.profile_edit_page,
+         name='profile_edit_page'),
+    path('edit-email/', views.email_edit,
+         name='email_edit'),
+
     path('page-categories/', views.page_categories,
          name='page_categories'),
     path('page_update_category/<int:pk>/', views.page_update_category,
@@ -23,7 +28,6 @@ urlpatterns = [
          name='create_subcategory'),
     path('create-subcategory/', views.create_subcategory,
          name='create_subcategory'),
-
 
     path('update-subcategory/<str:pk>/', views.update_subcategory,
          name='update_subcategory'),

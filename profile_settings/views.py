@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from transactions.forms import *
 from transactions.models import *
+from account.forms import *
 
 
 @login_required
@@ -16,6 +17,30 @@ def user_logout(request):
 @login_required
 def settings(request):
     return render(request, 'settings.html')
+
+
+# ------------ Profile settings -----------
+
+@login_required
+def profile_edit_page(request):
+    user = request.user
+    email = user.email
+
+    return render(request, 'profile/profile_edit_page.html', {'email': email})
+
+
+@login_required
+def email_edit(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('settings:email_edit')
+
+    form = UserForm(instance=user)
+    return render(request, 'profile/edit_email.html')
 
 
 # ------------ Categories ------------
@@ -112,8 +137,6 @@ def create_subcategory(request):
             print(f'Error while creating subcategory {e}')
 
     return redirect('settings:page_update_category', pk=category_id)
-
-
 
 
 @login_required
