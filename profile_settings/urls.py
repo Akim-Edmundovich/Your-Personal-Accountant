@@ -9,8 +9,8 @@ urlpatterns = [
 
     path('profile-edit-page/', views.profile_edit_page,
          name='profile_edit_page'),
-    path('edit-email/', views.email_edit,
-         name='email_edit'),
+    path('edit-email/', views.edit_email,
+         name='edit_email'),
 
     path('page-categories/', views.page_categories,
          name='page_categories'),

@@ -35,8 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_select2',
-    'sortable_listview',
 
+    'import_export',
+    'sortable_listview',
     'rest_framework',
 
     'account',
@@ -111,6 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 AUTH_USER_MODEL = 'account.CustomUser'
 

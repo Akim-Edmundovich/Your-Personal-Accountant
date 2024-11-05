@@ -17,7 +17,9 @@ class CustomUserCreationForm(UserCreationForm):
             return user
 
 
-class UserForm(forms.ModelForm):
+class UpdateEmailForm(forms.ModelForm):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Enter new email'}))
+
     class Meta:
         model = get_user_model()
         fields = ['email']

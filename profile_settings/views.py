@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from transactions.forms import *
@@ -30,17 +31,29 @@ def profile_edit_page(request):
 
 
 @login_required
-def email_edit(request):
-    user = request.user
-    form = UserForm(instance=user)
+def edit_email(request):
+    user_email = request.user.email
 
     if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('settings:email_edit')
+        form = UpdateEmailForm(request.POST)
 
-    form = UserForm(instance=user)
-    return render(request, 'profile/edit_email.html')
+        if form.is_valid():
+            new_email = form.cleaned_data.get('email')
+
+            if CustomUser.objects.filter(email=new_email).exists():
+                messages.warning(request, 'Email already exists')
+            else:
+                CustomUser.objects.filter(id=request.user.id).update(
+                    email=new_email)
+                print('Email was changed on: ' + new_email)
+                return redirect('settings:profile_edit_page')
+    else:
+        form = UpdateEmailForm()
+
+    return render(request, 'profile/edit_email.html', {
+        'form': form,
+        'messages': messages.get_messages(request)
+    })
 
 
 # ------------ Categories ------------
