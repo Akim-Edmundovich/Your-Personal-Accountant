@@ -70,6 +70,9 @@ def check_password_page(request):
     return render(request, 'profile/check_password.html')
 
 
+
+
+
 # ------------ Categories ------------
 
 @login_required
