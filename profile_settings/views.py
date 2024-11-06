@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 
 from transactions.forms import *
 from transactions.models import *
@@ -54,6 +55,19 @@ def edit_email(request):
         'form': form,
         'messages': messages.get_messages(request)
     })
+
+
+@login_required
+def check_password_page(request):
+    if request.method == 'POST':
+        entered_password = request.POST.get('password')
+        user = request.user
+
+        if user.check_password(entered_password):
+            return redirect('settings:edit_email')
+        else:
+            messages.warning(request, 'Incorrect password')
+    return render(request, 'profile/check_password.html')
 
 
 # ------------ Categories ------------

@@ -1,0 +1,488 @@
+@import url(//fonts.googleapis.com/css?family=Muli);
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i');
+@import url('https://fonts.googleapis.com/css?family=Bree+Serif');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: helvetica, sans-serif;
+}
+
+p {
+    line-height: 1.8;
+}
+
+a {
+    color: #12c064;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #00a74f;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Muli', sans-serif;
+    font-weight: normal;
+}
+
+h1 {
+    border-bottom: 1px solid #bbb;
+    padding: 0 0 10px 0;
+    margin: 10px 0 20px 0;
+}
+
+h2 {
+    margin: 30px 0 20px;
+}
+
+ol {
+    line-height: 1.5;
+}
+
+#header {
+    padding: 10px 100px;
+    font-size: 14px;
+    background: #757cdd;
+    color: #fff;
+    border-bottom: 4px solid #000000;
+    overflow: auto;
+}
+
+#header .logo {
+    font-family: 'Muli', sans-serif;
+    float: left;
+    color: #f3f7cc;
+    font-size: 20px;
+    margin-right: 10%;
+}
+
+#header ul.menu {
+    list-style: none;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+#header ul.menu li {
+    float: left;
+    padding: 4px 10px;
+}
+
+#header ul.menu li.selected a, #header ul.menu li.selected a:hover {
+    color: #1b6d32;
+    font-weight: bold;
+}
+
+#header a {
+    color: #f3f7cc;
+}
+
+#header a:hover {
+    color: #fff;
+}
+
+#header .user {
+    float: right;
+    padding-top: 4px;
+}
+
+#content {
+    padding: 30px 100px;
+}
+
+
+.hidden {
+    display: none;
+}
+
+/* Forms */
+form {
+    overflow: auto;
+    width: 100%; /* Ширина формы */
+    max-width: 500px; /* Ограничение максимальной ширины */
+    margin: 0 auto; /* Центрируем форму */
+}
+
+form p {
+    width: 100%;
+    overflow: auto;
+}
+
+
+input, textarea, select {
+    clear: both;
+    margin: 0 0 10px;
+    background: #efefef;
+    border: 1px solid #ccc; /* Убедитесь, что у элементов есть рамка */
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+
+.errorlist {
+    color: #cc0033;
+    clear: both;
+    padding-left: 10px;
+}
+
+.helptext {
+    margin: 0 0 20px 0;
+    color: #aaa;
+    clear: both;
+    float: left;
+    font-size: 13px;
+}
+
+
+.login-form {
+    float: left;
+}
+
+/* Social-auth */
+.social {
+    float: right;
+}
+
+.social li {
+    list-style: none;
+    padding: 10px 20px;
+    margin: 0 0 10px 0;
+}
+
+.social li a {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: #fff;
+}
+
+.social li.facebook {
+    background: #3b5399;
+}
+
+.social li.twitter {
+    background: #00cffa;
+}
+
+.social li.google {
+    background: #de1710;
+}
+
+
+.form-row {
+    display: flex; /* Используем Flexbox для размещения элементов в одной строке */
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    align-items: center; /* Выравнивание по центру */
+    gap: 10px; /* Отступ между элементами */
+    padding: 10px;
+}
+
+.form-row select, .form-row input {
+    flex: 1; /* Заставляем элементы растягиваться равномерно */
+}
+
+
+.image-container {
+    margin-top: 40px;
+}
+
+/* Actions */
+.action {
+    clear: both;
+    overflow: auto;
+}
+
+.action .images {
+    float: left;
+    margin: 0 10px 10px 0;
+}
+
+.action .date {
+    font-style: italic;
+    color: #ccc;
+}
+
+/* Buttons */
+.submit {
+    background-color: #4cbf7a; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 16px; /* Размер текста */
+    margin: 5px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.submit:hover {
+    background-color: #000000; /* Изменение цвета при наведении */
+}
+
+.delete {
+    background-color: #bf4c4c; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 16px; /* Размер текста */
+    margin: 5px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.delete:hover {
+    background-color: #000000; /* Изменение цвета при наведении */
+}
+
+.edit-btn {
+    background-color: #4c6baf;
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 16px; /* Размер текста */
+    margin: 5px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.edit-btn:hover {
+    background-color: #000000;
+}
+
+
+.trans-btn-container {
+    display: flex;
+    justify-content: center;
+
+}
+
+.transaction-btn {
+    background-color: #000000; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренний отступ */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 16px; /* Размер текста */
+    margin: 10px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.expense-btn {
+    background-color: #ac1d21; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 20px; /* Размер текста */
+    margin: 10px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+
+.income-btn {
+    background-color: #2f9831; /* Задний фон кнопки */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    text-align: center; /* Выравнивание текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Чтобы кнопки располагались в одну строку */
+    font-size: 20px; /* Размер текста */
+    margin: 10px; /* Внешний отступ между кнопками */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.table-edit-btn {
+    width: 100%;
+    margin: 10px;
+    background-color: #4c6baf;
+    color: white;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.table-edit-btn:hover {
+    background-color: #000000;
+}
+
+.table-delete-btn {
+    width: 100px;
+    margin: 10px;
+    background-color: #af4c4c;
+    color: white;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.table-delete-btn:hover {
+    background-color: #000000;
+}
+
+
+input[type="checkbox"][name$="DELETE"] {
+    display: none;
+}
+
+.filter-btn {
+    width: 70px;
+    height: 30px;
+    margin: 2px;
+    background-color: #4c6baf;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/*.filter-btn:hover {*/
+/*    background-color: #000000;*/
+/*}*/
+
+.black-btn {
+    background-color: #000000;
+
+}
+
+
+
+
+/* ---------------------------- */
+.transaction-page {
+    display: block;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Общие стили для контейнеров */
+#category-container,
+#subcategory-container,
+#amount-quantity-fields {
+    margin: 10px auto; /* Центрирование элементов с автоматическими отступами */
+    width: 50%;
+}
+
+/* Стили для полей ввода суммы и количества */
+#amount-quantity-fields {
+    display: flex;
+    justify-content: space-between; /* Разделение элементов с равными отступами */
+}
+
+/*Стили для input и select*/
+#amount-quantity-fields input,
+#amount-quantity-fields select {
+    width: 30%;
+    padding: 5px;
+    text-align: center;
+
+}
+
+form input:disabled, form select:disabled, form textarea:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}
+
+/* Стили для поля описания и даты */
+#description-input {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.container {
+    display: flex; /* Flexbox для создания двух колонок */
+    justify-content: space-between; /* Пространство между колонками */
+    gap: 20px; /* Промежуток между колонками */
+    align-items: flex-start; /* Выравнивание колонок по верху */
+    flex-wrap: wrap; /* Если не помещаются на одну строку, они будут обернуты */
+}
+
+.column {
+    width: 45%; /* Ширина каждой колонки — 45% */
+    box-sizing: border-box; /* Убедитесь, что ширина учитывает padding и margin */
+}
+
+ul {
+    list-style-type: none; /* Убираем стандартные маркеры у списка */
+    padding: 0;
+    margin: 0;
+}
+
+/* ------------------  TABEL --------------------- */
+.red {
+    color: red;
+}
+
+table {
+    width: 100%; /* Таблицы занимают всю ширину колонки */
+    border-collapse: separate;
+}
+
+/* Специфические стили для таблиц с ID "transactions" */
+table#transactions {
+    border-collapse: collapse; /* Границы ячеек сливаются */
+    background-color: #f5f5f5; /* Фон таблицы */
+}
+
+th, td {
+    border: 1px solid #b1b1b1;
+    border-radius: 5px;
+    text-align: center;
+}
+
+td.table-edit-btn, td.table-delete-btn {
+    width: 100px; /* Ограничиваем ширину ячейки */
+    cursor: pointer;
+}
+
+.tables-container {
+    justify-content: center;
+    display: flex;
+
+}
+
+.table-column {
+    width: 45%;
+
+}
+
+/*---------------------------------------------------*/
+
+@media (min-width: 600px) {
+    .label {
+        width: auto;
+    }
+}
+
+.panel {
+    display: none;
+    padding: 20px 30px 30px;
+    background: #fff;
+}
+

@@ -11,6 +11,8 @@ urlpatterns = [
          name='profile_edit_page'),
     path('edit-email/', views.edit_email,
          name='edit_email'),
+    path('check_password/', views.check_password_page,
+         name='check_password'),
 
     path('page-categories/', views.page_categories,
          name='page_categories'),
