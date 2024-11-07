@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from datetime import timedelta, date
 
+from dashboard.resources import TransactionResource
 from transactions.models import *
 
 
@@ -241,3 +242,27 @@ def incomes_filter_transactions(request, filter_type):
         context)
 
     return JsonResponse({'html': html})
+
+
+@login_required
+def export_by_category(request, file_format):
+    transactions = Transaction.objects.all().order_by('category__name').select_related('category')
+
+    resource = TransactionResource()
+    dataset = resource.export(transactions)
+
+    if file_format == 'csv':
+        response = HttpResponse(
+            dataset.export('csv', delimiter=';').encode('utf-8-sig'),
+            content_type=f'text/{file_format}; charset=utf-8')
+        response[
+            'Content-Disposition'] = f'attachment; filename="transactions.{file_format}"'
+        return response
+    elif file_format == 'xlsx':
+        response = HttpResponse(
+            dataset.export('xlsx'),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response[
+            'Content-Disposition'] = 'attachment; filename="transactions.xlsx"'
+        return response

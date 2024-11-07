@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
-from pathlib import Path
 import coloredlogs
 import logging
+from pathlib import Path
+
+from import_export.formats.base_formats import CSV, XLSX
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'import_export',
     'sortable_listview',
     'rest_framework',
+    "debug_toolbar",
 
     'account',
     'transactions',
@@ -59,7 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_htmx.middleware.HtmxMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'yourAccountment.urls'
@@ -187,30 +190,13 @@ REST_FRAMEWORK = {
     ]
 }
 
-# # Настройка логирования
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'django.db.backends': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#         },
-#     },
-# }
-#
-# # Настройка coloredlogs
-# logger = logging.getLogger('django.db.backends')
-# coloredlogs.install(level='DEBUG',
-#                     fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-#                     datefmt='%Y-%m-%d %H:%M:%S',
-#                     level_styles={'debug': {'color': 'blue'},
-#                                   'info': {'color': 'green'},
-#                                   'warning': {'color': 'yellow'},
-#                                   'error': {'color': 'red'},
-#                                   'critical': {'color': 'red', 'bold': True}})
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+IMPORT_FORMATS = [CSV, XLSX]
+EXPORT_FORMATS = [XLSX]
+
+
+if DEBUG is False:
+    del MIDDLEWARE[0]

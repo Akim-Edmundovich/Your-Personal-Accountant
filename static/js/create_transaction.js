@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const expenseBtn = document.getElementById('expense-btn')
     const incomeBtn = document.getElementById('income-btn')
+    const clearBtn = document.getElementById('')
 
 
     expenseBtn.classList.add('expense-btn')
