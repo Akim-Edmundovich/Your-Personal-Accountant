@@ -24,4 +24,7 @@ urlpatterns = [
     path('list-transactions/<str:category>/',
          views.list_transactions,
          name='list_transactions'),
+
+    path('export-csv/', views.export,
+         name='export'),
 ]
