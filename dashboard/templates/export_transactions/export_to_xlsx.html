@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+
+	<a href="{% url 'dashboard:to_xlsx_openpyxl' 'year_expense'%}">DOWNLOAD</a>
+
+{% endblock %}

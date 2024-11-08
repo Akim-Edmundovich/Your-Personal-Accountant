@@ -1,5 +1,3 @@
-import io
-
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -7,7 +5,9 @@ from django.template.loader import render_to_string
 from django.db.models import Sum
 from django.utils import timezone
 
+import io
 import xlsxwriter
+from openpyxl import Workbook
 from datetime import timedelta, date
 
 from dashboard.resources import TransactionResource
@@ -114,7 +114,8 @@ def delete_transaction(request, pk: int):
 # ------------------------------------------------------
 
 def convert_decimal_to_str(transactions):
-    return {category: str(amount) for category, amount in transactions.items()}
+    return (
+        {category: str(amount) for category, amount in transactions.items()})
 
 
 def calculate_sum_by_category(user,
@@ -205,6 +206,7 @@ def to_html_format_expenses_filter(request, filter_type):
     html = render_to_string(
         'dashboard/filter_transactions/expenses_filter_transaction.html',
         {'expenses': expenses_data})
+
     return JsonResponse({'html': html})
 
 
@@ -248,16 +250,15 @@ def incomes_filter_transactions(request, filter_type: str):
                                                 start_date=start_date,
                                                 end_date=end_date)
 
-    return {'incomes': incomes}
+    return convert_decimal_to_str(incomes)
 
 
 @login_required
 def to_html_format_incomes_filter(request, filter_type):
     incomes_data = incomes_filter_transactions(request, filter_type)
-    context = {'incomes': incomes_data}
     html = render_to_string(
         'dashboard/filter_transactions/incomes_filter_transaction.html',
-        context
+        {'incomes': incomes_data}
     )
 
     return JsonResponse({'html': html})
@@ -288,13 +289,47 @@ def export_order_by_category(request, file_format: str):
 
 
 @login_required
+def to_xlsx_openpyxl(request, filter_type):
+    # Создать файл в памяти
+    output = io.BytesIO()
+    wb = Workbook()
+
+    wb.remove(wb.active)
+
+    ws1 = wb.create_sheet('Expense')
+    ws2 = wb.create_sheet('Income')
+
+    expense = expenses_filter_transactions(request, filter_type)
+    income = incomes_filter_transactions(request, filter_type)
+
+    # Записать Expense
+    for category, amount in expense.items():
+        ws1.append([category, amount])
+
+    # Записать Income
+    for category, amount in income.items():
+        ws2.append([category, amount])
+
+    # Сохранить книгу в объект памяти
+    wb.save(output)
+    wb.close()
+    output.seek(0)
+
+    response = HttpResponse(output,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response[
+        'Content-Disposition'] = 'attachment; filename="expenses_report.xlsx"'
+
+    return response
+
+
+@login_required
 def to_xlsx_formatter(request, filter_type):
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output, {'in_memory': True})
     worksheet = workbook.add_worksheet()
 
     expenses = expenses_filter_transactions(request, filter_type)
-    expenses = convert_decimal_to_str(expenses)
 
     bold = workbook.add_format({'bold': 1})
 

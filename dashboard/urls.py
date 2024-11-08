@@ -31,5 +31,7 @@ urlpatterns = [
          views.to_xlsx_formatter,
          name='to_xlsx_formatter'),
 
-
+    path('to_xlsx_openpyxl/<filter_type>/',
+         views.to_xlsx_openpyxl,
+         name='to_xlsx_openpyxl'),
 ]
