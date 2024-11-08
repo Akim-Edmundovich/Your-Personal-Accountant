@@ -23,6 +23,8 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+
 # accounts/login/ [name='login']
 # accounts/logout/ [name='logout']
 # accounts/password_change/ [name='password_change']

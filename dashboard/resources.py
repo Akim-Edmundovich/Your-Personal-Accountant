@@ -30,4 +30,12 @@ class TransactionResource(resources.ModelResource):
                   'created_at_field')
 
 
+class CategoryResource(resources.ModelResource):
+    category_field = Field(attribute='name',
+                           column_name='Category')
+    amount_field = Field(attribute='amount',
+                         column_name='Amount')
 
+    class Meta:
+        model = Category
+        fields = ('category_field', 'amount_field')

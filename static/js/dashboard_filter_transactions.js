@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function loadExpensesDefault() {
-        axios.get(`expenses-filter-transactions/day_expense/`)
+        axios.get(`to_html_format_expenses_filter/day_expense/`)
             .then(response => {
                 transactionsList.innerHTML = response.data.html
             })
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             date_range: `${startDate},${endDate}`
         } : {};
 
-        axios.get(`expenses-filter-transactions/${filterType}/`, {params})
+        axios.get(`to_html_format_expenses_filter/${filterType}/`, {params})
             .then(response => {
                 transactionsList.innerHTML = response.data.html;
             })
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
             date_range: `${startDate},${endDate}`
         } : {};
 
-        axios.get(`incomes-filter-transactions/${filterType}/`, {params})
+        axios.get(`to_html_format_incomes_filter/${filterType}/`, {params})
             .then(response => {
                 transactionsList.innerHTML = response.data.html;
             })

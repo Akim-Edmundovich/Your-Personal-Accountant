@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.db.models import Sum
 from django.utils import timezone
 
+import xlsxwriter
 from datetime import timedelta, date
 
 from dashboard.resources import TransactionResource
@@ -22,9 +23,10 @@ def dashboard(request):
 
 
 @login_required
-def list_transactions(request, category):
+def list_transactions(request, category: str):
     transactions = Transaction.objects.filter(user=request.user,
-                                              category__name=category)
+                                              category__name=category).select_related(
+        'category').select_related('subcategory')
 
     order_by_date = transactions.order_by('-created_at')
     order_by_amount = transactions.order_by('-amount')
@@ -36,7 +38,7 @@ def list_transactions(request, category):
 
 
 @login_required
-def detail_transaction(request, pk):
+def detail_transaction(request, pk: int):
     transaction = Transaction.objects.get(id=pk)
     categories = Category.objects.all()
     subcategories = Subcategory.objects.all()
@@ -50,7 +52,7 @@ def detail_transaction(request, pk):
 
 
 @login_required
-def update_transaction(request, pk):
+def update_transaction(request, pk: int):
     transaction = Transaction.objects.get(id=pk, user=request.user)
 
     if request.method == 'POST':
@@ -92,13 +94,13 @@ def update_transaction(request, pk):
 
 
 @login_required
-def delete_transaction(request, pk):
+def delete_transaction(request, pk: int):
     transaction = get_object_or_404(Transaction, id=pk)
 
     if request.method == 'POST':
         try:
             transaction.delete()
-            return redirect('dashboard:list_transactions')
+            return redirect('dashboard:list_transactions', transaction.category)
 
         except transaction.DoesNotExist as e:
             print(f'Cannot delete transaction. Detail: {e}')
@@ -149,7 +151,7 @@ def calculate_sum_by_category(user,
 
 
 @login_required
-def expenses_filter_transactions(request, filter_type):
+def expenses_filter_transactions(request, filter_type: str):
     today = timezone.now().date()
     expenses = Transaction.objects.none()
 
@@ -187,17 +189,20 @@ def expenses_filter_transactions(request, filter_type):
                                                  'period_expense',
                                                  start_date=start_date,
                                                  end_date=end_date)
-    context = {'expenses': expenses}
 
+    return {'expenses': expenses}
+
+
+def to_html_format_expenses_filter(request, filter_type):
+    expenses_data = expenses_filter_transactions(request, filter_type)
     html = render_to_string(
         'dashboard/filter_transactions/expenses_filter_transaction.html',
-        context)
-
+        expenses_data)
     return JsonResponse({'html': html})
 
 
 @login_required
-def incomes_filter_transactions(request, filter_type):
+def incomes_filter_transactions(request, filter_type: str):
     today = timezone.now().date()
     incomes = Transaction.objects.none()
 
@@ -235,18 +240,21 @@ def incomes_filter_transactions(request, filter_type):
                                                 'period_income',
                                                 start_date=start_date,
                                                 end_date=end_date)
-    context = {'incomes': incomes}
 
+    return {'incomes': incomes}
+
+
+def to_html_format_incomes_filter(request, filter_type):
+    incomes_data = incomes_filter_transactions(request, filter_type)
     html = render_to_string(
         'dashboard/filter_transactions/incomes_filter_transaction.html',
-        context)
-
+        incomes_data)
     return JsonResponse({'html': html})
 
 
 @login_required
-def export_by_category(request, file_format):
-    transactions = Transaction.objects.all().order_by('category__name').select_related('category')
+def export_order_by_category(request, file_format: str):
+    transactions = Transaction.objects.all().order_by('category__name')
 
     resource = TransactionResource()
     dataset = resource.export(transactions)
@@ -266,3 +274,9 @@ def export_by_category(request, file_format):
         response[
             'Content-Disposition'] = 'attachment; filename="transactions.xlsx"'
         return response
+
+
+@login_required
+def to_xlsx_formatter(request, filter_type):
+    workbook = xlsxwriter.Workbook('test.xlsx')
+    worksheet = workbook.add_worksheet()

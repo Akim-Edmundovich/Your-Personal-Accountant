@@ -14,19 +14,19 @@ urlpatterns = [
     path('delete-transaction/<int:pk>', views.delete_transaction,
          name='delete_transaction'),
 
-    path('expenses-filter-transactions/<str:filter_type>/',
-         views.expenses_filter_transactions,
-         name='expenses_filter_transactions'),
-    path('incomes-filter-transactions/<str:filter_type>/',
-         views.incomes_filter_transactions,
-         name='incomes_filter_transactions'),
+    path('to_html_format_expenses_filter/<str:filter_type>/',
+         views.to_html_format_expenses_filter,
+         name='to_html_format_expenses_filter'),
+    path('to_html_format_incomes_filter/<str:filter_type>/',
+         views.to_html_format_incomes_filter,
+         name='to_html_format_incomes_filter'),
 
     path('list-transactions/<str:category>/',
          views.list_transactions,
          name='list_transactions'),
 
-    path('export-by-category/<file_format>/', views.export_by_category,
-         name='export_by_category'),
+    path('export-by-category/<file_format>/', views.export_order_by_category,
+         name='export_order_by_category'),
 
 
 ]
