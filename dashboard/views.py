@@ -1,3 +1,5 @@
+import io
+
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -111,6 +113,10 @@ def delete_transaction(request, pk: int):
 
 # ------------------------------------------------------
 
+def convert_decimal_to_str(transactions):
+    return {category: str(amount) for category, amount in transactions.items()}
+
+
 def calculate_sum_by_category(user,
                               transaction_type: str,
                               filter_type: str,
@@ -190,14 +196,15 @@ def expenses_filter_transactions(request, filter_type: str):
                                                  start_date=start_date,
                                                  end_date=end_date)
 
-    return {'expenses': expenses}
+    return convert_decimal_to_str(expenses)
 
 
+@login_required
 def to_html_format_expenses_filter(request, filter_type):
     expenses_data = expenses_filter_transactions(request, filter_type)
     html = render_to_string(
         'dashboard/filter_transactions/expenses_filter_transaction.html',
-        expenses_data)
+        {'expenses': expenses_data})
     return JsonResponse({'html': html})
 
 
@@ -244,11 +251,15 @@ def incomes_filter_transactions(request, filter_type: str):
     return {'incomes': incomes}
 
 
+@login_required
 def to_html_format_incomes_filter(request, filter_type):
     incomes_data = incomes_filter_transactions(request, filter_type)
+    context = {'incomes': incomes_data}
     html = render_to_string(
         'dashboard/filter_transactions/incomes_filter_transaction.html',
-        incomes_data)
+        context
+    )
+
     return JsonResponse({'html': html})
 
 
@@ -278,5 +289,32 @@ def export_order_by_category(request, file_format: str):
 
 @login_required
 def to_xlsx_formatter(request, filter_type):
-    workbook = xlsxwriter.Workbook('test.xlsx')
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output, {'in_memory': True})
     worksheet = workbook.add_worksheet()
+
+    expenses = expenses_filter_transactions(request, filter_type)
+    expenses = convert_decimal_to_str(expenses)
+
+    bold = workbook.add_format({'bold': 1})
+
+    worksheet.set_column(1, 1, 15)
+
+    worksheet.write('A1', 'Category', bold)
+    worksheet.write('B1', 'Amount', bold)
+
+    row = 0
+    for category, amount in expenses.items():
+        worksheet.write(row, 0, category)
+        worksheet.write(row, 1, amount)
+        row += 1
+
+    workbook.close()
+
+    output.seek(0)
+    response = HttpResponse(output.read(),
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response[
+        'Content-Disposition'] = 'attachment; filename="expenses_report.xlsx"'
+
+    return response

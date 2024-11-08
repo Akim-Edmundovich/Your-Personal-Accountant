@@ -27,6 +27,9 @@ urlpatterns = [
 
     path('export-by-category/<file_format>/', views.export_order_by_category,
          name='export_order_by_category'),
+    path('xlsx-formatter/<filter_type>/',
+         views.to_xlsx_formatter,
+         name='to_xlsx_formatter'),
 
 
 ]
