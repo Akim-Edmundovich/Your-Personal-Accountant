@@ -9,11 +9,11 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import os
-import coloredlogs
 import logging
+import os
 from pathlib import Path
 
+import coloredlogs
 from import_export.formats.base_formats import CSV, XLSX
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,14 +41,14 @@ INSTALLED_APPS = [
     'import_export',
     'sortable_listview',
     'rest_framework',
-    "debug_toolbar",
+    'debug_toolbar',
 
-    'account',
-    'transactions',
+    'apps.account',
+    'apps.transactions',
     'social_django',
     'django_extensions',
-    'profile_settings',
-    'dashboard',
+    'apps.profile_settings',
+    'apps.dashboard',
 ]
 
 # Application definition
@@ -70,7 +70,7 @@ ROOT_URLCONF = 'yourAccountment.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'account/templates']
+        'DIRS': [BASE_DIR / 'apps/account/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -93,8 +93,12 @@ WSGI_APPLICATION = 'yourAccountment.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'yourAccountment',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -186,8 +190,14 @@ SELECT2_CACHE_BACKEND: str = "select2"
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }
 
 INTERNAL_IPS = [
@@ -196,7 +206,6 @@ INTERNAL_IPS = [
 
 IMPORT_FORMATS = [CSV, XLSX]
 EXPORT_FORMATS = [CSV, XLSX]
-
 
 if DEBUG is False:
     del MIDDLEWARE[0]
