@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 from apps.account.models import CustomUser
 
@@ -18,10 +19,16 @@ class Category(models.Model):
                             null=False,
                             blank=False)
     name = models.CharField(max_length=50)
+    slug = models.SlugField(unique=True, blank=True)
 
     class Meta:
         unique_together = ('type', 'name')
         verbose_name_plural = 'Categories'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -31,10 +38,16 @@ class Subcategory(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     class Meta:
         unique_together = ('category', 'name')
         verbose_name_plural = 'Subcategories'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -46,6 +59,7 @@ class Transaction(models.Model):
         ('income', 'Income'),
     )
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
     type = models.CharField(max_length=7,
                             choices=TRANSACTION_TYPES,
                             null=False,
@@ -66,7 +80,8 @@ class Transaction(models.Model):
                                    null=True,
                                    blank=True,
                                    default=Decimal('0.0'),
-                                   validators=[MinValueValidator(Decimal('0.1'))])
+                                   validators=[
+                                       MinValueValidator(Decimal('0.1'))])
     quantity_type = models.CharField(max_length=4, choices=[
         ("шт", "шт"),
         ("кг", "кг"),
@@ -78,6 +93,7 @@ class Transaction(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
 
     def __str__(self):
         return f"{self.type} - {self.amount}"

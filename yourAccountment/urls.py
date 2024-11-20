@@ -1,13 +1,8 @@
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework.routers import SimpleRouter
 
-from apps.account.api.views import UserViewSet
 from yourAccountment import settings
 
-router = SimpleRouter()
-
-router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,13 +13,12 @@ urlpatterns = [
     path('settings/', include('apps.profile_settings.urls')),
     path('dashboard/', include('apps.dashboard.urls')),
 
-    path('api/v1/', include('apps.transactions.api.urls', namespace='api_transactions')),
+    path('api/', include('yourAccountment.api.urls')),
 
     path('social-auth/',
          include('social_django.urls', namespace='social')),
 ]
 
-urlpatterns += router.urls
 
 if settings.DEBUG:
     import debug_toolbar

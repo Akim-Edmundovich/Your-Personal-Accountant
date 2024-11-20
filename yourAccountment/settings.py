@@ -28,7 +28,6 @@ SECRET_KEY = 'django-insecure-)+(08&m0#)(wayg16!)1sb@!sn^fw$xix5q!t04=^p7&__kjn*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,14 +41,21 @@ INSTALLED_APPS = [
     'sortable_listview',
     'rest_framework',
     'debug_toolbar',
-
+    'django_extensions',
+    # ----- Apps -----
     'apps.account',
     'apps.transactions',
-    'social_django',
-    'django_extensions',
     'apps.profile_settings',
     'apps.dashboard',
+    'social_django',
+    # ----- API -----
+    'apps.account.api',
+    'apps.dashboard.api',
+    'apps.profile_settings.api',
+    'apps.transactions.api',
+
 ]
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -197,6 +203,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
+'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
 

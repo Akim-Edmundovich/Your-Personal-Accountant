@@ -7,6 +7,7 @@ from .models import Category, Subcategory, Transaction
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['type', 'name']
     list_filter = ['type', 'name']
+    prepopulated_fields = {'slug': ['name']}
 
 
 @admin.register(Transaction)
@@ -20,3 +21,4 @@ class TransactionAdmin(admin.ModelAdmin):
 @admin.register(Subcategory)
 class SubcategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'category']
+    prepopulated_fields = {'slug': ['name']}

@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from .serializers import TransactionSerializer, CategorySerializer, \
+from apps.transactions.api.serializers import TransactionSerializer, CategorySerializer, \
     SubcategorySerializer
-from ..models import Category, Subcategory, Transaction
+from apps.transactions.models import Category, Subcategory, Transaction
 
 
 class TransactionViewSet(viewsets.ModelViewSet):

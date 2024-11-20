@@ -1,9 +1,9 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
 
+from apps.account.api.serializers import UserSerializerClass
 from apps.account.models import CustomUser
-from apps.account.serializers import CustomUserSerializer
 
 
-class UserViewSet(ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializerClass
+    queryset = CustomUser.objects.filter(is_active=True)

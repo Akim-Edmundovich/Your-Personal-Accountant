@@ -1,6 +1,6 @@
 from rest_framework.routers import SimpleRouter
 
-from .views import *
+from apps.transactions.api.views import *
 
 router = SimpleRouter()
 
