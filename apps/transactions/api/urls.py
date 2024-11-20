@@ -1,13 +1,15 @@
-from rest_framework.routers import SimpleRouter
+from rest_framework import routers
 
 from apps.transactions.api.views import *
 
-router = SimpleRouter()
+router = routers.DefaultRouter()
 
 app_name = 'api_transactions'
 
-router.register(r'transactions', TransactionViewSet, basename='transaction'),
-router.register(r'categories', CategoryViewSet, basename='category'),
-router.register(r'subcategories', SubcategoryViewSet, basename='subcategory'),
+router.register('transactions', TransactionViewSet),
+router.register('categories', CategoryViewSet),
+router.register('subcategories', SubcategoryViewSet),
 
-urlpatterns = router.urls
+urlpatterns = []
+
+urlpatterns.extend(router.urls)

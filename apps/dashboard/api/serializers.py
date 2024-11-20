@@ -1,12 +1,12 @@
 from rest_framework import serializers
+from apps.transactions.models import Transaction
 
-from apps.transactions.models import *
 
-
-class CategorySerializerClass(serializers.ModelSerializer):
-    id = serializers.CharField(source='name')
+class TransactionSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField()
+    subcategory = serializers.StringRelatedField()
+    user = serializers.StringRelatedField()
 
     class Meta:
-        model = Category
+        model = Transaction
         fields = '__all__'
-
