@@ -1,2 +1,8 @@
-Запуск с сертификатами для HTTPs:  
-`python manage.py runserver_plus --cert-file cert.pem --key-file key.pem`
+Данные для **PostgreSQL**: 
+```
+login: postgres
+password: postgres
+DB name: yourAccountment
+host: localhost
+port: 5423
+```

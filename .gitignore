@@ -1,0 +1,39 @@
+# created by virtualenv automatically
+
+.venv
+.idea
+
+
+/cert.crt
+/cert.key
+
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+
+# Backup files #k
+*.bak
+
+# File-based project format
+*.iws
+
+# Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+dump.rdb
+
+
+TEST.py
