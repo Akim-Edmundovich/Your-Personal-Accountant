@@ -1,18 +1,18 @@
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework import viewsets
-from rest_framework.response import Response
+from rest_framework import mixins
+from rest_framework import generics
 
-from apps.dashboard.api.serializers import TransactionSerializer
 from apps.transactions.models import *
+from apps.transactions.api.serializers import *
 
 
-class TransactionViewSet(viewsets.ModelViewSet):
+class TransactionList(generics.ListCreateAPIView):
+    queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
-    queryset = Transaction.objects.select_related('user', 'category', 'subcategory')
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
+
+class TransactionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer

@@ -6,7 +6,7 @@ router = routers.DefaultRouter()
 
 app_name = 'api_transactions'
 
-router.register('transactions', TransactionViewSet),
+# router.register('transactions', TransactionViewSet),
 router.register('categories', CategoryViewSet),
 router.register('subcategories', SubcategoryViewSet),
 

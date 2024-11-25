@@ -3,9 +3,9 @@ from django.urls import path, include
 
 from apps.dashboard.api.views import *
 
-router = routers.DefaultRouter()
-router.register('transactions', TransactionViewSet)
-
-urlpatterns = []
-
-urlpatterns.extend(router.urls)
+urlpatterns = [
+    path('transactions/', TransactionList.as_view(),
+         name='api_transaction'),
+    path('transactions/<int:pk>/', TransactionDetail.as_view(),
+         name='api_transaction_detail'),
+]
