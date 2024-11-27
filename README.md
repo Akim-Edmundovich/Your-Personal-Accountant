@@ -1,4 +1,4 @@
-Проект "Your Personal Accoyntment"
+Проект "Your Personal Accountent"
 (финансовый менеджер)
 
 Стек:
