@@ -21,7 +21,7 @@ db.sqlite3
 *.bak
 
 # Certificates and keys
-*.pem
+key.pem
 *.key
 
 # Documentation (mkdocs)
