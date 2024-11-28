@@ -14,7 +14,6 @@ from apps.dashboard.resources import TransactionResource
 from apps.transactions.models import *
 
 
-
 @login_required
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
@@ -114,7 +113,9 @@ def delete_transaction(request, pk: int):
 
 def convert_decimal_to_str(transactions):
     return (
-        {category: str(amount) for category, amount in transactions.items()})
+        {category: str(amount) for category, amount in
+         transactions.items()}
+    )
 
 
 def calculate_sum_by_category(user,
@@ -153,6 +154,7 @@ def calculate_sum_by_category(user,
         if total_amount is not None:
             category_and_sum[category.name] = total_amount
 
+    print(category_and_sum)
     return category_and_sum
 
 

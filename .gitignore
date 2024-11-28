@@ -1,39 +1,34 @@
-# created by virtualenv automatically
-
+# Virtual environment
 .venv
-.idea
-
-
-/cert.crt
-/cert.key
-
-# Django #
-*.log
-*.pot
-*.pyc
-__pycache__
-db.sqlite3
-
-# Backup files #k
-*.bak
-
-# File-based project format
-*.iws
-
-# Environments
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
 
+# IDE files
+.idea
+*.iws
 
-# mkdocs documentation
-/site
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+
+# Backup files
+*.bak
+
+# Certificates and keys
+*.pem
+*.key
+
+# Documentation (mkdocs)
+.site
 
 # mypy
 .mypy_cache/
+
+# Redis dump
 dump.rdb
-
-
-TEST.py
