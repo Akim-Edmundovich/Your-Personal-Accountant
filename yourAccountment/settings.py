@@ -134,6 +134,8 @@ AUTH_USER_MODEL = 'account.CustomUser'
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+FILE_CHARSET = "utf-8"
+DEFAULT_CHARSET = "utf-8"
 
 TIME_ZONE = 'Europe/Moscow'
 

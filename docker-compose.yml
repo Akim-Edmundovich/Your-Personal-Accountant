@@ -7,6 +7,9 @@ services:
       POSTGRES_DB: yourAccountant
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+        - LANG=ru_RU.UTF-8
+        - LANGUAGE=ru_RU:ru
+        - LC_ALL=ru_RU.UTF-8
     ports:
       - "15432:5432"
 

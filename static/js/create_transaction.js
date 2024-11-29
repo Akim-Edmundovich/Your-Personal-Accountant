@@ -58,7 +58,11 @@ document.addEventListener('DOMContentLoaded', function () {
     loadQuantityType();
 
     function loadCategories(type) {
-        axios.get(`/transaction/get_categories/${type}/`)
+        axios.get(`/transaction/get_categories/${type}/`, {
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
             .then(response => {
                 const data = response.data;
                 const categorySelect = document.getElementById('category-select');
@@ -103,7 +107,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        axios.get(`/transaction/get_subcategories/${categoryId}/`)
+        axios.get(`/transaction/get_subcategories/${categoryId}/`, {
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
             .then(response => {
                 const data = response.data;
                 const subcategorySelect = document.getElementById('subcategory-select');

@@ -53,11 +53,11 @@ def add_transaction(request):
 
 @login_required
 def get_categories(request, type_name):
-    categories = Category.objects.filter(type=type_name,
-                                         user=request.user)
+    categories = Category.objects.filter(type=type_name, user=request.user)
     data = [{"id": category.id, "name": category.name} for category in
             categories]
-    return JsonResponse(data, safe=False)
+    return JsonResponse(data, safe=False, json_dumps_params={
+        'ensure_ascii': False})  # Убираем экранирование
 
 
 @login_required
@@ -66,5 +66,22 @@ def get_subcategories(request, category_id):
                                                category__user=request.user)
     data = [{'id': subcategory.id, 'name': subcategory.name} for subcategory in
             subcategories]
-    return JsonResponse(data, safe=False)
+    return JsonResponse(data, safe=False, json_dumps_params={
+        'ensure_ascii': False})  # Убираем экранирование
 
+# @login_required
+# def get_categories(request, type_name):
+#     categories = Category.objects.filter(type=type_name,
+#                                          user=request.user)
+#     data = [{"id": category.id, "name": category.name} for category in
+#             categories]
+#     return JsonResponse(data, safe=False)
+#
+#
+# @login_required
+# def get_subcategories(request, category_id):
+#     subcategories = Subcategory.objects.filter(category_id=category_id,
+#                                                category__user=request.user)
+#     data = [{'id': subcategory.id, 'name': subcategory.name} for subcategory in
+#             subcategories]
+#     return JsonResponse(data, safe=False)
